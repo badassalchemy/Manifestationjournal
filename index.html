@@ -4,429 +4,584 @@
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>Manifestation Journal — Badass Alchemy</title>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,700;1,400&family=DM+Serif+Display:ital@0;1&family=Montserrat:wght@400;500;700&display=swap" rel="stylesheet"/>
-<script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
-<script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
-<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,700;1,400&family=Montserrat:wght@400;500;700&display=swap" rel="stylesheet"/>
 <style>
-  *{box-sizing:border-box;margin:0;padding:0}
-  body{background:#3D2B52;min-height:100vh}
-  textarea{color:#F0EAF8!important}
-  textarea::placeholder{color:#7A5A9A!important;opacity:1}
-  input::placeholder{color:#7A5A9A!important;opacity:1}
-  input{color:#F0EAF8!important}
-  ::-webkit-scrollbar{height:3px;width:3px}
-  ::-webkit-scrollbar-track{background:transparent}
-  ::-webkit-scrollbar-thumb{background:rgba(201,184,232,0.2);border-radius:2px}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:radial-gradient(ellipse at 50% 40%,#5C3F7A 0%,#3D2B52 45%,#2E1F40 100%);min-height:100vh;font-family:'Montserrat',sans-serif;color:#F0EAF8}
+::-webkit-scrollbar{width:3px;height:3px}
+::-webkit-scrollbar-thumb{background:rgba(201,184,232,0.2);border-radius:2px}
+
+/* ── Layout ── */
+#cover{min-height:100vh;display:flex;align-items:center;justify-content:center;text-align:center;padding:48px 24px;position:relative;overflow:hidden}
+#app{display:none;min-height:100vh;flex-direction:column}
+.content{max-width:680px;margin:0 auto;padding:22px 14px 60px;width:100%}
+
+/* ── Nebula canvas ── */
+.nebula{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+
+/* ── Affirmation bar ── */
+#aff-bar{background:rgba(139,92,246,0.13);border-bottom:1px solid rgba(201,184,232,0.14);padding:13px 44px 13px 20px;text-align:center;position:relative}
+#aff-bar p{font-family:'Cormorant Garamond',serif;font-size:15px;font-style:italic;color:#C9B8E8;line-height:1.6;margin:0}
+#aff-bar .aff-label{color:#E091C4;font-size:11px;font-style:normal;margin-right:8px}
+#aff-close{position:absolute;right:12px;top:50%;transform:translateY(-50%);background:none;border:none;color:#7A5A9A;cursor:pointer;font-size:18px;line-height:1}
+
+/* ── Sticky nav ── */
+#nav{position:sticky;top:0;z-index:100;background:rgba(45,28,70,0.94);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);border-bottom:1px solid rgba(201,184,232,0.14);padding:10px 16px}
+.nav-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+.nav-title{font-family:'Cormorant Garamond',serif;font-size:17px;color:#F0EAF8;display:flex;align-items:center;gap:10px}
+.streak-badge{background:linear-gradient(135deg,#8B5CF6,#D670AC);border-radius:50px;padding:3px 10px;font-size:10px;font-weight:700;color:#fff}
+.tab-row{display:flex;gap:6px;overflow-x:auto;padding-bottom:2px}
+
+/* ── Hero bar ── */
+#hero-bar{position:relative;overflow:hidden;padding:28px 20px 24px;text-align:center;border-bottom:1px solid rgba(201,184,232,0.14)}
+#hero-bar h2{font-family:'Cormorant Garamond',serif;font-size:clamp(22px,5vw,32px);font-weight:700;color:#F0EAF8;margin:0 0 6px;line-height:1.15}
+#hero-bar h2 em{background:linear-gradient(135deg,#A78BDB,#E091C4);-webkit-background-clip:text;-webkit-text-fill-color:transparent;font-style:italic}
+#hero-bar p{font-size:12px;color:#A888C8;margin:0}
+
+/* ── Footer ── */
+footer{position:relative;overflow:hidden;padding:32px 24px;text-align:center;border-top:1px solid rgba(201,184,232,0.14)}
+footer .f1{font-family:'Cormorant Garamond',serif;font-size:14px;font-style:italic;background:linear-gradient(135deg,#A78BDB,#E091C4);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin:0 0 8px}
+footer .f2{font-size:9px;font-weight:700;letter-spacing:2px;color:#7A5A9A;text-transform:uppercase}
+
+/* ── Cards ── */
+.card{background:rgba(255,255,255,0.07);border-radius:18px;border:1px solid rgba(201,184,232,0.14);box-shadow:0 4px 24px rgba(0,0,0,0.25);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);padding:22px 20px;margin-bottom:14px}
+.card-tint{background:rgba(201,184,232,0.1);border-color:rgba(201,184,232,0.2)}
+.card-glow{background:rgba(139,92,246,0.12);border-color:rgba(201,184,232,0.22);box-shadow:0 4px 32px rgba(139,92,246,0.15),0 2px 12px rgba(0,0,0,0.25)}
+.card-streak{background:rgba(139,92,246,0.1);border-color:rgba(201,184,232,0.2)}
+
+/* ── Overline ── */
+.overline{font-size:9px;font-weight:700;letter-spacing:1.5px;color:#E091C4;text-transform:uppercase;margin-bottom:10px}
+.overline.lav{color:#C9B8E8}
+.card-head{display:flex;align-items:center;gap:8px;margin-bottom:16px}
+.card-head .overline{margin-bottom:0}
+
+/* ── Pills / buttons ── */
+.pill{border-radius:50px;font-family:'Montserrat',sans-serif;font-weight:600;cursor:pointer;transition:all .2s;white-space:nowrap;border:1px solid rgba(201,184,232,0.14)}
+.pill.sm{font-size:11px;padding:6px 13px;background:rgba(255,255,255,0.08);color:#A888C8}
+.pill.sm.active{background:linear-gradient(135deg,#8B5CF6,#D670AC);color:#fff;border-color:transparent}
+.pill.lg{font-size:13px;padding:11px 26px;background:rgba(255,255,255,0.08);color:#A888C8}
+.pill.lg.active{background:linear-gradient(135deg,#8B5CF6,#D670AC);color:#fff;border-color:transparent}
+.btn-grad{background:linear-gradient(135deg,#8B5CF6,#D670AC);color:#fff;border:none;border-radius:50px;font-family:'Montserrat',sans-serif;font-weight:700;cursor:pointer}
+.btn-ghost{background:rgba(255,255,255,0.08);color:#C9B8E8;border:1px solid rgba(201,184,232,0.14);border-radius:50px;font-family:'Montserrat',sans-serif;font-weight:700;cursor:pointer}
+
+/* ── Inputs ── */
+textarea,input[type=text]{width:100%;padding:13px 15px;border-radius:12px;border:1px solid rgba(201,184,232,0.14);background:rgba(255,255,255,0.06);font-size:14px;font-family:'Cormorant Garamond',serif;color:#F0EAF8;outline:none;line-height:1.8;transition:border-color .2s;resize:vertical}
+textarea:focus,input[type=text]:focus{border-color:#C9B8E8;background:rgba(255,255,255,0.1)}
+textarea::placeholder,input::placeholder{color:#7A5A9A;opacity:1}
+.win-input{border-radius:50px!important;resize:none!important}
+input[type=checkbox]{accent-color:#8B5CF6;width:17px;height:17px;cursor:pointer}
+
+/* ── Tab sections ── */
+.section{display:none}.section.active{display:block}
+
+/* ── Mood pills container ── */
+.pill-wrap{display:flex;flex-wrap:wrap;gap:7px}
+
+/* ── Number circle ── */
+.num-circle{min-width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,#8B5CF6,#D670AC);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:13px;flex-shrink:0;margin-top:8px}
+
+/* ── Wins bubbles ── */
+.wins-wrap{display:flex;flex-wrap:wrap;gap:4px;margin-top:4px}
+.win-bubble{display:inline-flex;align-items:center;gap:8px;background:rgba(201,184,232,0.14);border:1px solid rgba(201,184,232,0.28);border-radius:50px;padding:7px 15px;font-size:13px;color:#D4C0E8}
+.win-bubble button{background:none;border:none;color:#7A5A9A;cursor:pointer;font-size:15px;line-height:1;padding:0}
+
+/* ── Streak days ── */
+.streak-days{display:flex;gap:6px;margin-bottom:16px}
+.streak-day{flex:1;text-align:center}
+.streak-day-label{font-size:9px;color:#7A5A9A;margin-bottom:5px;font-weight:700}
+.streak-dot-wrap{width:100%;padding-bottom:100%;position:relative;border-radius:50%}
+.streak-dot{position:absolute;inset:0;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:9px}
+
+/* ── Cover ── */
+.cover-inner{position:relative;z-index:1}
+.cover-box{max-width:460px;background:rgba(255,255,255,0.08);backdrop-filter:blur(20px);border-radius:20px;padding:26px 30px;margin:0 auto 36px;border:1px solid rgba(201,184,232,0.14)}
+.cover-h1{font-family:'Cormorant Garamond',serif;font-size:clamp(32px,6vw,52px);font-weight:700;line-height:1.1;margin:0 0 4px;color:#F0EAF8}
+.cover-sub{font-family:'Cormorant Garamond',serif;font-size:clamp(15px,3.2vw,21px);font-style:italic;margin:0 0 6px;background:linear-gradient(135deg,#A78BDB,#E091C4);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.cover-div{width:48px;height:1.5px;background:linear-gradient(135deg,#8B5CF6,#D670AC);margin:18px auto 24px;border-radius:2px}
+.cover-p1{font-size:15px;line-height:1.75;color:#D4C0E8;font-weight:500;margin:0 0 12px}
+.cover-p2{font-size:13px;line-height:1.75;color:#A888C8;margin:0}
+.cover-btn{font-size:14px;padding:14px 38px;letter-spacing:.5px;box-shadow:0 10px 36px rgba(139,92,246,0.35)}
+.cover-fine{font-size:10px;color:#7A5A9A;margin-top:18px;letter-spacing:.08em}
+
+/* ── Section titles ── */
+.sec-date{font-size:11px;letter-spacing:.1em;color:#E091C4;font-weight:700;text-transform:uppercase;margin:0 0 4px}
+.sec-sub{font-size:12px;color:#7A5A9A;margin:0}
+.sec-head{text-align:center;margin-bottom:24px}
+
+/* ── Prompts ── */
+.prompt-quote{font-family:'Cormorant Garamond',serif;font-size:17px;font-style:italic;color:#F0EAF8;line-height:1.8;margin:0 0 16px}
+.prompt-item{padding:13px 16px;border-radius:12px;cursor:pointer;border:1px solid transparent;transition:all .2s;margin-bottom:9px;font-size:13px;color:#F0EAF8;line-height:1.7}
+.prompt-item:hover{background:rgba(201,184,232,0.08)}
+.prompt-item.sel{background:rgba(201,184,232,0.14);border-color:rgba(201,184,232,0.14)}
+
+/* ── 3/6/9 ── */
+.s69-row{display:flex;gap:10px;align-items:center;margin-bottom:9px}
+.s69-num{font-size:11px;font-weight:700;color:#7A5A9A;min-width:20px}
+
+/* ── Guide ── */
+.guide-item{display:flex;gap:12px;padding:12px 14px;background:rgba(255,255,255,0.05);border-radius:12px;margin-bottom:9px;align-items:flex-start}
+.guide-star{color:#C9B8E8;font-size:14px;margin-top:2px;flex-shrink:0}
+.guide-t{font-weight:700;font-size:13px;color:#F0EAF8;margin-bottom:3px}
+.guide-d{font-size:13px;color:#A888C8;line-height:1.65}
+
+/* ── Ritual check ── */
+.ritual-label{display:flex;align-items:center;gap:10px;cursor:pointer;font-size:14px;color:#F0EAF8}
+.hint-text{font-size:13px;color:#A888C8;line-height:1.7;margin:0 0 12px}
+.chakra-theme{font-family:'Cormorant Garamond',serif;font-size:14px;font-style:italic;color:#C9B8E8;margin:10px 0 0}
+.done-msg{font-family:'Cormorant Garamond',serif;font-size:15px;font-style:italic;color:#E091C4;margin:12px 0 0;text-align:center}
+.row-flex{display:flex;gap:12px;align-items:flex-start}
+.divider{height:1px;background:rgba(201,184,232,0.14);margin:12px 0}
+.print-note{font-size:11px;color:#7A5A9A;margin-top:8px;text-align:center}
+
+@media(max-width:480px){
+  .cover-h1{font-size:30px}
+  .cover-box{padding:20px 18px}
+}
 </style>
 </head>
 <body>
-<div id="root"></div>
-<script type="text/babel">
-const { useState, useRef, useEffect, useCallback } = React;
 
-const C = {
-  bg:"#3D2B52", bgMid:"#4A3260", bgCard:"rgba(255,255,255,0.07)", bgSurface:"rgba(255,255,255,0.05)",
-  lavender:"#C9B8E8", lavLight:"rgba(201,184,232,0.15)", pink:"#E091C4", pinkLight:"rgba(224,145,196,0.15)",
-  txt:"#F0EAF8", txtSec:"#D4C0E8", txtMuted:"#A888C8", txtFaded:"#7A5A9A",
-  border:"rgba(201,184,232,0.14)", borderBr:"rgba(201,184,232,0.26)", shadow:"rgba(0,0,0,0.25)",
-};
-const PG  = "linear-gradient(135deg,#8B5CF6,#D670AC)";
-const PG2 = "linear-gradient(135deg,#A78BDB,#E091C4)";
-const BG_GRAD = "radial-gradient(ellipse at 50% 40%,#5C3F7A 0%,#3D2B52 45%,#2E1F40 100%)";
+<!-- COVER -->
+<div id="cover">
+  <canvas class="nebula" id="cnv-cover"></canvas>
+  <div class="cover-inner">
+    <div style="font-size:44px;margin-bottom:14px">👑</div>
+    <h1 class="cover-h1">Manifestation Journal</h1>
+    <p class="cover-sub">for the Baddie Building an Empire</p>
+    <div class="cover-div"></div>
+    <div class="cover-box">
+      <p class="cover-p1">Script your future. Regulate your energy. Build your empire — 10 minutes a day.</p>
+      <div style="width:32px;height:1px;background:linear-gradient(135deg,#A78BDB,#E091C4);margin:0 auto 12px"></div>
+      <p class="cover-p2">Part altar, part CEO dashboard. Every session leaves you with one clear aligned move.</p>
+    </div>
+    <button class="btn-grad cover-btn" onclick="startApp()">✦ Begin Your Practice</button>
+    <p class="cover-fine">SOUL + STRATEGY · 5-10 MINUTES DAILY</p>
+  </div>
+</div>
 
-const AFFIRMATIONS = [
-  "I am magnetic. The right clients, money, and opportunities find me with ease.",
-  "My self-trust is my most powerful business asset.",
-  "I release scarcity and step into the identity of a woman who receives abundantly.",
-  "I am building an empire that is an extension of my soul.",
-  "Money flows to me consistently because I show up as my highest self.",
-  "I am allowed to want more — and I am allowed to have it.",
-  "The version of me who has everything I desire already exists. I am becoming her now.",
-  "I decentered everyone else's opinion the moment I chose to trust myself.",
-  "My nervous system is regulated. My income is consistent. My life is my design.",
-  "I am not chasing. I am calling in.",
-  "I help women release scarcity and build consistent income — and I lead by example.",
-  "Every boundary I hold is a declaration of my self-worth.",
-  "I am the woman in the room who knows her value and names her price.",
-  "Visibility is safe. Being seen is my superpower.",
-  "I did not come this far to shrink. I came here to build an empire.",
-  "My past is not my identity. My future self is already calling me forward.",
-  "I receive. I trust. I become.",
-  "The Baddie Building an Empire does not wait for permission. She moves.",
-  "I am in full alignment — my energy, my offers, and my income match my worth.",
-  "Today I choose to be the evidence that it is possible.",
-  "My community needs the version of me that says yes to herself.",
-  "I am not too much. I am exactly enough — and then some.",
-  "Scarcity had its turn. Abundance is my new normal.",
-  "I script my future and I act like it is already done.",
-  "The empire I am building will outlast every doubt I ever had.",
-  "I am a woman who finishes what she starts — with grace and with fire.",
-  "My income is a reflection of how deeply I trust myself.",
-  "I attract soul-aligned clients who are ready and who pay in full.",
-  "I am not starting over. I am leveling up.",
-  "Every day I show up is a vote for the woman I am becoming.",
-  "I release the need for outside permission. I am my own authority.",
-];
+<!-- APP -->
+<div id="app">
+  <!-- Affirmation bar -->
+  <div id="aff-bar">
+    <p><span class="aff-label">✦ TODAY</span><span id="aff-text"></span></p>
+    <button id="aff-close" onclick="document.getElementById('aff-bar').style.display='none'">×</button>
+  </div>
 
-const store = {
-  get:(k,fb)=>{try{const v=localStorage.getItem(k);return v!=null?JSON.parse(v):fb;}catch{return fb;}},
-  set:(k,v)=>{try{localStorage.setItem(k,JSON.stringify(v));}catch{}},
-};
+  <!-- Nav -->
+  <div id="nav">
+    <div class="nav-top">
+      <div class="nav-title">
+        👑 Manifestation Journal
+        <span class="streak-badge" id="streak-badge" style="display:none"></span>
+      </div>
+      <button class="btn-ghost" style="font-size:11px;padding:6px 14px" id="guide-btn" onclick="toggleGuide()">📖 Guide</button>
+    </div>
+    <div class="tab-row" id="tab-row">
+      <button class="pill sm active" onclick="switchTab('daily',this)">☀️ Daily</button>
+      <button class="pill sm" onclick="switchTab('weekly',this)">🗓️ Weekly</button>
+      <button class="pill sm" onclick="switchTab('monthly',this)">🌙 Monthly</button>
+      <button class="pill sm" onclick="switchTab('prompts',this)">💡 Prompts</button>
+      <button class="pill sm" onclick="switchTab('s369',this)">🔮 3/6/9</button>
+      <button class="pill sm" onclick="switchTab('streak',this)">🔥 Streak</button>
+    </div>
+  </div>
+
+  <!-- Hero bar -->
+  <div id="hero-bar">
+    <canvas class="nebula" id="cnv-hero"></canvas>
+    <div style="position:relative">
+      <h2 id="hero-title">Daily Sacred <em>Spread</em></h2>
+      <p id="hero-sub">Soul + Strategy · 5-10 minutes</p>
+    </div>
+  </div>
+
+  <!-- Content -->
+  <div class="content">
+
+    <!-- GUIDE -->
+    <div class="section" id="tab-guide">
+      <button class="btn-ghost" style="font-size:13px;padding:8px 18px;margin-bottom:16px" onclick="toggleGuide()">← Back</button>
+      <div class="card" style="margin-bottom:14px">
+        <div style="font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:700;color:#F0EAF8;line-height:1.25;margin-bottom:8px">What is manifestation journaling?</div>
+        <p class="hint-text" style="margin:0">It bridges your inner vision with your outer business reality. Present-tense scripting trains your brain to recognize and act on opportunities that match your vision. Written goals increase achievement. Emotion accelerates everything.</p>
+      </div>
+      <div class="card">
+        <div class="card-head"><div class="overline">5 Key Principles</div></div>
+        <div class="guide-item"><span class="guide-star">✦</span><div><div class="guide-t">Present-tense writing</div><div class="guide-d">Write as if it is already real. Your nervous system responds to what you believe.</div></div></div>
+        <div class="guide-item"><span class="guide-star">✦</span><div><div class="guide-t">Emotional intensity</div><div class="guide-d">Feel it as you write. Emotion is the language your subconscious understands.</div></div></div>
+        <div class="guide-item"><span class="guide-star">✦</span><div><div class="guide-t">Repetition over perfection</div><div class="guide-d">Two minutes every day beats 30 minutes once a week.</div></div></div>
+        <div class="guide-item"><span class="guide-star">✦</span><div><div class="guide-t">Aligned action</div><div class="guide-d">Vision without movement stays a dream. One small action per session.</div></div></div>
+        <div class="guide-item" style="margin-bottom:0"><span class="guide-star">✦</span><div><div class="guide-t">Bridge beliefs</div><div class="guide-d">Not quite believing it yet? Start with "I am learning to..." Your nervous system will catch up.</div></div></div>
+      </div>
+      <div class="card">
+        <div class="card-head"><div class="overline">How to Use Each Section</div></div>
+        <div style="font-weight:700;font-size:13px;color:#C9B8E8;margin-bottom:4px">Daily Spread</div>
+        <div class="hint-text">Your non-negotiable 5-10 min core: check in, script, embody, one aligned action.</div>
+        <div class="divider"></div>
+        <div style="font-weight:700;font-size:13px;color:#C9B8E8;margin-bottom:4px">Weekly Spread</div>
+        <div class="hint-text">Vision, top 3 manifestations, gratitude, synchronicities.</div>
+        <div class="divider"></div>
+        <div style="font-weight:700;font-size:13px;color:#C9B8E8;margin-bottom:4px">Monthly Review</div>
+        <div class="hint-text">Wins, manifestations, belief shifts, releases, and your next declaration.</div>
+        <div class="divider"></div>
+        <div style="font-weight:700;font-size:13px;color:#C9B8E8;margin-bottom:4px">Prompt Library</div>
+        <div class="hint-text">Pull a prompt when you need depth. From future-self visioning to shadow work.</div>
+        <div class="divider"></div>
+        <div style="font-weight:700;font-size:13px;color:#C9B8E8;margin-bottom:4px">3/6/9 Method</div>
+        <div class="hint-text" style="margin:0">One desire, all day: 3× morning, 6× afternoon, 9× evening.</div>
+      </div>
+    </div>
+
+    <!-- DAILY -->
+    <div class="section active" id="tab-daily">
+      <div class="sec-head">
+        <p class="sec-date" id="today-date"></p>
+        <p class="sec-sub">5-10 minutes · Let this be a ritual, not a task</p>
+      </div>
+      <div class="card card-tint">
+        <p class="hint-text">Before you begin: light a candle, pull a card, or take 3 deep breaths.</p>
+        <label class="ritual-label"><input type="checkbox" id="chk-open"/> I have created my sacred space ✨</label>
+      </div>
+      <div class="card">
+        <div class="card-head"><span>🌊</span><div class="overline lav">Energetic Check-In</div></div>
+        <div class="overline lav">Mood</div>
+        <div class="pill-wrap" id="mood-pills" style="margin-bottom:16px"></div>
+        <div class="overline lav" style="margin-top:4px">Body Sensation</div>
+        <textarea rows="2" placeholder="Where do you feel tension? Openness? Warmth?" style="margin-bottom:14px"></textarea>
+        <div class="overline lav">Dominant Emotion</div>
+        <textarea rows="2" placeholder="Name the feeling sitting with you right now..." style="margin-bottom:14px"></textarea>
+        <div class="overline lav">Chakra / Energy Theme</div>
+        <div class="pill-wrap" id="chakra-pills"></div>
+        <p class="chakra-theme" id="chakra-theme" style="display:none"></p>
+      </div>
+      <div class="card">
+        <div class="card-head"><span>✍️</span><div class="overline">Present-Tense Manifestation Script</div></div>
+        <p class="hint-text">Write your core business desire as if it is already real. Be specific — numbers, feelings, scenarios.</p>
+        <textarea rows="6" placeholder="I am fully booked with soul-aligned clients paying $____ per month. My work feels like a natural extension of my purpose..."></textarea>
+      </div>
+      <div class="card">
+        <div class="card-head"><span>🦋</span><div class="overline">Feelings and Embodiment</div></div>
+        <textarea rows="5" placeholder="It feels like warm honey in my chest. My shoulders are relaxed. There is a quiet confidence — not hustle energy, but deep knowing..."></textarea>
+      </div>
+      <div class="card">
+        <div class="card-head"><span>⚡</span><div class="overline">One Inspired Action for Today</div></div>
+        <textarea rows="2" placeholder="DM two people who engaged with my last post. Send the proposal. Record that reel..."></textarea>
+      </div>
+      <div class="card">
+        <div class="card-head"><span>🔮</span><div class="overline">Intuitive Hits and Spiritual Signs</div></div>
+        <textarea rows="3" placeholder="Pulled The Star card today. Saw 1111 three times. Had a dream about speaking on stage..."></textarea>
+      </div>
+      <div class="card card-tint">
+        <p class="hint-text">Close your journal, take one breath, and whisper: "It is done. I trust the timing."</p>
+        <label class="ritual-label"><input type="checkbox" id="chk-close" onchange="markToday()"/> Practice complete — I release it now 🤍</label>
+        <p class="done-msg" id="done-msg" style="display:none">Streak updated. You showed up. 👑</p>
+      </div>
+    </div>
+
+    <!-- WEEKLY -->
+    <div class="section" id="tab-weekly">
+      <div class="sec-head">
+        <p class="sec-date" id="week-range"></p>
+        <p class="sec-sub">Vision · Gratitude · Evidence</p>
+      </div>
+      <div class="card"><div class="card-head"><span>🔭</span><div class="overline">Vision for the Week</div></div><textarea rows="5" placeholder="This week I am creating... I am visible in... I am attracting..."></textarea></div>
+      <div class="card">
+        <div class="card-head"><span>🎯</span><div class="overline">Top 3 Manifestations</div></div>
+        <div class="row-flex" style="margin-bottom:12px"><div class="num-circle">1</div><div style="flex:1"><textarea rows="2" placeholder="5 new aligned DMs from potential clients"></textarea></div></div>
+        <div class="row-flex" style="margin-bottom:12px"><div class="num-circle">2</div><div style="flex:1"><textarea rows="2" placeholder="Sign one soul-aligned client at my new price"></textarea></div></div>
+        <div class="row-flex"><div class="num-circle">3</div><div style="flex:1"><textarea rows="2" placeholder="Consistent $10K month from recurring revenue"></textarea></div></div>
+      </div>
+      <div class="card"><div class="card-head"><span>🙏</span><div class="overline">Business-Aligned Gratitude</div></div><textarea rows="5" placeholder="I am grateful for the client who renewed this week. I am grateful in advance for the podcast invitation coming my way..."></textarea></div>
+      <div class="card"><div class="card-head"><span>💎</span><div class="overline">Values Alignment Check</div></div><textarea rows="4" placeholder="My offer feels aligned because... I notice I am pushing too hard on... My energy is asking me to..."></textarea></div>
+      <div class="card"><div class="card-head"><span>✨</span><div class="overline">Evidence and Synchronicities</div></div><p class="hint-text">DMs from nowhere, repeating numbers, unexpected opportunities. Track it all.</p><textarea rows="5" placeholder="Tuesday: someone I had not spoken to in months messaged asking about my services. Saw 222 three times..."></textarea></div>
+    </div>
+
+    <!-- MONTHLY -->
+    <div class="section" id="tab-monthly">
+      <div class="sec-head">
+        <p class="sec-date" id="month-label"></p>
+        <p class="sec-sub">Celebrate · Calibrate · Claim</p>
+      </div>
+      <div class="card card-glow">
+        <div class="card-head"><span>🏆</span><div class="overline">Wins for the Month</div></div>
+        <p class="hint-text">Everything counts — small, big, and in between. A sold-out offer AND finally replying to that email. Celebrate it all, Queen.</p>
+        <div style="display:flex;gap:8px;margin-bottom:14px">
+          <input type="text" id="win-input" class="win-input" placeholder="Add a win... press Enter" onkeydown="if(event.key==='Enter')addWin()" style="flex:1;resize:none"/>
+          <button class="btn-grad" style="font-size:13px;padding:11px 20px" onclick="addWin()">+ Add</button>
+        </div>
+        <div class="wins-wrap" id="wins-wrap">
+          <p style="font-size:13px;color:#7A5A9A;font-style:italic;padding:8px 0;margin:0">Your wins will appear here — start adding ✦</p>
+        </div>
+      </div>
+      <div class="card"><div class="card-head"><span>🌠</span><div class="overline">What Did I Manifest That I Asked For?</div></div><p class="hint-text">Look back at your daily scripts. What actually landed? This is your proof of concept.</p><textarea rows="5" placeholder="I asked for a sold-out launch and got ____. I scripted $____ and received ____..."></textarea></div>
+      <div class="card"><div class="card-head"><span>🏅</span><div class="overline">What Manifested Overall</div></div><p class="hint-text">Revenue, clients, clarity, confidence — all of it counts.</p><textarea rows="4" placeholder="This month I manifested: $____ in revenue, ____ new clients, a collaboration with..."></textarea></div>
+      <div class="card"><div class="card-head"><span>📈</span><div class="overline">What Moved the Needle</div></div><textarea rows="4" placeholder="The thing that moved the needle most was... I noticed that when I..."></textarea></div>
+      <div class="card"><div class="card-head"><span>🧬</span><div class="overline">Beliefs That Shifted</div></div><p class="hint-text">What do you believe now that you did not believe 30 days ago?</p><textarea rows="4" placeholder="I used to believe... Now I know... The old story was... The new truth is..."></textarea></div>
+      <div class="card"><div class="card-head"><span>🔥</span><div class="overline">What Is Now Non-Negotiable</div></div><textarea rows="4" placeholder="I will no longer... I now require... My non-negotiables are..."></textarea></div>
+      <div class="card"><div class="card-head"><span>🌙</span><div class="overline">What I Am Releasing</div></div><textarea rows="4" placeholder="I release the need to... I am done carrying... I surrender..."></textarea></div>
+      <div class="card"><div class="card-head"><span>👑</span><div class="overline">Next Month's Empire Declaration</div></div><p class="hint-text">One powerful paragraph. Present tense. Full embodiment. No hedging.</p><textarea rows="5" placeholder="Next month I am the woman who... My business is... I feel..."></textarea></div>
+      <div style="text-align:center;padding-top:8px">
+        <button class="btn-ghost" style="font-size:13px;padding:12px 28px" onclick="printMonthly()">🖨️ &nbsp;Export / Print This Review</button>
+        <p class="print-note">Opens a clean print-ready version in a new tab</p>
+      </div>
+    </div>
+
+    <!-- PROMPTS -->
+    <div class="section" id="tab-prompts">
+      <div class="sec-head"><p class="sec-sub">Pull a prompt · Let it guide you</p></div>
+      <div class="pill-wrap" id="prompt-cats" style="justify-content:center;margin-bottom:18px"></div>
+      <div style="text-align:center;margin-bottom:18px">
+        <button class="btn-grad" style="font-size:13px;padding:12px 30px" onclick="randomPrompt()">🎲 Pull a Random Prompt</button>
+      </div>
+      <div class="card" id="prompt-result" style="display:none">
+        <p class="prompt-quote" id="prompt-quote"></p>
+        <textarea rows="8" placeholder="Let it flow..."></textarea>
+      </div>
+      <div class="card">
+        <div class="card-head"><span>📚</span><div class="overline" id="prompt-list-title">All Prompts</div></div>
+        <div id="prompt-list"></div>
+      </div>
+    </div>
+
+    <!-- 3/6/9 -->
+    <div class="section" id="tab-s369">
+      <div class="sec-head"><p class="sec-sub">One desire · All day · Full embodiment</p></div>
+      <div class="card"><div class="card-head"><span>🎯</span><div class="overline">Your Focus Statement</div></div><p class="hint-text">Choose one specific desire and write it as a present-tense statement.</p><textarea rows="2" id="focus-stmt" placeholder="I am consistently earning $10,000/month from my soul-aligned membership community." oninput="syncFocus()"></textarea></div>
+      <div class="card"><div class="card-head"><span>🌅</span><div class="overline">Morning — Write 3×</div></div><p class="hint-text">Write your focus statement 3 times when you wake up.</p><div id="rows-morning"></div></div>
+      <div class="card"><div class="card-head"><span>☀️</span><div class="overline">Afternoon — Write 6×</div></div><p class="hint-text">Write it 6 times midday. Feel the desire strengthen.</p><div id="rows-afternoon"></div></div>
+      <div class="card"><div class="card-head"><span>🌙</span><div class="overline">Evening — Write 9×</div></div><p class="hint-text">Write it 9 times before bed. Let it be the last thought you carry into sleep.</p><div id="rows-evening"></div></div>
+    </div>
+
+    <!-- STREAK -->
+    <div class="section" id="tab-streak">
+      <div class="card card-streak">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:10px">
+          <div>
+            <div class="overline lav">Your Practice Streak</div>
+            <div style="display:flex;align-items:baseline;gap:10px">
+              <span id="streak-big" style="font-family:'Cormorant Garamond',serif;font-size:42px;font-weight:700;background:linear-gradient(135deg,#8B5CF6,#D670AC);-webkit-background-clip:text;-webkit-text-fill-color:transparent;line-height:1">0</span>
+              <span id="streak-label" style="font-size:12px;color:#A888C8">days in a row</span>
+            </div>
+          </div>
+          <div style="text-align:right">
+            <div style="font-size:11px;color:#7A5A9A;margin-bottom:4px">Total sessions</div>
+            <div id="total-big" style="font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:700;color:#C9B8E8;line-height:1">0</div>
+          </div>
+        </div>
+        <div class="streak-days" id="streak-days"></div>
+        <button class="btn-grad" id="mark-btn" style="width:100%;font-size:13px;padding:12px" onclick="markToday()">✦ Mark Today as Complete</button>
+        <p id="streak-done-msg" style="display:none;text-align:center;padding:10px;font-family:'Cormorant Garamond',serif;font-size:16px;font-style:italic;color:#E091C4">You showed up today. She is proud of you. 🤍</p>
+      </div>
+    </div>
+
+  </div><!-- /content -->
+
+  <footer>
+    <canvas class="nebula" id="cnv-footer"></canvas>
+    <div style="position:relative">
+      <p class="f1">release · receive · become</p>
+      <p class="f2">✦ Badass Alchemy · The Manifestation Journal ✦</p>
+    </div>
+  </footer>
+</div><!-- /app -->
+
+<script>
+/* ── Nebula canvas ── */
+function drawNebula(id){
+  const c=document.getElementById(id);if(!c)return;
+  const W=c.width=c.offsetWidth||800,H=c.height=c.offsetHeight||300;
+  const ctx=c.getContext('2d');
+  ctx.clearRect(0,0,W,H);
+  const glows=[[W*.5,H*.45,W*.5,'rgba(180,120,230,0.2)','rgba(160,100,210,0.1)'],[W*.7,H*.3,W*.3,'rgba(220,120,180,0.1)','transparent'],[W*.2,H*.6,W*.25,'rgba(130,90,200,0.08)','transparent']];
+  glows.forEach(([x,y,r,c1,c2])=>{const g=ctx.createRadialGradient(x,y,0,x,y,r);g.addColorStop(0,c1);g.addColorStop(1,c2||'transparent');ctx.fillStyle=g;ctx.fillRect(0,0,W,H);});
+  for(let i=0;i<120;i++){ctx.beginPath();ctx.arc(Math.random()*W,Math.random()*H,Math.random()*1.1+.2,0,Math.PI*2);ctx.fillStyle=Math.random()>.5?'#D4C0E8':'#ffffff';ctx.globalAlpha=Math.random()*.5+.1;ctx.fill();}
+  ctx.globalAlpha=1;
+}
+
+/* ── Affirmations ── */
+const AFFS=['I am magnetic. The right clients, money, and opportunities find me with ease.','My self-trust is my most powerful business asset.','I release scarcity and step into the identity of a woman who receives abundantly.','I am building an empire that is an extension of my soul.','Money flows to me consistently because I show up as my highest self.','I am allowed to want more — and I am allowed to have it.','The version of me who has everything I desire already exists. I am becoming her now.','I decentered everyone\'s opinion the moment I chose to trust myself.','My nervous system is regulated. My income is consistent. My life is my design.','I am not chasing. I am calling in.','Every boundary I hold is a declaration of my self-worth.','I am the woman in the room who knows her value and names her price.','Visibility is safe. Being seen is my superpower.','I did not come this far to shrink. I came here to build an empire.','My past is not my identity. My future self is already calling me forward.','I receive. I trust. I become.','The Baddie Building an Empire does not wait for permission. She moves.','I am in full alignment — my energy, my offers, and my income match my worth.','Today I choose to be the evidence that it is possible.','My community needs the version of me that says yes to herself.','I am not too much. I am exactly enough — and then some.','Scarcity had its turn. Abundance is my new normal.','I script my future and I act like it is already done.','The empire I am building will outlast every doubt I ever had.','I am a woman who finishes what she starts — with grace and with fire.','My income is a reflection of how deeply I trust myself.','I attract soul-aligned clients who are ready and who pay in full.','I am not starting over. I am leveling up.','Every day I show up is a vote for the woman I am becoming.','I release the need for outside permission. I am my own authority.','I help women release scarcity and build consistent income — and I lead by example.'];
+
+/* ── Storage ── */
+const store={get:(k,fb)=>{try{const v=localStorage.getItem(k);return v!=null?JSON.parse(v):fb;}catch{return fb;}},set:(k,v)=>{try{localStorage.setItem(k,JSON.stringify(v));}catch{}}};
 const todayKey=()=>new Date().toISOString().slice(0,10);
-const daysBetween=(a,b)=>Math.round((new Date(b)-new Date(a))/(1000*60*60*24));
+const daysBetween=(a,b)=>Math.round((new Date(b)-new Date(a))/(864e5));
 
-function useStreak(){
-  const [streak,setStreak]=useState(()=>store.get("ba_streak",0));
-  const [lastDate,setLastDate]=useState(()=>store.get("ba_lastDate",""));
-  const [totalDays,setTotalDays]=useState(()=>store.get("ba_total",0));
-  const markToday=useCallback(()=>{
-    const today=todayKey();
-    if(lastDate===today)return;
-    const diff=lastDate?daysBetween(lastDate,today):1;
-    const ns=diff===1?streak+1:1;
-    const nt=totalDays+1;
-    setStreak(ns);setLastDate(today);setTotalDays(nt);
-    store.set("ba_streak",ns);store.set("ba_lastDate",today);store.set("ba_total",nt);
-  },[lastDate,streak,totalDays]);
-  return{streak,totalDays,doneToday:lastDate===todayKey(),markToday};
+/* ── Streak state ── */
+let streakData={streak:store.get('ba_streak',0),lastDate:store.get('ba_lastDate',''),total:store.get('ba_total',0)};
+
+function markToday(){
+  const today=todayKey();
+  if(streakData.lastDate===today)return;
+  const diff=streakData.lastDate?daysBetween(streakData.lastDate,today):1;
+  streakData.streak=diff===1?streakData.streak+1:1;
+  streakData.total+=1;
+  streakData.lastDate=today;
+  store.set('ba_streak',streakData.streak);store.set('ba_lastDate',streakData.lastDate);store.set('ba_total',streakData.total);
+  renderStreak();
+  const dm=document.getElementById('done-msg');if(dm)dm.style.display='block';
 }
 
-function NebulaCanvas({style={}}){
-  const ref=useRef(null);
-  useEffect(()=>{
-    const c=ref.current;if(!c)return;
-    const W=c.width=c.offsetWidth||800,H=c.height=c.offsetHeight||400;
-    const ctx=c.getContext("2d");
-    ctx.clearRect(0,0,W,H);
-    [[W*.5,H*.42,W*.48,"rgba(180,120,230,0.22)","rgba(160,100,210,0.12)"],[W*.68,H*.35,W*.28,"rgba(220,120,180,0.12)","transparent"],[W*.25,H*.55,W*.25,"rgba(130,90,200,0.1)","transparent"]].forEach(([x,y,r,c1,c2])=>{
-      const g=ctx.createRadialGradient(x,y,0,x,y,r);g.addColorStop(0,c1);g.addColorStop(1,c2||"transparent");ctx.fillStyle=g;ctx.fillRect(0,0,W,H);
-    });
-    for(let i=0;i<140;i++){
-      ctx.beginPath();ctx.arc(Math.random()*W,Math.random()*H,Math.random()*1.1+0.2,0,Math.PI*2);
-      ctx.fillStyle=Math.random()>.5?"#D4C0E8":"#FFFFFF";ctx.globalAlpha=Math.random()*.55+.1;ctx.fill();
-    }
-    ctx.globalAlpha=1;
-  },[]);
-  return React.createElement("canvas",{ref,style:{position:"absolute",inset:0,width:"100%",height:"100%",pointerEvents:"none",...style}});
-}
+function doneToday(){return streakData.lastDate===todayKey();}
 
-function Sparkle({x,y,size,color,opacity}){
-  const h=size/2,q=size/5;
-  return React.createElement("polygon",{points:`${x},${y-h} ${x+q},${y-q} ${x+h},${y} ${x+q},${y+q} ${x},${y+h} ${x-q},${y+q} ${x-h},${y} ${x-q},${y-q}`,fill:color,opacity});
-}
-function SparkleLayer({w=800,h=400}){
-  const s=[{x:w*.08,y:h*.3,s:18,c:"#C9B8E8",o:.7},{x:w*.91,y:h*.25,s:22,c:"#C9B8E8",o:.65},{x:w*.15,y:h*.68,s:12,c:"#E091C4",o:.55},{x:w*.87,y:h*.7,s:11,c:"#E091C4",o:.5}];
-  return React.createElement("svg",{style:{position:"absolute",inset:0,width:"100%",height:"100%",pointerEvents:"none"},viewBox:`0 0 ${w} ${h}`,preserveAspectRatio:"xMidYMid slice"},s.map((k,i)=>React.createElement(Sparkle,{key:i,...k,size:k.s,color:k.c,opacity:k.o})));
-}
-
-const cardStyle=(extra={})=>({background:C.bgCard,borderRadius:18,border:`1px solid ${C.border}`,boxShadow:`0 4px 24px ${C.shadow}`,backdropFilter:"blur(12px)",WebkitBackdropFilter:"blur(12px)",padding:"22px 20px",marginBottom:14,...extra});
-const Overline=({children,color})=>React.createElement("div",{style:{fontFamily:"'Montserrat',sans-serif",fontSize:9,fontWeight:700,letterSpacing:1.5,color:color||C.pink,textTransform:"uppercase",marginBottom:10}},children);
-
-function Pill({children,onClick,active,small}){
-  return React.createElement("button",{onClick,style:{background:active?PG:"rgba(255,255,255,0.08)",color:active?"#fff":C.txtMuted,border:`1px solid ${active?"transparent":C.border}`,padding:small?"6px 13px":"11px 26px",borderRadius:50,fontSize:small?11:13,fontWeight:600,cursor:"pointer",fontFamily:"'Montserrat',sans-serif",transition:"all .2s ease",letterSpacing:.3,whiteSpace:"nowrap"}},children);
-}
-
-function TA({value,onChange,placeholder,rows=3}){
-  return React.createElement("textarea",{value,onChange:e=>onChange(e.target.value),placeholder,rows,style:{width:"100%",padding:"13px 15px",borderRadius:12,border:`1px solid ${C.border}`,background:"rgba(255,255,255,0.06)",fontSize:14,fontFamily:"'DM Serif Display',serif",color:C.txt,resize:"vertical",outline:"none",lineHeight:1.8,transition:"border-color .2s"},onFocus:e=>{e.target.style.borderColor=C.lavender;e.target.style.background="rgba(255,255,255,0.1)";},onBlur:e=>{e.target.style.borderColor=C.border;e.target.style.background="rgba(255,255,255,0.06)";}});
-}
-
-function SCard({title,emoji,children,glow}){
-  return React.createElement("div",{style:cardStyle({boxShadow:glow?`0 4px 32px rgba(160,100,220,0.2),0 2px 12px ${C.shadow}`:`0 4px 24px ${C.shadow}`})},
-    title&&React.createElement("div",{style:{display:"flex",alignItems:"center",gap:8,marginBottom:16}},emoji&&React.createElement("span",{style:{fontSize:17}},emoji),React.createElement(Overline,null,title)),
-    children
-  );
-}
-
-function AffirmationBar(){
-  const idx=Math.floor(Date.now()/86400000)%AFFIRMATIONS.length;
-  const [visible,setVisible]=useState(true);
-  if(!visible)return null;
-  return React.createElement("div",{style:{position:"relative",overflow:"hidden",background:"rgba(139,92,246,0.13)",borderBottom:`1px solid ${C.border}`,padding:"14px 44px 14px 20px",textAlign:"center"}},
-    React.createElement("p",{style:{fontFamily:"'Cormorant Garamond',serif",fontSize:15,fontStyle:"italic",color:C.lavender,margin:0,lineHeight:1.6}},
-      React.createElement("span",{style:{color:C.pink,marginRight:8,fontSize:11}},"✦ TODAY"),
-      AFFIRMATIONS[idx]
-    ),
-    React.createElement("button",{onClick:()=>setVisible(false),style:{position:"absolute",right:12,top:"50%",transform:"translateY(-50%)",background:"none",border:"none",color:C.txtFaded,cursor:"pointer",fontSize:18,lineHeight:1}},"×")
-  );
-}
-
-function StreakWidget({streak,totalDays,doneToday,markToday}){
-  const days=["M","T","W","T","F","S","S"];
+function renderStreak(){
+  const s=streakData.streak,t=streakData.total;
+  const big=document.getElementById('streak-big');if(big)big.textContent=s;
+  const lbl=document.getElementById('streak-label');if(lbl)lbl.textContent=s===1?'day in a row':'days in a row';
+  const tb=document.getElementById('total-big');if(tb)tb.textContent=t;
+  const badge=document.getElementById('streak-badge');if(badge){badge.textContent='🔥 '+s;badge.style.display=s>0?'inline-block':'none';}
+  const markBtn=document.getElementById('mark-btn');
+  const doneMsg=document.getElementById('streak-done-msg');
+  if(doneToday()){if(markBtn)markBtn.style.display='none';if(doneMsg)doneMsg.style.display='block';}
+  else{if(markBtn)markBtn.style.display='block';if(doneMsg)doneMsg.style.display='none';}
+  const days=['M','T','W','T','F','S','S'];
   const todayDow=(new Date().getDay()+6)%7;
-  return React.createElement("div",{style:cardStyle({background:"rgba(139,92,246,0.1)",border:`1px solid rgba(201,184,232,0.2)`,marginBottom:20})},
-    React.createElement("div",{style:{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:16,flexWrap:"wrap",gap:10}},
-      React.createElement("div",null,
-        React.createElement(Overline,{color:C.lavender},"Your Practice Streak"),
-        React.createElement("div",{style:{display:"flex",alignItems:"baseline",gap:10}},
-          React.createElement("span",{style:{fontFamily:"'Cormorant Garamond',serif",fontSize:42,fontWeight:700,background:PG,WebkitBackgroundClip:"text",WebkitTextFillColor:"transparent",lineHeight:1}},streak),
-          React.createElement("span",{style:{fontFamily:"'Montserrat',sans-serif",fontSize:12,color:C.txtMuted}},`day${streak!==1?"s":""} in a row`)
-        )
-      ),
-      React.createElement("div",{style:{textAlign:"right"}},
-        React.createElement("div",{style:{fontFamily:"'Montserrat',sans-serif",fontSize:11,color:C.txtFaded,marginBottom:4}},"Total sessions"),
-        React.createElement("div",{style:{fontFamily:"'Cormorant Garamond',serif",fontSize:28,fontWeight:700,color:C.lavender,lineHeight:1}},totalDays)
-      )
-    ),
-    React.createElement("div",{style:{display:"flex",gap:6,marginBottom:16}},
-      days.map((d,i)=>React.createElement("div",{key:i,style:{flex:1,textAlign:"center"}},
-        React.createElement("div",{style:{fontFamily:"'Montserrat',sans-serif",fontSize:9,color:C.txtFaded,marginBottom:5,fontWeight:700}},d),
-        React.createElement("div",{style:{width:"100%",paddingBottom:"100%",borderRadius:"50%",position:"relative"}},
-          React.createElement("div",{style:{position:"absolute",inset:0,borderRadius:"50%",background:i===todayDow?(doneToday?PG:"rgba(255,255,255,0.08)"):i<todayDow?"rgba(139,92,246,0.35)":"rgba(255,255,255,0.05)",border:i===todayDow?`1.5px solid ${C.lavender}`:`1px solid ${C.border}`,display:"flex",alignItems:"center",justifyContent:"center"}},
-            (i<todayDow||（i===todayDow&&doneToday))&&React.createElement("span",{style:{position:"absolute",top:"50%",left:"50%",transform:"translate(-50%,-50%)",fontSize:9,color:i===todayDow?"#fff":C.lavender}},"✦")
-          )
-        )
-      ))
-    ),
-    !doneToday
-      ?React.createElement("button",{onClick:markToday,style:{width:"100%",background:PG,color:"#fff",border:"none",borderRadius:50,padding:"12px",fontFamily:"'Montserrat',sans-serif",fontWeight:700,fontSize:13,cursor:"pointer",boxShadow:`0 6px 20px rgba(139,92,246,0.3)`}},"✦ Mark Today as Complete")
-      :React.createElement("div",{style:{textAlign:"center",padding:"10px",fontFamily:"'Cormorant Garamond',serif",fontSize:16,fontStyle:"italic",color:C.pink}},"You showed up today. She is proud of you. 🤍")
-  );
+  const wrap=document.getElementById('streak-days');
+  if(!wrap)return;
+  wrap.innerHTML=days.map((d,i)=>{
+    const isToday=i===todayDow;const past=i<todayDow;
+    const bg=isToday?(doneToday()?'linear-gradient(135deg,#8B5CF6,#D670AC)':'rgba(255,255,255,0.08)'):past?'rgba(139,92,246,0.35)':'rgba(255,255,255,0.05)';
+    const border=isToday?'1.5px solid #C9B8E8':'1px solid rgba(201,184,232,0.14)';
+    const star=(past||(isToday&&doneToday()))?`<span style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:9px;color:${isToday?'#fff':'#C9B8E8'}">✦</span>`:'';
+    return `<div class="streak-day"><div class="streak-day-label">${d}</div><div class="streak-dot-wrap" style="border-radius:50%"><div class="streak-dot" style="background:${bg};border:${border}">${star}</div></div></div>`;
+  }).join('');
 }
 
-function Cover({onStart}){
-  return React.createElement("div",{style:{minHeight:"100vh",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",textAlign:"center",padding:"48px 24px",background:BG_GRAD,position:"relative",overflow:"hidden"}},
-    React.createElement(NebulaCanvas),
-    React.createElement("svg",{style:{position:"absolute",inset:0,width:"100%",height:"100%",pointerEvents:"none"},viewBox:"0 0 1000 700",preserveAspectRatio:"xMidYMid slice"},
-      React.createElement(Sparkle,{x:80,y:200,size:22,color:"#C9B8E8",opacity:.7}),
-      React.createElement(Sparkle,{x:920,y:190,size:26,color:"#C9B8E8",opacity:.65}),
-      React.createElement(Sparkle,{x:130,y:500,size:13,color:"#E091C4",opacity:.55}),
-      React.createElement(Sparkle,{x:880,y:520,size:12,color:"#E091C4",opacity:.5}),
-      [{x:540,y:150},{x:820,y:300},{x:160,y:320},{x:680,y:580},{x:380,y:560}].map((d,i)=>React.createElement("circle",{key:i,cx:d.x,cy:d.y,r:"2",fill:"#D4C0E8",opacity:".35"}))
-    ),
-    React.createElement("div",{style:{position:"relative"}},
-      React.createElement("div",{style:{fontSize:44,marginBottom:14}},"👑"),
-      React.createElement("h1",{style:{fontFamily:"'Cormorant Garamond',serif",fontSize:"clamp(32px,6vw,52px)",fontWeight:700,lineHeight:1.1,margin:"0 0 4px",color:C.txt}},"Manifestation Journal"),
-      React.createElement("p",{style:{fontFamily:"'Cormorant Garamond',serif",fontSize:"clamp(15px,3.2vw,21px)",fontStyle:"italic",margin:"0 0 6px",background:PG2,WebkitBackgroundClip:"text",WebkitTextFillColor:"transparent"}},"for the Baddie Building an Empire"),
-      React.createElement("div",{style:{width:48,height:1.5,background:PG,margin:"18px auto 24px",borderRadius:2}}),
-      React.createElement("div",{style:{maxWidth:460,background:"rgba(255,255,255,0.08)",backdropFilter:"blur(20px)",borderRadius:20,padding:"26px 30px",margin:"0 auto 36px",border:`1px solid ${C.border}`}},
-        React.createElement("p",{style:{fontFamily:"'Montserrat',sans-serif",fontSize:15,lineHeight:1.75,color:C.txtSec,fontWeight:500,margin:"0 0 12px"}},"Script your future. Regulate your energy. Build your empire — 10 minutes a day."),
-        React.createElement("div",{style:{width:32,height:1,background:PG2,margin:"0 auto 12px"}}),
-        React.createElement("p",{style:{fontFamily:"'Montserrat',sans-serif",fontSize:13,lineHeight:1.75,color:C.txtMuted,margin:0}},"Part altar, part CEO dashboard. Every session leaves you with one clear aligned move.")
-      ),
-      React.createElement("button",{onClick:onStart,style:{fontFamily:"'Montserrat',sans-serif",fontSize:14,fontWeight:700,color:"#fff",background:PG,padding:"14px 38px",borderRadius:50,border:"none",cursor:"pointer",letterSpacing:.5,boxShadow:"0 10px 36px rgba(139,92,246,0.35)"}},"✦ Begin Your Practice"),
-      React.createElement("p",{style:{fontFamily:"'Montserrat',sans-serif",fontSize:10,color:C.txtFaded,marginTop:18,letterSpacing:"0.08em"}},"SOUL + STRATEGY · 5-10 MINUTES DAILY")
-    )
-  );
+/* ── Dates ── */
+function setDates(){
+  const now=new Date();
+  const el=document.getElementById('today-date');
+  if(el)el.textContent=now.toLocaleDateString('en-US',{weekday:'long',year:'numeric',month:'long',day:'numeric'}).toUpperCase();
+  const ml=document.getElementById('month-label');
+  if(ml)ml.textContent=now.toLocaleDateString('en-US',{month:'long',year:'numeric'}).toUpperCase();
+  const ws=new Date(now);const dw=ws.getDay();ws.setDate(ws.getDate()-(dw===0?6:dw-1));
+  const we=new Date(ws);we.setDate(we.getDate()+6);
+  const fmt=d=>d.toLocaleDateString('en-US',{month:'short',day:'numeric'});
+  const wr=document.getElementById('week-range');if(wr)wr.textContent=`WEEK OF ${fmt(ws)} – ${fmt(we)}`;
 }
 
-const MOODS=["✨ Expansive","🌸 Soft","🔥 Fired Up","🌊 Flowing","😤 Frustrated","😰 Anxious","🌙 Reflective","💫 Magnetic","🥱 Low Energy","🦋 Transforming"];
-const CHAKRAS=[{name:"Root",emoji:"🔴",theme:"Safety & Foundation"},{name:"Sacral",emoji:"🟠",theme:"Creativity & Flow"},{name:"Solar Plexus",emoji:"🟡",theme:"Power & Confidence"},{name:"Heart",emoji:"💚",theme:"Love & Connection"},{name:"Throat",emoji:"🔵",theme:"Expression & Visibility"},{name:"Third Eye",emoji:"💜",theme:"Intuition & Vision"},{name:"Crown",emoji:"🤍",theme:"Purpose & Surrender"}];
+/* ── Moods / Chakras ── */
+const MOODS=['✨ Expansive','🌸 Soft','🔥 Fired Up','🌊 Flowing','😤 Frustrated','😰 Anxious','🌙 Reflective','💫 Magnetic','🥱 Low Energy','🦋 Transforming'];
+const CHAKRAS=[{n:'Root',e:'🔴',t:'Safety & Foundation'},{n:'Sacral',e:'🟠',t:'Creativity & Flow'},{n:'Solar Plexus',e:'🟡',t:'Power & Confidence'},{n:'Heart',e:'💚',t:'Love & Connection'},{n:'Throat',e:'🔵',t:'Expression & Visibility'},{n:'Third Eye',e:'💜',t:'Intuition & Vision'},{n:'Crown',e:'🤍',t:'Purpose & Surrender'}];
+let activeMood='',activeChakra='';
 
-function Daily({markToday,doneToday}){
-  const [mood,setMood]=useState(""); const [body,setBody]=useState(""); const [emotion,setEmotion]=useState("");
-  const [chakra,setChakra]=useState(null); const [script,setScript]=useState(""); const [feelings,setFeelings]=useState("");
-  const [action,setAction]=useState(""); const [intuition,setIntuition]=useState(""); const [open,setOpen]=useState(false); const [close,setClose]=useState(false);
-  const today=new Date().toLocaleDateString("en-US",{weekday:"long",year:"numeric",month:"long",day:"numeric"});
-  return React.createElement("div",null,
-    React.createElement("div",{style:{textAlign:"center",marginBottom:24}},
-      React.createElement("p",{style:{fontFamily:"'Montserrat',sans-serif",fontSize:11,letterSpacing:"0.1em",color:C.pink,fontWeight:700,margin:"0 0 4px",textTransform:"uppercase"}},today),
-      React.createElement("p",{style:{fontFamily:"'Montserrat',sans-serif",fontSize:12,color:C.txtFaded,margin:0}},"5-10 minutes · Let this be a ritual, not a task")
-    ),
-    React.createElement("div",{style:cardStyle({background:"rgba(201,184,232,0.1)",border:`1px solid rgba(201,184,232,0.2)`})},
-      React.createElement("p",{style:{fontFamily:"'Montserrat',sans-serif",fontSize:13,color:C.txtSec,margin:"0 0 12px",lineHeight:1.7}},"Before you begin: light a candle, pull a card, or take 3 deep breaths."),
-      React.createElement("label",{style:{display:"flex",alignItems:"center",gap:10,cursor:"pointer"}},
-        React.createElement("input",{type:"checkbox",checked:open,onChange:()=>setOpen(!open),style:{accentColor:"#8B5CF6",width:17,height:17}}),
-        React.createElement("span",{style:{fontFamily:"'Montserrat',sans-serif",fontSize:14,color:C.txt}},"I have created my sacred space ✨")
-      )
-    ),
-    React.createElement(SCard,{title:"Energetic Check-In",emoji:"🌊"},
-      React.createElement("div",{style:{marginBottom:16}},React.createElement(Overline,{color:C.lavender},"Mood"),React.createElement("div",{style:{display:"flex",flexWrap:"wrap",gap:7}},MOODS.map(m=>React.createElement(Pill,{key:m,small:true,active:mood===m,onClick:()=>setMood(m)},m)))),
-      React.createElement("div",{style:{marginBottom:14}},React.createElement(Overline,{color:C.lavender},"Body Sensation"),React.createElement(TA,{value:body,onChange:setBody,placeholder:"Where do you feel tension? Openness? Warmth?",rows:2})),
-      React.createElement("div",{style:{marginBottom:14}},React.createElement(Overline,{color:C.lavender},"Dominant Emotion"),React.createElement(TA,{value:emotion,onChange:setEmotion,placeholder:"Name the feeling sitting with you right now...",rows:2})),
-      React.createElement("div",null,React.createElement(Overline,{color:C.lavender},"Chakra / Energy Theme"),
-        React.createElement("div",{style:{display:"flex",flexWrap:"wrap",gap:7}},CHAKRAS.map(c=>React.createElement(Pill,{key:c.name,small:true,active:chakra===c.name,onClick:()=>setChakra(c.name)},`${c.emoji} ${c.name}`))),
-        chakra&&React.createElement("p",{style:{fontFamily:"'Cormorant Garamond',serif",fontSize:14,fontStyle:"italic",color:C.lavender,margin:"10px 0 0"}},CHAKRAS.find(c=>c.name===chakra)?.theme)
-      )
-    ),
-    React.createElement(SCard,{title:"Present-Tense Manifestation Script",emoji:"✍️"},
-      React.createElement("p",{style:{fontFamily:"'Montserrat',sans-serif",fontSize:13,color:C.txtMuted,margin:"0 0 12px",lineHeight:1.7}},"Write your core business desire as if it is already real. Be specific."),
-      React.createElement(TA,{value:script,onChange:setScript,placeholder:"I am fully booked with soul-aligned clients paying $____ per month...",rows:6})
-    ),
-    React.createElement(SCard,{title:"Feelings and Embodiment",emoji:"🦋"},
-      React.createElement(TA,{value:feelings,onChange:setFeelings,placeholder:"It feels like warm honey in my chest. My shoulders are relaxed. There is a quiet confidence...",rows:5})
-    ),
-    React.createElement(SCard,{title:"One Inspired Action for Today",emoji:"⚡"},
-      React.createElement(TA,{value:action,onChange:setAction,placeholder:"DM two people who engaged with my last post. Send the proposal. Record that reel...",rows:2})
-    ),
-    React.createElement(SCard,{title:"Intuitive Hits and Spiritual Signs",emoji:"🔮"},
-      React.createElement(TA,{value:intuition,onChange:setIntuition,placeholder:"Pulled The Star card today. Saw 1111 three times. Had a dream about speaking on stage...",rows:3})
-    ),
-    React.createElement("div",{style:cardStyle({background:"rgba(201,184,232,0.1)",border:`1px solid rgba(201,184,232,0.2)`})},
-      React.createElement("p",{style:{fontFamily:"'Montserrat',sans-serif",fontSize:13,color:C.txtSec,margin:"0 0 12px",lineHeight:1.7}},`Close your journal, take one breath, and whisper: "It is done. I trust the timing."`),
-      React.createElement("label",{style:{display:"flex",alignItems:"center",gap:10,cursor:"pointer"}},
-        React.createElement("input",{type:"checkbox",checked:close,onChange:()=>{setClose(true);markToday();},style:{accentColor:"#8B5CF6",width:17,height:17}}),
-        React.createElement("span",{style:{fontFamily:"'Montserrat',sans-serif",fontSize:14,color:C.txt}},"Practice complete — I release it now 🤍")
-      ),
-      doneToday&&React.createElement("p",{style:{fontFamily:"'Cormorant Garamond',serif",fontSize:15,fontStyle:"italic",color:C.pink,margin:"12px 0 0",textAlign:"center"}},"Streak updated. You showed up. 👑")
-    )
-  );
+function buildMoodPills(){
+  const wrap=document.getElementById('mood-pills');
+  MOODS.forEach(m=>{const b=document.createElement('button');b.className='pill sm';b.textContent=m;b.onclick=()=>{activeMood=m;document.querySelectorAll('#mood-pills .pill').forEach(x=>x.classList.remove('active'));b.classList.add('active');};wrap.appendChild(b);});
+}
+function buildChakraPills(){
+  const wrap=document.getElementById('chakra-pills');
+  CHAKRAS.forEach(c=>{const b=document.createElement('button');b.className='pill sm';b.textContent=`${c.e} ${c.n}`;b.onclick=()=>{activeChakra=c.n;document.querySelectorAll('#chakra-pills .pill').forEach(x=>x.classList.remove('active'));b.classList.add('active');const th=document.getElementById('chakra-theme');th.textContent=c.t;th.style.display='block';};wrap.appendChild(b);});
 }
 
-function Weekly(){
-  const [vision,setVision]=useState(""); const [mans,setMans]=useState(["","",""]); const [gratitude,setGratitude]=useState(""); const [evidence,setEvidence]=useState(""); const [values,setValues]=useState("");
-  const ws=new Date(); const d=ws.getDay(); ws.setDate(ws.getDate()-(d===0?6:d-1)); const we=new Date(ws); we.setDate(we.getDate()+6);
-  const fmt=d=>d.toLocaleDateString("en-US",{month:"short",day:"numeric"});
-  return React.createElement("div",null,
-    React.createElement("div",{style:{textAlign:"center",marginBottom:24}},React.createElement("p",{style:{fontFamily:"'Montserrat',sans-serif",fontSize:11,letterSpacing:"0.1em",color:C.pink,fontWeight:700,margin:"0 0 4px",textTransform:"uppercase"}},`Week of ${fmt(ws)} – ${fmt(we)}`)),
-    React.createElement(SCard,{title:"Vision for the Week",emoji:"🔭"},React.createElement(TA,{value:vision,onChange:setVision,placeholder:"This week I am creating... I am visible in... I am attracting...",rows:5})),
-    React.createElement(SCard,{title:"Top 3 Manifestations",emoji:"🎯"},
-      React.createElement("div",{style:{display:"grid",gap:12}},mans.map((v,i)=>React.createElement("div",{key:i,style:{display:"flex",gap:12,alignItems:"flex-start"}},
-        React.createElement("div",{style:{minWidth:30,height:30,borderRadius:"50%",background:PG,display:"flex",alignItems:"center",justifyContent:"center",color:"#fff",fontWeight:700,fontSize:13,fontFamily:"'Montserrat',sans-serif",flexShrink:0,marginTop:8}},i+1),
-        React.createElement("div",{style:{flex:1}},React.createElement(TA,{value:v,onChange:val=>{const n=[...mans];n[i]=val;setMans(n);},placeholder:["5 new aligned DMs","Sign one soul-aligned client","Consistent $10K month"][i],rows:2}))
-      )))
-    ),
-    React.createElement(SCard,{title:"Business-Aligned Gratitude",emoji:"🙏"},React.createElement(TA,{value:gratitude,onChange:setGratitude,placeholder:"I am grateful for the client who renewed this week...",rows:5})),
-    React.createElement(SCard,{title:"Values Alignment Check",emoji:"💎"},React.createElement(TA,{value:values,onChange:setValues,placeholder:"My offer feels aligned because... My energy is asking me to...",rows:4})),
-    React.createElement(SCard,{title:"Evidence and Synchronicities",emoji:"✨"},React.createElement(TA,{value:evidence,onChange:setEvidence,placeholder:"Tuesday: someone messaged asking about my services. Saw 222 three times...",rows:5}))
-  );
+/* ── 3/6/9 rows ── */
+function build369(){
+  [['morning',3],['afternoon',6],['evening',9]].forEach(([id,n])=>{
+    const wrap=document.getElementById(`rows-${id}`);
+    for(let i=0;i<n;i++){
+      const row=document.createElement('div');row.className='s69-row';
+      row.innerHTML=`<span class="s69-num">${i+1}.</span><div style="flex:1"><textarea rows="1" placeholder="Your focus statement..."></textarea></div>`;
+      wrap.appendChild(row);
+    }
+  });
+}
+function syncFocus(){
+  const v=document.getElementById('focus-stmt').value||'Your focus statement...';
+  document.querySelectorAll('#tab-s369 textarea:not(#focus-stmt)').forEach(t=>t.placeholder=v);
 }
 
-function WinBubble({text,onRemove}){
-  return React.createElement("div",{style:{display:"inline-flex",alignItems:"center",gap:8,background:"rgba(201,184,232,0.14)",border:`1px solid rgba(201,184,232,0.28)`,borderRadius:50,padding:"7px 15px",margin:"4px",fontSize:13,fontFamily:"'Montserrat',sans-serif",color:C.txtSec}},
-    React.createElement("span",{style:{color:C.lavender,fontSize:10}},"✦"),text,
-    React.createElement("button",{onClick:onRemove,style:{background:"none",border:"none",color:C.txtFaded,cursor:"pointer",fontSize:15,lineHeight:1,padding:0,marginLeft:2}},"×")
-  );
-}
-
-function Monthly(){
-  const [wins,setWins]=useState([]); const [winInput,setWinInput]=useState("");
-  const [asked,setAsked]=useState(""); const [manifested,setManifested]=useState(""); const [needle,setNeedle]=useState(""); const [beliefs,setBeliefs]=useState(""); const [nonNeg,setNonNeg]=useState(""); const [release,setRelease]=useState(""); const [next,setNext]=useState("");
-  const addWin=()=>{if(winInput.trim()){setWins([...wins,winInput.trim()]);setWinInput("");}};
-  const month=new Date().toLocaleDateString("en-US",{month:"long",year:"numeric"});
-  const handlePrint=()=>{
-    const content=`WINS\n${wins.map(w=>`✦ ${w}`).join("\n")||"none"}\n\nWHAT DID I MANIFEST THAT I ASKED FOR?\n${asked||"not filled in"}\n\nWHAT MANIFESTED OVERALL\n${manifested||"not filled in"}\n\nWHAT MOVED THE NEEDLE\n${needle||"not filled in"}\n\nBELIEFS THAT SHIFTED\n${beliefs||"not filled in"}\n\nWHAT IS NOW NON-NEGOTIABLE\n${nonNeg||"not filled in"}\n\nWHAT I AM RELEASING\n${release||"not filled in"}\n\nNEXT MONTH'S EMPIRE DECLARATION\n${next||"not filled in"}`;
-    const w=window.open("","_blank");
-    w.document.write(`<!DOCTYPE html><html><head><title>Monthly Review — ${month}</title><style>body{font-family:Georgia,serif;max-width:680px;margin:40px auto;padding:0 24px;color:#1a0a2e;line-height:1.8;background:#faf6f0}h1{font-size:28px;margin-bottom:4px}h2{font-size:18px;margin:28px 0 8px;color:#7C3AED;border-bottom:1px solid #e0d6f0;padding-bottom:6px}pre{white-space:pre-wrap;font-family:Georgia,serif;font-size:15px;margin:0}.meta{font-size:12px;color:#9775C7;letter-spacing:.08em;text-transform:uppercase;margin-bottom:32px}.footer{margin-top:48px;text-align:center;font-size:11px;color:#b39ddb;letter-spacing:.1em}</style></head><body><h1>Manifestation Journal</h1><div class="meta">${month} · Badass Alchemy</div>${content.split("\n\n").map(b=>{const[h,...rest]=b.split("\n");return`<h2>${h}</h2><pre>${rest.join("\n")}</pre>`;}).join("")}<div class="footer">✦ release · receive · become ✦</div></body></html>`);
-    w.document.close();w.print();
-  };
-  return React.createElement("div",null,
-    React.createElement("div",{style:{textAlign:"center",marginBottom:24}},
-      React.createElement("p",{style:{fontFamily:"'Montserrat',sans-serif",fontSize:11,letterSpacing:"0.1em",color:C.pink,fontWeight:700,margin:"0 0 4px",textTransform:"uppercase"}},month),
-      React.createElement("p",{style:{fontFamily:"'Montserrat',sans-serif",fontSize:12,color:C.txtFaded,margin:0}},"Celebrate · Calibrate · Claim")
-    ),
-    React.createElement("div",{style:cardStyle({background:"rgba(139,92,246,0.12)",border:`1px solid rgba(201,184,232,0.22)`,boxShadow:`0 4px 32px rgba(139,92,246,0.15),0 2px 12px ${C.shadow}`})},
-      React.createElement("div",{style:{display:"flex",alignItems:"center",gap:8,marginBottom:6}},React.createElement("span",{style:{fontSize:18}},"🏆"),React.createElement(Overline,null,"Wins for the Month")),
-      React.createElement("p",{style:{fontFamily:"'Montserrat',sans-serif",fontSize:13,color:C.txtSec,margin:"0 0 16px",lineHeight:1.7}},"Everything counts — small, big, and in between. Celebrate it all, Queen."),
-      React.createElement("div",{style:{display:"flex",gap:8,marginBottom:14}},
-        React.createElement("input",{value:winInput,onChange:e=>setWinInput(e.target.value),onKeyDown:e=>e.key==="Enter"&&addWin(),placeholder:"Add a win... press Enter",style:{flex:1,padding:"11px 15px",borderRadius:50,border:`1px solid ${C.border}`,background:"rgba(255,255,255,0.07)",fontFamily:"'Montserrat',sans-serif",fontSize:13,outline:"none"},onFocus:e=>e.target.style.borderColor=C.lavender,onBlur:e=>e.target.style.borderColor=C.border}),
-        React.createElement("button",{onClick:addWin,style:{background:PG,color:"#fff",border:"none",borderRadius:50,padding:"11px 20px",fontFamily:"'Montserrat',sans-serif",fontWeight:700,fontSize:13,cursor:"pointer"}},"+ Add")
-      ),
-      wins.length>0
-        ?React.createElement("div",{style:{display:"flex",flexWrap:"wrap"}},wins.map((w,i)=>React.createElement(WinBubble,{key:i,text:w,onRemove:()=>setWins(wins.filter((_,j)=>j!==i))})))
-        :React.createElement("p",{style:{fontFamily:"'Montserrat',sans-serif",fontSize:13,color:C.txtFaded,fontStyle:"italic",textAlign:"center",margin:0,padding:"8px 0"}},"Your wins will appear here — start adding ✦")
-    ),
-    React.createElement(SCard,{title:"What Did I Manifest That I Asked For?",emoji:"🌠"},
-      React.createElement("p",{style:{fontFamily:"'Montserrat',sans-serif",fontSize:13,color:C.txtMuted,margin:"0 0 12px",lineHeight:1.7}},"Look back at your daily scripts. What actually landed? This is your proof of concept."),
-      React.createElement(TA,{value:asked,onChange:setAsked,placeholder:"I asked for a sold-out launch and got ____. I scripted $____ and received ____...",rows:5})
-    ),
-    ...[["What Manifested Overall","🏅",manifested,setManifested,"This month I manifested: $____ in revenue, ____ new clients, a collaboration with...","Revenue, clients, clarity, confidence — all of it counts."],["What Moved the Needle","📈",needle,setNeedle,"The thing that moved the needle most was... I noticed that when I...",null],["Beliefs That Shifted","🧬",beliefs,setBeliefs,"I used to believe... Now I know... The old story was... The new truth is...","What do you believe now that you did not believe 30 days ago?"],["What Is Now Non-Negotiable","🔥",nonNeg,setNonNeg,"I will no longer... I now require... My non-negotiables are...",null],["What I Am Releasing","🌙",release,setRelease,"I release the need to... I am done carrying... I surrender...",null],["Next Month's Empire Declaration","👑",next,setNext,"Next month I am the woman who... My business is... I feel...","One powerful paragraph. Present tense. Full embodiment. No hedging."]].map(([t,e,v,s,ph,hint])=>
-      React.createElement(SCard,{key:t,title:t,emoji:e},hint&&React.createElement("p",{style:{fontFamily:"'Montserrat',sans-serif",fontSize:13,color:C.txtMuted,margin:"0 0 12px",lineHeight:1.7}},hint),React.createElement(TA,{value:v,onChange:s,placeholder:ph,rows:4}))
-    ),
-    React.createElement("div",{style:{textAlign:"center",paddingTop:8}},
-      React.createElement("button",{onClick:handlePrint,style:{background:"rgba(255,255,255,0.08)",color:C.lavender,border:`1px solid ${C.border}`,borderRadius:50,padding:"12px 28px",fontFamily:"'Montserrat',sans-serif",fontWeight:700,fontSize:13,cursor:"pointer"}},"🖨️  Export / Print This Review"),
-      React.createElement("p",{style:{fontFamily:"'Montserrat',sans-serif",fontSize:11,color:C.txtFaded,marginTop:8}},"Opens a clean print-ready version in a new tab")
-    )
-  );
-}
-
+/* ── Prompts ── */
 const PROMPTS={
-  "Future Business Self":["Describe your day as the version of you consistently making your dream income doing soul work you love.","Your dream client just DM'd you saying your work changed their life. What did they say?","You just closed out your best month ever. Walk through the moment you saw the numbers.","You are being interviewed on a top podcast about your success. What are you sharing?","Your calendar this week is exactly how you designed it. Describe every block.","You just launched your signature offer and it sold out. What happened in the 24 hours after?"],
-  "Client and Community":["Who is your soul-aligned client? Describe them as if they are sitting across from you right now.","Your community just hit a milestone. What are members saying in the comments?","Describe the moment a client tells you they got the result they came for.","Your waitlist is full. How does that feel in your body? What shifted to make this your reality?"],
-  "Money and Abundance":["What does financial safety feel like in your body? Describe it without using numbers.","You just raised your prices and people said yes immediately. What belief shifted?","Money flows to you because ____. Finish this sentence 10 different ways.","Write a thank-you letter to the next $10K coming to you. What will you do with it?"],
-  "Resistance and Shadow":["What would you do in your business if you knew no one was watching or judging?","The fear of being seen is trying to protect you from ____. What is underneath it?","If your highest self could send you a voice note right now, what would she say about your current block?","Where are you playing small because it feels safer? What would bold look like today?"],
-  "Create Your Day":["How do I want today to FEEL? Name three feelings and one action that creates each.","If today were the day everything started clicking, what is the one move I would make?","What is one courageous thing I can do today that my future self will thank me for?","What does my highest self want me to know before I start this day?"],
+  'Future Self':['Describe your day as the version of you consistently making your dream income doing soul work you love.','Your dream client just DM\'d you saying your work changed their life. What did they say?','You just closed out your best month ever. Walk through the moment you saw the numbers.','You are being interviewed on a top podcast about your success. What are you sharing?','Your calendar this week is exactly how you designed it. Describe every block.','You just launched your signature offer and it sold out. What happened in the 24 hours after?'],
+  'Client & Community':['Who is your soul-aligned client? Describe them as if they are sitting across from you right now.','Your community just hit a milestone. What are members saying in the comments?','Describe the moment a client tells you they got the result they came for.','Your waitlist is full. How does that feel in your body? What shifted to make this your reality?'],
+  'Money & Abundance':['What does financial safety feel like in your body? Describe it without using numbers.','You just raised your prices and people said yes immediately. What belief shifted?','Money flows to you because ____. Finish this sentence 10 different ways.','Write a thank-you letter to the next $10K coming to you. What will you do with it?'],
+  'Shadow Work':['What would you do in your business if you knew no one was watching or judging?','The fear of being seen is trying to protect you from ____. What is underneath it?','If your highest self could send you a voice note right now, what would she say about your current block?','Where are you playing small because it feels safer? What would bold look like today?'],
+  'Create Your Day':['How do I want today to FEEL? Name three feelings and one action that creates each.','If today were the day everything started clicking, what is the one move I would make?','What is one courageous thing I can do today that my future self will thank me for?','What does my highest self want me to know before I start this day?'],
 };
+let activeCat=Object.keys(PROMPTS)[0],selPrompt='';
 
-function Prompts(){
-  const [cat,setCat]=useState(Object.keys(PROMPTS)[0]); const [sel,setSel]=useState(null); const [entry,setEntry]=useState("");
-  const random=()=>{const a=PROMPTS[cat];setSel(a[Math.floor(Math.random()*a.length)]);};
-  return React.createElement("div",null,
-    React.createElement("div",{style:{textAlign:"center",marginBottom:22}},React.createElement("p",{style:{fontFamily:"'Montserrat',sans-serif",fontSize:12,color:C.txtFaded,margin:0}},"Pull a prompt · Let it guide you")),
-    React.createElement("div",{style:{display:"flex",flexWrap:"wrap",gap:7,marginBottom:18,justifyContent:"center"}},Object.keys(PROMPTS).map(c=>React.createElement(Pill,{key:c,small:true,active:cat===c,onClick:()=>{setCat(c);setSel(null);}},c))),
-    React.createElement("div",{style:{textAlign:"center",marginBottom:18}},React.createElement("button",{onClick:random,style:{fontFamily:"'Montserrat',sans-serif",fontSize:13,fontWeight:700,color:"#fff",background:PG,padding:"12px 30px",borderRadius:50,border:"none",cursor:"pointer",boxShadow:"0 6px 22px rgba(139,92,246,0.28)"}},"🎲 Pull a Random Prompt")),
-    sel&&React.createElement(SCard,null,React.createElement("p",{style:{fontFamily:"'Cormorant Garamond',serif",fontSize:17,fontStyle:"italic",color:C.txt,lineHeight:1.8,margin:"0 0 16px"}},`"${sel}"`),React.createElement(TA,{value:entry,onChange:setEntry,placeholder:"Let it flow...",rows:8})),
-    React.createElement(SCard,{title:"All Prompts",emoji:"📚"},
-      React.createElement("div",{style:{display:"grid",gap:9}},PROMPTS[cat].map((p,i)=>React.createElement("div",{key:i,onClick:()=>setSel(p),style:{padding:"13px 16px",background:sel===p?"rgba(201,184,232,0.14)":C.bgSurface,borderRadius:12,cursor:"pointer",border:`1px solid ${sel===p?C.border:"transparent"}`,transition:"all .2s"}},React.createElement("p",{style:{margin:0,fontFamily:"'Montserrat',sans-serif",fontSize:13,color:C.txt,lineHeight:1.7}},p))))
-    )
-  );
+function buildPromptCats(){
+  const wrap=document.getElementById('prompt-cats');
+  Object.keys(PROMPTS).forEach(cat=>{
+    const b=document.createElement('button');b.className='pill sm'+(cat===activeCat?' active':'');b.textContent=cat;
+    b.onclick=()=>{activeCat=cat;selPrompt='';document.querySelectorAll('#prompt-cats .pill').forEach(x=>x.classList.remove('active'));b.classList.add('active');renderPromptList();document.getElementById('prompt-result').style.display='none';};
+    wrap.appendChild(b);
+  });
+}
+function renderPromptList(){
+  const list=document.getElementById('prompt-list');list.innerHTML='';
+  document.getElementById('prompt-list-title').textContent=`All ${activeCat} Prompts`;
+  PROMPTS[activeCat].forEach(p=>{
+    const d=document.createElement('div');d.className='prompt-item'+(p===selPrompt?' sel':'');d.textContent=p;
+    d.onclick=()=>{selPrompt=p;showPrompt(p);renderPromptList();};
+    list.appendChild(d);
+  });
+}
+function showPrompt(p){selPrompt=p;const r=document.getElementById('prompt-result');r.style.display='block';document.getElementById('prompt-quote').textContent=`"${p}"`;renderPromptList();}
+function randomPrompt(){const a=PROMPTS[activeCat];showPrompt(a[Math.floor(Math.random()*a.length)]);}
+
+/* ── Wins ── */
+let wins=[];
+function addWin(){
+  const inp=document.getElementById('win-input');const v=inp.value.trim();if(!v)return;
+  wins.push(v);inp.value='';renderWins();
+}
+function removeWin(i){wins.splice(i,1);renderWins();}
+function renderWins(){
+  const wrap=document.getElementById('wins-wrap');
+  if(!wins.length){wrap.innerHTML='<p style="font-size:13px;color:#7A5A9A;font-style:italic;padding:8px 0;margin:0">Your wins will appear here — start adding ✦</p>';return;}
+  wrap.innerHTML=wins.map((w,i)=>`<div class="win-bubble"><span style="color:#C9B8E8;font-size:10px">✦</span>${w}<button onclick="removeWin(${i})">×</button></div>`).join('');
 }
 
-function ThreeSixNine(){
-  const [focus,setFocus]=useState(""); const [morning,setMorning]=useState(["","",""]); const [afternoon,setAfternoon]=useState(["","","","","",""]); const [evening,setEvening]=useState(["","","","","","","","",""]);
-  const upd=(arr,s,i,v)=>{const n=[...arr];n[i]=v;s(n);};
-  const Block=({label,emoji,arr,setter,note})=>React.createElement(SCard,{title:`${label} — Write ${arr.length}x`,emoji},
-    React.createElement("p",{style:{fontFamily:"'Montserrat',sans-serif",fontSize:13,color:C.txtMuted,margin:"0 0 14px",lineHeight:1.7}},note),
-    React.createElement("div",{style:{display:"grid",gap:9}},arr.map((v,i)=>React.createElement("div",{key:i,style:{display:"flex",gap:10,alignItems:"center"}},
-      React.createElement("span",{style:{fontFamily:"'Montserrat',sans-serif",fontSize:11,fontWeight:700,color:C.txtFaded,minWidth:20}},`${i+1}.`),
-      React.createElement("div",{style:{flex:1}},React.createElement(TA,{value:v,onChange:val=>upd(arr,setter,i,val),placeholder:focus||"Your focus statement...",rows:1}))
-    )))
-  );
-  return React.createElement("div",null,
-    React.createElement("div",{style:{textAlign:"center",marginBottom:24}},React.createElement("p",{style:{fontFamily:"'Montserrat',sans-serif",fontSize:12,color:C.txtFaded,margin:0}},"One desire · All day · Full embodiment")),
-    React.createElement(SCard,{title:"Your Focus Statement",emoji:"🎯"},React.createElement("p",{style:{fontFamily:"'Montserrat',sans-serif",fontSize:13,color:C.txtMuted,margin:"0 0 12px",lineHeight:1.7}},"Choose one specific desire and write it as a present-tense statement."),React.createElement(TA,{value:focus,onChange:setFocus,placeholder:"I am consistently earning $10,000/month from my soul-aligned membership community.",rows:2})),
-    React.createElement(Block,{label:"Morning",emoji:"🌅",arr:morning,setter:setMorning,note:"Write your focus statement 3 times when you wake up."}),
-    React.createElement(Block,{label:"Afternoon",emoji:"☀️",arr:afternoon,setter:setAfternoon,note:"Write it 6 times midday. Feel the desire strengthen."}),
-    React.createElement(Block,{label:"Evening",emoji:"🌙",arr:evening,setter:setEvening,note:"Write it 9 times before bed. Let it be the last thought you carry into sleep."})
-  );
+/* ── Print monthly ── */
+function printMonthly(){
+  const textareas=document.querySelectorAll('#tab-monthly textarea');
+  const vals=[...textareas].map(t=>t.value||'(not filled in)');
+  const labels=['What Did I Manifest That I Asked For?','What Manifested Overall','What Moved the Needle','Beliefs That Shifted','What Is Now Non-Negotiable','What I Am Releasing','Next Month\'s Empire Declaration'];
+  const month=new Date().toLocaleDateString('en-US',{month:'long',year:'numeric'});
+  const w=window.open('','_blank');
+  w.document.write(`<!DOCTYPE html><html><head><title>Monthly Review — ${month}</title><style>body{font-family:Georgia,serif;max-width:680px;margin:40px auto;padding:0 24px;color:#1a0a2e;line-height:1.8;background:#faf6f0}h1{font-size:28px;margin-bottom:4px}h2{font-size:18px;margin:28px 0 8px;color:#7C3AED;border-bottom:1px solid #e0d6f0;padding-bottom:6px}pre{white-space:pre-wrap;font-family:Georgia,serif;font-size:15px;margin:0}.meta{font-size:12px;color:#9775C7;letter-spacing:.08em;text-transform:uppercase;margin-bottom:32px}.footer{margin-top:48px;text-align:center;font-size:11px;color:#b39ddb;letter-spacing:.1em}</style></head><body><h1>Manifestation Journal</h1><div class="meta">${month} · Badass Alchemy</div><h2>Wins for the Month</h2><pre>${wins.length?wins.map(w=>`✦ ${w}`).join('\n'):'(none added)'}</pre>${labels.map((l,i)=>`<h2>${l}</h2><pre>${vals[i]}</pre>`).join('')}<div class="footer">✦ release · receive · become ✦</div></body></html>`);
+  w.document.close();w.print();
 }
 
-const TABS=[{id:"daily",label:"Daily",emoji:"☀️"},{id:"weekly",label:"Weekly",emoji:"🗓️"},{id:"monthly",label:"Monthly",emoji:"🌙"},{id:"prompts",label:"Prompts",emoji:"💡"},{id:"369",label:"3/6/9",emoji:"🔮"},{id:"streak",label:"Streak",emoji:"🔥"}];
-const heroLabel={daily:"Daily Sacred Spread",weekly:"Weekly Vision Spread",monthly:"Monthly Review",prompts:"Prompt Library","369":"3 / 6 / 9 Method",streak:"Your Practice Streak"};
-const heroSub={daily:"Soul + Strategy · 5-10 minutes",weekly:"Vision · Gratitude · Evidence",monthly:"Celebrate · Calibrate · Claim",prompts:"Pull a prompt · Let it guide you","369":"One desire · All day · Full embodiment",streak:"Show up. Stack the days. Build the empire."};
+/* ── Tab switching ── */
+const HERO={daily:['Daily Sacred <em>Spread</em>','Soul + Strategy · 5-10 minutes'],weekly:['Weekly Vision <em>Spread</em>','Vision · Gratitude · Evidence'],monthly:['Monthly <em>Review</em>','Celebrate · Calibrate · Claim'],prompts:['Prompt <em>Library</em>','Pull a prompt · Let it guide you'],s369:['3 / 6 / 9 <em>Method</em>','One desire · All day · Full embodiment'],streak:['Your Practice <em>Streak</em>','Show up. Stack the days. Build the empire.']};
+let guideOpen=false;
 
-function App(){
-  const [screen,setScreen]=useState("cover"); const [tab,setTab]=useState("daily"); const [guide,setGuide]=useState(false);
-  const {streak,totalDays,doneToday,markToday}=useStreak();
-  if(screen==="cover")return React.createElement(Cover,{onStart:()=>setScreen("journal")});
-  return React.createElement("div",{style:{minHeight:"100vh",background:BG_GRAD,fontFamily:"'Montserrat',sans-serif"}},
-    React.createElement(AffirmationBar),
-    React.createElement("div",{style:{position:"sticky",top:0,zIndex:100,background:"rgba(45,28,70,0.94)",backdropFilter:"blur(18px)",WebkitBackdropFilter:"blur(18px)",borderBottom:`1px solid ${C.border}`,padding:"10px 16px"}},
-      React.createElement("div",{style:{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:guide?0:10}},
-        React.createElement("div",{style:{display:"flex",alignItems:"center",gap:10}},
-          React.createElement("h1",{style:{fontFamily:"'Cormorant Garamond',serif",fontSize:17,color:C.txt,margin:0}},"👑 Manifestation Journal"),
-          streak>0&&React.createElement("div",{style:{background:PG,borderRadius:50,padding:"3px 10px",fontFamily:"'Montserrat',sans-serif",fontSize:10,fontWeight:700,color:"#fff"}},`🔥 ${streak}`)
-        ),
-        React.createElement("button",{onClick:()=>setGuide(!guide),style:{fontFamily:"'Montserrat',sans-serif",fontSize:11,fontWeight:700,color:guide?"#fff":C.lavender,background:guide?PG:"transparent",border:`1px solid ${guide?"transparent":C.border}`,padding:"6px 14px",borderRadius:50,cursor:"pointer"}},guide?"✕ Close":"📖 Guide")
-      ),
-      !guide&&React.createElement("div",{style:{display:"flex",gap:6,overflowX:"auto"}},TABS.map(t=>React.createElement(Pill,{key:t.id,small:true,active:tab===t.id,onClick:()=>setTab(t.id)},`${t.emoji} ${t.label}`)))
-    ),
-    !guide&&React.createElement("div",{style:{position:"relative",overflow:"hidden",padding:"28px 20px 24px",textAlign:"center",borderBottom:`1px solid ${C.border}`}},
-      React.createElement(NebulaCanvas),React.createElement(SparkleLayer,{w:800,h:120}),
-      React.createElement("div",{style:{position:"relative"}},
-        React.createElement("h2",{style:{fontFamily:"'Cormorant Garamond',serif",fontSize:"clamp(24px,5vw,34px)",fontWeight:700,color:C.txt,margin:"0 0 6px",lineHeight:1.15}},
-          heroLabel[tab].split(" ").slice(0,-1).join(" ")+" ",
-          React.createElement("span",{style:{background:PG2,WebkitBackgroundClip:"text",WebkitTextFillColor:"transparent",fontStyle:"italic"}},heroLabel[tab].split(" ").slice(-1)[0])
-        ),
-        React.createElement("p",{style:{fontFamily:"'Montserrat',sans-serif",fontSize:12,color:C.txtMuted,margin:0}},heroSub[tab])
-      )
-    ),
-    React.createElement("div",{style:{maxWidth:680,margin:"0 auto",padding:"22px 14px 60px"}},
-      guide
-        ?React.createElement("div",null,
-            React.createElement("button",{onClick:()=>setGuide(false),style:{background:"none",border:"none",color:C.lavender,cursor:"pointer",fontSize:14,marginBottom:16,fontWeight:700,fontFamily:"'Montserrat',sans-serif"}},"← Back"),
-            React.createElement(SCard,{glow:true},React.createElement("div",{style:{fontFamily:"'Cormorant Garamond',serif",fontSize:22,fontWeight:700,color:C.txt,lineHeight:1.25,marginBottom:8}},"What is manifestation journaling?"),React.createElement("p",{style:{fontFamily:"'Montserrat',sans-serif",fontSize:13.5,color:C.txtSec,lineHeight:1.75,margin:0}},"It bridges your inner vision with your outer business reality. Present-tense scripting trains your brain to recognize and act on opportunities that match your vision.")),
-            ...[["Present-tense writing","Write as if it is already real."],["Emotional intensity","Feel it as you write."],["Repetition over perfection","Two minutes every day beats 30 minutes once a week."],["Aligned action","Vision without movement stays a dream."],["Bridge beliefs","Start with 'I am learning to...' Your nervous system will catch up."]].map(([t,d],i)=>React.createElement("div",{key:i,style:{display:"flex",gap:12,padding:"12px 14px",background:C.bgSurface,borderRadius:12,marginBottom:9,alignItems:"flex-start"}},React.createElement("span",{style:{color:C.lavender,fontSize:14,marginTop:2,flexShrink:0}},"✦"),React.createElement("div",null,React.createElement("div",{style:{fontFamily:"'Montserrat',sans-serif",fontWeight:700,fontSize:13,color:C.txt,marginBottom:3}},t),React.createElement("div",{style:{fontFamily:"'Montserrat',sans-serif",fontSize:13,color:C.txtMuted,lineHeight:1.65}},d))))
-          )
-        :tab==="daily"?React.createElement(Daily,{markToday,doneToday})
-        :tab==="weekly"?React.createElement(Weekly)
-        :tab==="monthly"?React.createElement(Monthly)
-        :tab==="prompts"?React.createElement(Prompts)
-        :tab==="369"?React.createElement(ThreeSixNine)
-        :React.createElement(StreakWidget,{streak,totalDays,doneToday,markToday})
-    ),
-    React.createElement("div",{style:{position:"relative",overflow:"hidden",padding:"32px 24px",textAlign:"center",borderTop:`1px solid ${C.border}`}},
-      React.createElement(NebulaCanvas),
-      React.createElement("div",{style:{position:"relative"}},
-        React.createElement("p",{style:{fontFamily:"'Cormorant Garamond',serif",fontSize:14,fontStyle:"italic",margin:"0 0 8px",background:PG2,WebkitBackgroundClip:"text",WebkitTextFillColor:"transparent"}},"release · receive · become"),
-        React.createElement("p",{style:{fontFamily:"'Montserrat',sans-serif",fontSize:9,fontWeight:700,letterSpacing:2,color:C.txtFaded,textTransform:"uppercase",margin:0}},"✦ Badass Alchemy · The Manifestation Journal ✦")
-      )
-    )
-  );
+function switchTab(id,btn){
+  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+  document.getElementById('tab-'+id).classList.add('active');
+  document.querySelectorAll('.tab-row .pill').forEach(p=>p.classList.remove('active'));
+  if(btn)btn.classList.add('active');
+  const h=HERO[id];
+  document.getElementById('hero-title').innerHTML=h[0];
+  document.getElementById('hero-sub').textContent=h[1];
+  document.getElementById('hero-bar').style.display='';
+  guideOpen=false;document.getElementById('guide-btn').textContent='📖 Guide';
+  drawNebula('cnv-hero');
 }
 
-const root=ReactDOM.createRoot(document.getElementById("root"));
-root.render(React.createElement(App));
+function toggleGuide(){
+  guideOpen=!guideOpen;
+  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+  if(guideOpen){document.getElementById('tab-guide').classList.add('active');document.getElementById('hero-bar').style.display='none';document.getElementById('guide-btn').textContent='✕ Close';document.querySelectorAll('.tab-row .pill').forEach(p=>p.classList.remove('active'));}
+  else{switchTab('daily',document.querySelector('.tab-row .pill'));document.getElementById('guide-btn').textContent='📖 Guide';}
+}
+
+/* ── Cover → App ── */
+function startApp(){
+  document.getElementById('cover').style.display='none';
+  const app=document.getElementById('app');app.style.display='flex';
+  setTimeout(()=>{drawNebula('cnv-hero');drawNebula('cnv-footer');},50);
+}
+
+/* ── Init ── */
+window.onload=()=>{
+  drawNebula('cnv-cover');
+  document.getElementById('aff-text').textContent=AFFS[Math.floor(Date.now()/864e5)%AFFS.length];
+  setDates();
+  buildMoodPills();buildChakraPills();build369();buildPromptCats();renderPromptList();renderWins();renderStreak();
+};
+window.onresize=()=>{['cnv-cover','cnv-hero','cnv-footer'].forEach(drawNebula);};
 </script>
 </body>
 </html>
