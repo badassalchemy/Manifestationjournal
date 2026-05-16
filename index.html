@@ -1,41 +1,51 @@
-import { useState, useRef, useEffect, useCallback } from "react";
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Manifestation Journal — Badass Alchemy</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,700;1,400;1,700&family=Montserrat:wght@400;500;700&display=swap" rel="stylesheet"/>
+<script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+<script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+  background-color:#0D0610;
+  background-image:url('https://raw.githubusercontent.com/badassalchemy/imageassets/main/dark%20nebula%20baxckground.jpg');
+  background-size:cover;
+  background-position:center top;
+  background-attachment:fixed;
+  min-height:100vh;
+}
+textarea{color:#F7EDF1!important;font-family:'Cormorant Garamond',serif!important;}
+textarea::placeholder{color:#8A6080!important;opacity:1}
+input{color:#F7EDF1!important}
+input::placeholder{color:#8A6080!important;opacity:1}
+::-webkit-scrollbar{height:3px;width:3px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:rgba(115,57,96,0.4);border-radius:2px}
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel">
+const {useState,useRef,useEffect,useCallback} = React;
 
-/* ═══════════════════════════════════════════════
-   BADASS ALCHEMY — LUXURY BRAND PALETTE
-   From luxurybranding.tsx
-═══════════════════════════════════════════════ */
 const C = {
-  bg:       "#0D0610",
-  bgMid:    "#180B1E",
-  dark:     "#0D0618",
-  darkMid:  "#461D34",
-  accent:   "#733960",
-  accentLt: "#B16AA2",
-  tertiary: "#9B4E7A",
-  detail:   "#C4789A",
-  orchid:   "#C6B6CD",
-  moonPrl:  "#F7EDF1",
-  txt:      "#F7EDF1",
-  txtSec:   "#E8D4E0",
-  txtMuted: "#C4A0B8",
-  txtFaded: "#8A6080",
-  txtHint:  "#9A7090",
-  border:   "rgba(179,106,162,0.18)",
-  borderBr: "rgba(179,106,162,0.32)",
-  shadow:   "rgba(36,10,25,0.6)",
-  card:     "rgba(24,11,30,0.72)",
-  cardHv:   "rgba(34,16,42,0.88)",
+  bg:"#0D0610",bgMid:"#180B1E",dark:"#0D0618",darkMid:"#461D34",
+  accent:"#733960",accentLt:"#B16AA2",tertiary:"#9B4E7A",detail:"#C4789A",
+  orchid:"#C6B6CD",moonPrl:"#F7EDF1",
+  txt:"#F7EDF1",txtSec:"#E8D4E0",txtMuted:"#C4A0B8",txtFaded:"#8A6080",txtHint:"#9A7090",
+  border:"rgba(179,106,162,0.18)",borderBr:"rgba(179,106,162,0.32)",
+  shadow:"rgba(36,10,25,0.6)",card:"rgba(24,11,30,0.72)",
 };
 
-const GRAD   = `linear-gradient(160deg,#0D0618 0%,#1A0828 30%,#3A0F30 65%,#5C1640 100%)`;
-const GRAD2  = `linear-gradient(150deg,#110820 0%,#2A0D3A 35%,#4A1545 60%,#7A1E50 100%)`;
-const ACCENT_GRAD = `linear-gradient(135deg,${C.accent},${C.darkMid})`;
-const ACCENT_GRAD2 = `linear-gradient(135deg,${C.accentLt},${C.accent})`;
-const STARS  = `radial-gradient(1px 1px at 20% 30%,rgba(247,237,241,0.5),transparent),radial-gradient(1px 1px at 60% 15%,rgba(247,237,241,0.4),transparent),radial-gradient(1.5px 1.5px at 80% 60%,rgba(247,237,241,0.45),transparent),radial-gradient(1px 1px at 40% 80%,rgba(247,237,241,0.35),transparent),radial-gradient(1px 1px at 10% 70%,rgba(247,237,241,0.4),transparent),radial-gradient(1.5px 1.5px at 90% 25%,rgba(247,237,241,0.5),transparent),radial-gradient(1px 1px at 55% 45%,rgba(247,237,241,0.3),transparent),radial-gradient(1px 1px at 30% 55%,rgba(247,237,241,0.25),transparent)`;
-const GLOW   = `radial-gradient(ellipse at 55% 60%,rgba(200,60,120,0.18),transparent 60%)`;
-const GLOW2  = `radial-gradient(ellipse at 25% 35%,rgba(100,30,90,0.22),transparent 55%)`;
-
-// GitHub raw image URL
+const ACCENT_GRAD  = "linear-gradient(135deg,#733960,#461D34)";
+const ACCENT_GRAD2 = "linear-gradient(135deg,#B16AA2,#733960)";
+const GLOW  = "radial-gradient(ellipse at 55% 60%,rgba(200,60,120,0.18),transparent 60%)";
+const GLOW2 = "radial-gradient(ellipse at 25% 35%,rgba(100,30,90,0.22),transparent 55%)";
+const STARS = "radial-gradient(1px 1px at 20% 30%,rgba(247,237,241,0.5),transparent),radial-gradient(1px 1px at 60% 15%,rgba(247,237,241,0.4),transparent),radial-gradient(1.5px 1.5px at 80% 60%,rgba(247,237,241,0.45),transparent),radial-gradient(1px 1px at 40% 80%,rgba(247,237,241,0.35),transparent),radial-gradient(1px 1px at 10% 70%,rgba(247,237,241,0.4),transparent),radial-gradient(1.5px 1.5px at 90% 25%,rgba(247,237,241,0.5),transparent),radial-gradient(1px 1px at 55% 45%,rgba(247,237,241,0.3),transparent),radial-gradient(1px 1px at 30% 55%,rgba(247,237,241,0.25),transparent)";
 const BG_IMAGE = "https://raw.githubusercontent.com/badassalchemy/imageassets/main/dark%20nebula%20baxckground.jpg";
 
 const AFFIRMATIONS = [
@@ -72,7 +82,7 @@ const AFFIRMATIONS = [
   "She is already inside you. Stop waiting for permission to become her.",
 ];
 
-const store = {
+const store={
   get:(k,fb)=>{try{const v=localStorage.getItem(k);return v!=null?JSON.parse(v):fb;}catch{return fb;}},
   set:(k,v)=>{try{localStorage.setItem(k,JSON.stringify(v));}catch{}},
 };
@@ -87,74 +97,59 @@ function useStreak(){
     const today=todayKey();
     if(lastDate===today)return;
     const diff=lastDate?daysBetween(lastDate,today):1;
-    const ns=diff===1?streak+1:1, nt=totalDays+1;
+    const ns=diff===1?streak+1:1,nt=totalDays+1;
     setStreak(ns);setLastDate(today);setTotalDays(nt);
     store.set("ba_streak",ns);store.set("ba_lastDate",today);store.set("ba_total",nt);
   },[lastDate,streak,totalDays]);
   return{streak,totalDays,doneToday:lastDate===todayKey(),markToday};
 }
 
-/* ── Glassmorphism card ── */
-const cardStyle=(extra={})=>({
-  background: C.card,
-  borderRadius: 16,
-  border: `1px solid ${C.border}`,
-  boxShadow: `0 8px 32px ${C.shadow}`,
-  backdropFilter: "blur(16px)",
-  WebkitBackdropFilter: "blur(16px)",
-  padding: "22px 20px",
-  marginBottom: 14,
-  position: "relative",
-  overflow: "hidden",
-  ...extra,
+const cardSt=(extra={})=>({
+  background:C.card,borderRadius:16,border:`1px solid ${C.border}`,
+  boxShadow:`0 8px 32px ${C.shadow}`,backdropFilter:"blur(16px)",
+  WebkitBackdropFilter:"blur(16px)",padding:"22px 20px",marginBottom:14,
+  position:"relative",overflow:"hidden",...extra,
 });
 
-/* ── Stars overlay inside cards ── */
-const CardStars = () => (
-  <div style={{position:"absolute",inset:0,backgroundImage:STARS,opacity:0.25,pointerEvents:"none"}}/>
-);
+const CardStars=()=>React.createElement("div",{style:{position:"absolute",inset:0,backgroundImage:STARS,opacity:0.25,pointerEvents:"none"}});
 
-const Overline=({children,color})=>(
-  <div style={{fontFamily:"'Montserrat',sans-serif",fontSize:9,fontWeight:700,letterSpacing:1.5,color:color||C.accentLt,textTransform:"uppercase",marginBottom:10}}>{children}</div>
-);
+const Overline=({children,color})=>React.createElement("div",{style:{fontFamily:"'Montserrat',sans-serif",fontSize:9,fontWeight:700,letterSpacing:1.5,color:color||C.accentLt,textTransform:"uppercase",marginBottom:10}},children);
 
 function Pill({children,onClick,active,small}){
-  return <button onClick={onClick} style={{
-    background: active ? ACCENT_GRAD : "rgba(115,57,96,0.18)",
-    color: active ? C.moonPrl : C.txtMuted,
-    border: `1px solid ${active ? "transparent" : C.border}`,
-    padding: small ? "6px 13px" : "11px 26px",
-    borderRadius: 50, fontSize: small ? 11 : 13,
-    fontWeight: 600, cursor: "pointer",
-    fontFamily:"'Montserrat',sans-serif",
-    transition: "all .2s", letterSpacing: .3, whiteSpace:"nowrap",
-  }}>{children}</button>;
+  return React.createElement("button",{onClick,style:{
+    background:active?ACCENT_GRAD:"rgba(115,57,96,0.18)",
+    color:active?C.moonPrl:C.txtMuted,
+    border:`1px solid ${active?"transparent":C.border}`,
+    padding:small?"6px 13px":"11px 26px",borderRadius:50,
+    fontSize:small?11:13,fontWeight:600,cursor:"pointer",
+    fontFamily:"'Montserrat',sans-serif",transition:"all .2s",
+    letterSpacing:.3,whiteSpace:"nowrap",
+  }},children);
 }
 
 function TA({value,onChange,placeholder,rows=3,hint}){
-  return (
-    <div>
-      {hint&&<p style={{fontFamily:"'Montserrat',sans-serif",fontSize:12,color:C.txtHint,margin:"0 0 8px",lineHeight:1.65,fontStyle:"italic"}}>{hint}</p>}
-      <textarea value={value} onChange={e=>onChange(e.target.value)} placeholder={placeholder} rows={rows}
-        style={{width:"100%",padding:"13px 15px",borderRadius:12,border:`1px solid ${C.border}`,
-          background:"rgba(13,6,16,0.5)",fontSize:14,
-          fontFamily:"'Cormorant Garamond',serif",color:C.txt,
-          resize:"vertical",outline:"none",lineHeight:1.8,transition:"border-color .2s"}}
-        onFocus={e=>{e.target.style.borderColor=C.accentLt;e.target.style.background="rgba(30,10,35,0.7)";}}
-        onBlur={e=>{e.target.style.borderColor=C.border;e.target.style.background="rgba(13,6,16,0.5)";}}/>
-    </div>
+  return React.createElement("div",null,
+    hint&&React.createElement("p",{style:{fontFamily:"'Montserrat',sans-serif",fontSize:12,color:C.txtHint,margin:"0 0 8px",lineHeight:1.65,fontStyle:"italic"}},hint),
+    React.createElement("textarea",{value,onChange:e=>onChange(e.target.value),placeholder,rows,
+      style:{width:"100%",padding:"13px 15px",borderRadius:12,border:`1px solid ${C.border}`,
+        background:"rgba(13,6,16,0.5)",fontSize:14,fontFamily:"'Cormorant Garamond',serif",
+        color:C.txt,resize:"vertical",outline:"none",lineHeight:1.8,transition:"border-color .2s"},
+      onFocus:e=>{e.target.style.borderColor=C.accentLt;e.target.style.background="rgba(30,10,35,0.7)";},
+      onBlur:e=>{e.target.style.borderColor=C.border;e.target.style.background="rgba(13,6,16,0.5)";}
+    })
   );
 }
 
 function SCard({title,emoji,children,glow}){
-  return (
-    <div style={cardStyle({boxShadow:glow?`0 4px 40px rgba(177,106,162,0.25),0 2px 16px ${C.shadow}`:`0 8px 32px ${C.shadow}`})}>
-      <CardStars/>
-      <div style={{position:"relative"}}>
-        {title&&<div style={{display:"flex",alignItems:"center",gap:8,marginBottom:16}}>{emoji&&<span style={{fontSize:17}}>{emoji}</span>}<Overline>{title}</Overline></div>}
-        {children}
-      </div>
-    </div>
+  return React.createElement("div",{style:cardSt({boxShadow:glow?`0 4px 40px rgba(177,106,162,0.25),0 2px 16px ${C.shadow}`:`0 8px 32px ${C.shadow}`})},
+    React.createElement(CardStars),
+    React.createElement("div",{style:{position:"relative"}},
+      title&&React.createElement("div",{style:{display:"flex",alignItems:"center",gap:8,marginBottom:16}},
+        emoji&&React.createElement("span",{style:{fontSize:17}},emoji),
+        React.createElement(Overline,null,title)
+      ),
+      children
+    )
   );
 }
 
@@ -162,23 +157,25 @@ function TabFooter({buildText}){
   const [copied,setCopied]=useState(false);
   const copy=()=>{
     const text=buildText();
-    navigator.clipboard.writeText(text).then(()=>{setCopied(true);setTimeout(()=>setCopied(false),2500);}).catch(()=>{
-      const ta=document.createElement("textarea");ta.value=text;document.body.appendChild(ta);ta.select();document.execCommand("copy");document.body.removeChild(ta);setCopied(true);setTimeout(()=>setCopied(false),2500);
-    });
+    if(navigator.clipboard){
+      navigator.clipboard.writeText(text).then(()=>{setCopied(true);setTimeout(()=>setCopied(false),2500);});
+    } else {
+      const ta=document.createElement("textarea");ta.value=text;
+      document.body.appendChild(ta);ta.select();document.execCommand("copy");
+      document.body.removeChild(ta);setCopied(true);setTimeout(()=>setCopied(false),2500);
+    }
   };
-  return (
-    <div style={{marginTop:8,padding:"20px",background:"rgba(115,57,96,0.1)",borderRadius:16,border:`1px solid ${C.border}`,textAlign:"center",position:"relative",overflow:"hidden"}}>
-      <CardStars/>
-      <div style={{position:"relative"}}>
-        <p style={{fontFamily:"'Montserrat',sans-serif",fontSize:12,color:C.txtFaded,margin:"0 0 14px",lineHeight:1.7}}>
-          💡 <strong style={{color:C.txtMuted}}>Heads up:</strong> Entries are not auto-saved. Copy them before switching tabs or closing your journal.
-        </p>
-        <button onClick={copy} style={{background:copied?`rgba(115,57,96,0.4)`:ACCENT_GRAD,color:C.moonPrl,border:"none",borderRadius:50,padding:"12px 28px",fontFamily:"'Montserrat',sans-serif",fontWeight:700,fontSize:13,cursor:"pointer",boxShadow:"0 6px 20px rgba(115,57,96,0.35)",transition:"all .3s"}}>
-          {copied?"✓ Copied to Clipboard!":"📋  Copy All Entries"}
-        </button>
-        <p style={{fontFamily:"'Montserrat',sans-serif",fontSize:11,color:C.txtFaded,marginTop:10}}>Paste into Notes, Notion, Google Docs, or email.</p>
-      </div>
-    </div>
+  return React.createElement("div",{style:{marginTop:8,padding:"20px",background:"rgba(115,57,96,0.1)",borderRadius:16,border:`1px solid ${C.border}`,textAlign:"center",position:"relative",overflow:"hidden"}},
+    React.createElement(CardStars),
+    React.createElement("div",{style:{position:"relative"}},
+      React.createElement("p",{style:{fontFamily:"'Montserrat',sans-serif",fontSize:12,color:C.txtFaded,margin:"0 0 14px",lineHeight:1.7}},
+        "💡 ",React.createElement("strong",{style:{color:C.txtMuted}},"Heads up:")," Entries are not auto-saved. Copy them before switching tabs or closing your journal."
+      ),
+      React.createElement("button",{onClick:copy,style:{background:copied?"rgba(115,57,96,0.4)":ACCENT_GRAD,color:C.moonPrl,border:"none",borderRadius:50,padding:"12px 28px",fontFamily:"'Montserrat',sans-serif",fontWeight:700,fontSize:13,cursor:"pointer",boxShadow:"0 6px 20px rgba(115,57,96,0.35)",transition:"all .3s"}},
+        copied?"✓ Copied to Clipboard!":"📋  Copy All Entries"
+      ),
+      React.createElement("p",{style:{fontFamily:"'Montserrat',sans-serif",fontSize:11,color:C.txtFaded,marginTop:10}},"Paste into Notes, Notion, Google Docs, or email.")
+    )
   );
 }
 
@@ -186,110 +183,82 @@ function AffirmationBar(){
   const idx=Math.floor(Date.now()/86400000)%AFFIRMATIONS.length;
   const [visible,setVisible]=useState(true);
   if(!visible)return null;
-  return (
-    <div style={{position:"relative",background:"rgba(115,57,96,0.2)",borderBottom:`1px solid ${C.border}`,padding:"13px 44px 13px 20px",textAlign:"center",backdropFilter:"blur(10px)"}}>
-      <div style={{position:"absolute",inset:0,backgroundImage:STARS,opacity:0.2,pointerEvents:"none"}}/>
-      <p style={{fontFamily:"'Cormorant Garamond',serif",fontSize:15,fontStyle:"italic",color:C.accentLt,margin:0,lineHeight:1.6,position:"relative"}}>
-        <span style={{color:C.detail,marginRight:8,fontSize:11,fontFamily:"'Montserrat',sans-serif",letterSpacing:1.5,fontStyle:"normal"}}>✦ TODAY</span>
-        {AFFIRMATIONS[idx]}
-      </p>
-      <button onClick={()=>setVisible(false)} style={{position:"absolute",right:12,top:"50%",transform:"translateY(-50%)",background:"none",border:"none",color:C.txtFaded,cursor:"pointer",fontSize:18}}>×</button>
-    </div>
+  return React.createElement("div",{style:{position:"relative",background:"rgba(115,57,96,0.2)",borderBottom:`1px solid ${C.border}`,padding:"13px 44px 13px 20px",textAlign:"center",backdropFilter:"blur(10px)"}},
+    React.createElement("div",{style:{position:"absolute",inset:0,backgroundImage:STARS,opacity:0.2,pointerEvents:"none"}}),
+    React.createElement("p",{style:{fontFamily:"'Cormorant Garamond',serif",fontSize:15,fontStyle:"italic",color:C.accentLt,margin:0,lineHeight:1.6,position:"relative"}},
+      React.createElement("span",{style:{color:C.detail,marginRight:8,fontSize:11,fontFamily:"'Montserrat',sans-serif",letterSpacing:1.5,fontStyle:"normal"}},"✦ TODAY"),
+      AFFIRMATIONS[idx]
+    ),
+    React.createElement("button",{onClick:()=>setVisible(false),style:{position:"absolute",right:12,top:"50%",transform:"translateY(-50%)",background:"none",border:"none",color:C.txtFaded,cursor:"pointer",fontSize:18}},"×")
   );
 }
 
 function StreakWidget({streak,totalDays,doneToday,markToday}){
   const days=["M","T","W","T","F","S","S"];
   const todayDow=(new Date().getDay()+6)%7;
-  return (
-    <div style={cardStyle({background:"rgba(115,57,96,0.15)",border:`1px solid ${C.borderBr}`,marginBottom:20})}>
-      <CardStars/>
-      <div style={{position:"relative"}}>
-        <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:16,flexWrap:"wrap",gap:10}}>
-          <div>
-            <Overline color={C.accentLt}>Your Practice Streak</Overline>
-            <div style={{display:"flex",alignItems:"baseline",gap:10}}>
-              <span style={{fontFamily:"'Cormorant Garamond',serif",fontSize:48,fontWeight:700,background:ACCENT_GRAD2,WebkitBackgroundClip:"text",WebkitTextFillColor:"transparent",lineHeight:1}}>{streak}</span>
-              <span style={{fontFamily:"'Montserrat',sans-serif",fontSize:12,color:C.txtMuted}}>day{streak!==1?"s":""} in a row</span>
-            </div>
-          </div>
-          <div style={{textAlign:"right"}}>
-            <div style={{fontFamily:"'Montserrat',sans-serif",fontSize:11,color:C.txtFaded,marginBottom:4}}>Total sessions</div>
-            <div style={{fontFamily:"'Cormorant Garamond',serif",fontSize:32,fontWeight:700,color:C.accentLt,lineHeight:1}}>{totalDays}</div>
-          </div>
-        </div>
-        <div style={{display:"flex",gap:6,marginBottom:16}}>
-          {days.map((d,i)=>(
-            <div key={i} style={{flex:1,textAlign:"center"}}>
-              <div style={{fontFamily:"'Montserrat',sans-serif",fontSize:9,color:C.txtFaded,marginBottom:5,fontWeight:700}}>{d}</div>
-              <div style={{width:"100%",paddingBottom:"100%",borderRadius:"50%",position:"relative"}}>
-                <div style={{position:"absolute",inset:0,borderRadius:"50%",
-                  background:i===todayDow?(doneToday?ACCENT_GRAD:"rgba(115,57,96,0.2)"):i<todayDow?"rgba(115,57,96,0.4)":"rgba(247,237,241,0.04)",
-                  border:i===todayDow?`1.5px solid ${C.accentLt}`:`1px solid ${C.border}`,
-                  display:"flex",alignItems:"center",justifyContent:"center"}}>
-                  {(i<todayDow||(i===todayDow&&doneToday))&&<span style={{position:"absolute",top:"50%",left:"50%",transform:"translate(-50%,-50%)",fontSize:9,color:i===todayDow?C.moonPrl:C.accentLt}}>✦</span>}
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-        {!doneToday
-          ?<button onClick={markToday} style={{width:"100%",background:ACCENT_GRAD,color:C.moonPrl,border:"none",borderRadius:50,padding:"13px",fontFamily:"'Montserrat',sans-serif",fontWeight:700,fontSize:13,cursor:"pointer",letterSpacing:.5,boxShadow:"0 6px 24px rgba(115,57,96,0.4)"}}>✦ Mark Today as Complete</button>
-          :<div style={{textAlign:"center",padding:"10px",fontFamily:"'Cormorant Garamond',serif",fontSize:17,fontStyle:"italic",color:C.accentLt}}>You showed up today. She is proud of you. 🤍</div>
-        }
-      </div>
-    </div>
+  return React.createElement("div",{style:cardSt({background:"rgba(115,57,96,0.15)",border:`1px solid ${C.borderBr}`,marginBottom:20})},
+    React.createElement(CardStars),
+    React.createElement("div",{style:{position:"relative"}},
+      React.createElement("div",{style:{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:16,flexWrap:"wrap",gap:10}},
+        React.createElement("div",null,
+          React.createElement(Overline,{color:C.accentLt},"Your Practice Streak"),
+          React.createElement("div",{style:{display:"flex",alignItems:"baseline",gap:10}},
+            React.createElement("span",{style:{fontFamily:"'Cormorant Garamond',serif",fontSize:48,fontWeight:700,background:ACCENT_GRAD2,WebkitBackgroundClip:"text",WebkitTextFillColor:"transparent",lineHeight:1}},streak),
+            React.createElement("span",{style:{fontFamily:"'Montserrat',sans-serif",fontSize:12,color:C.txtMuted}},`day${streak!==1?"s":""} in a row`)
+          )
+        ),
+        React.createElement("div",{style:{textAlign:"right"}},
+          React.createElement("div",{style:{fontFamily:"'Montserrat',sans-serif",fontSize:11,color:C.txtFaded,marginBottom:4}},"Total sessions"),
+          React.createElement("div",{style:{fontFamily:"'Cormorant Garamond',serif",fontSize:32,fontWeight:700,color:C.accentLt,lineHeight:1}},totalDays)
+        )
+      ),
+      React.createElement("div",{style:{display:"flex",gap:6,marginBottom:16}},
+        days.map((d,i)=>React.createElement("div",{key:i,style:{flex:1,textAlign:"center"}},
+          React.createElement("div",{style:{fontFamily:"'Montserrat',sans-serif",fontSize:9,color:C.txtFaded,marginBottom:5,fontWeight:700}},d),
+          React.createElement("div",{style:{width:"100%",paddingBottom:"100%",borderRadius:"50%",position:"relative"}},
+            React.createElement("div",{style:{position:"absolute",inset:0,borderRadius:"50%",
+              background:i===todayDow?(doneToday?ACCENT_GRAD:"rgba(115,57,96,0.2)"):i<todayDow?"rgba(115,57,96,0.4)":"rgba(247,237,241,0.04)",
+              border:i===todayDow?`1.5px solid ${C.accentLt}`:`1px solid ${C.border}`,display:"flex",alignItems:"center",justifyContent:"center"}},
+              (i<todayDow||(i===todayDow&&doneToday))&&React.createElement("span",{style:{position:"absolute",top:"50%",left:"50%",transform:"translate(-50%,-50%)",fontSize:9,color:i===todayDow?C.moonPrl:C.accentLt}},"✦")
+            )
+          )
+        ))
+      ),
+      !doneToday
+        ?React.createElement("button",{onClick:markToday,style:{width:"100%",background:ACCENT_GRAD,color:C.moonPrl,border:"none",borderRadius:50,padding:"13px",fontFamily:"'Montserrat',sans-serif",fontWeight:700,fontSize:13,cursor:"pointer",letterSpacing:.5,boxShadow:"0 6px 24px rgba(115,57,96,0.4)"}},"✦ Mark Today as Complete")
+        :React.createElement("div",{style:{textAlign:"center",padding:"10px",fontFamily:"'Cormorant Garamond',serif",fontSize:17,fontStyle:"italic",color:C.accentLt}},"You showed up today. She is proud of you. 🤍")
+    )
   );
 }
 
-/* ══════════════════════ COVER ══════════════════════ */
 function Cover({onStart}){
-  return (
-    <div style={{minHeight:"100vh",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",textAlign:"center",padding:"48px 24px",
-      backgroundImage:`url('${BG_IMAGE}')`,
-      backgroundSize:"cover",backgroundPosition:"center",backgroundAttachment:"fixed",
-      position:"relative",overflow:"hidden"}}>
-      {/* Dark overlay */}
-      <div style={{position:"absolute",inset:0,background:"rgba(13,6,16,0.62)",pointerEvents:"none"}}/>
-      <div style={{position:"absolute",inset:0,background:GLOW,pointerEvents:"none"}}/>
-      <div style={{position:"absolute",inset:0,background:GLOW2,pointerEvents:"none"}}/>
-      <div style={{position:"absolute",inset:0,backgroundImage:STARS,opacity:0.4,pointerEvents:"none"}}/>
-
-      {/* 4-point sparkles */}
-      <svg style={{position:"absolute",inset:0,width:"100%",height:"100%",pointerEvents:"none"}} viewBox="0 0 1000 700" preserveAspectRatio="xMidYMid slice">
-        {[{x:80,y:200,s:20,c:C.accentLt,o:.7},{x:920,y:190,s:24,c:C.accentLt,o:.65},{x:130,y:500,s:12,c:C.detail,o:.55},{x:880,y:520,s:11,c:C.detail,o:.5}].map((k,i)=>{
-          const h=k.s/2,q=k.s/5;
-          return <polygon key={i} points={`${k.x},${k.y-h} ${k.x+q},${k.y-q} ${k.x+h},${k.y} ${k.x+q},${k.y+q} ${k.x},${k.y+h} ${k.x-q},${k.y+q} ${k.x-h},${k.y} ${k.x-q},${k.y-q}`} fill={k.c} opacity={k.o}/>;
-        })}
-      </svg>
-
-      <div style={{position:"relative",maxWidth:560}}>
-        <div style={{fontFamily:"'Cormorant Garamond',serif",fontSize:14,fontStyle:"italic",color:C.detail,marginBottom:10,letterSpacing:1}}>Badass Alchemy</div>
-        <h1 style={{fontFamily:"'Cormorant Garamond',serif",fontSize:"clamp(34px,6vw,56px)",fontWeight:700,lineHeight:1.08,margin:"0 0 8px",color:C.txt}}>
-          Manifestation<br/><em style={{color:C.accentLt,fontStyle:"italic",fontWeight:400}}>Journal</em>
-        </h1>
-        <p style={{fontFamily:"'Cormorant Garamond',serif",fontSize:"clamp(16px,3vw,22px)",fontStyle:"italic",margin:"0 0 6px",color:C.orchid}}>
-          for the Baddie Building an Empire
-        </p>
-        <div style={{width:48,height:1,background:ACCENT_GRAD2,margin:"20px auto 26px",borderRadius:2}}/>
-        <div style={{background:"rgba(13,6,16,0.65)",backdropFilter:"blur(20px)",borderRadius:20,padding:"26px 30px",margin:"0 auto 36px",border:`1px solid ${C.border}`,position:"relative",overflow:"hidden"}}>
-          <CardStars/>
-          <div style={{position:"relative"}}>
-            <p style={{fontFamily:"'Montserrat',sans-serif",fontSize:15,lineHeight:1.75,color:C.txtSec,fontWeight:500,margin:"0 0 12px"}}>Script your future. Regulate your energy. Build your empire — 10 minutes a day.</p>
-            <div style={{width:32,height:1,background:ACCENT_GRAD2,margin:"0 auto 12px"}}/>
-            <p style={{fontFamily:"'Montserrat',sans-serif",fontSize:13,lineHeight:1.75,color:C.txtMuted,margin:0}}>Part altar, part CEO dashboard. Every session leaves you with one clear aligned move.</p>
-          </div>
-        </div>
-        <button onClick={onStart} style={{fontFamily:"'Montserrat',sans-serif",fontSize:14,fontWeight:700,letterSpacing:1,color:C.moonPrl,background:ACCENT_GRAD,padding:"14px 40px",borderRadius:50,border:"none",cursor:"pointer",boxShadow:"0 10px 40px rgba(115,57,96,0.45)"}}>
-          ✦ &nbsp;Begin Your Practice
-        </button>
-        <p style={{fontFamily:"'Montserrat',sans-serif",fontSize:10,color:C.txtFaded,marginTop:18,letterSpacing:"0.08em"}}>SOUL + STRATEGY · 5-10 MINUTES DAILY</p>
-      </div>
-    </div>
+  return React.createElement("div",{style:{minHeight:"100vh",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",textAlign:"center",padding:"48px 24px",backgroundImage:`url('${BG_IMAGE}')`,backgroundSize:"cover",backgroundPosition:"center",backgroundAttachment:"fixed",position:"relative",overflow:"hidden"}},
+    React.createElement("div",{style:{position:"absolute",inset:0,background:"rgba(13,6,16,0.62)",pointerEvents:"none"}}),
+    React.createElement("div",{style:{position:"absolute",inset:0,background:GLOW,pointerEvents:"none"}}),
+    React.createElement("div",{style:{position:"absolute",inset:0,background:GLOW2,pointerEvents:"none"}}),
+    React.createElement("div",{style:{position:"absolute",inset:0,backgroundImage:STARS,opacity:0.4,pointerEvents:"none"}}),
+    React.createElement("div",{style:{position:"relative",maxWidth:560}},
+      React.createElement("div",{style:{fontFamily:"'Cormorant Garamond',serif",fontSize:14,fontStyle:"italic",color:C.detail,marginBottom:10,letterSpacing:1}},"Badass Alchemy"),
+      React.createElement("h1",{style:{fontFamily:"'Cormorant Garamond',serif",fontSize:"clamp(34px,6vw,56px)",fontWeight:700,lineHeight:1.08,margin:"0 0 8px",color:C.txt}},
+        "Manifestation",React.createElement("br"),
+        React.createElement("em",{style:{color:C.accentLt,fontStyle:"italic",fontWeight:400}},"Journal")
+      ),
+      React.createElement("p",{style:{fontFamily:"'Cormorant Garamond',serif",fontSize:"clamp(16px,3vw,22px)",fontStyle:"italic",margin:"0 0 6px",color:C.orchid}},"for the Baddie Building an Empire"),
+      React.createElement("div",{style:{width:48,height:1,background:ACCENT_GRAD2,margin:"20px auto 26px",borderRadius:2}}),
+      React.createElement("div",{style:{background:"rgba(13,6,16,0.65)",backdropFilter:"blur(20px)",borderRadius:20,padding:"26px 30px",margin:"0 auto 36px",border:`1px solid ${C.border}`,position:"relative",overflow:"hidden"}},
+        React.createElement(CardStars),
+        React.createElement("div",{style:{position:"relative"}},
+          React.createElement("p",{style:{fontFamily:"'Montserrat',sans-serif",fontSize:15,lineHeight:1.75,color:C.txtSec,fontWeight:500,margin:"0 0 12px"}},"Script your future. Regulate your energy. Build your empire — 10 minutes a day."),
+          React.createElement("div",{style:{width:32,height:1,background:ACCENT_GRAD2,margin:"0 auto 12px"}}),
+          React.createElement("p",{style:{fontFamily:"'Montserrat',sans-serif",fontSize:13,lineHeight:1.75,color:C.txtMuted,margin:0}},"Part altar, part CEO dashboard. Every session leaves you with one clear aligned move.")
+        )
+      ),
+      React.createElement("button",{onClick:onStart,style:{fontFamily:"'Montserrat',sans-serif",fontSize:14,fontWeight:700,letterSpacing:1,color:C.moonPrl,background:ACCENT_GRAD,padding:"14px 40px",borderRadius:50,border:"none",cursor:"pointer",boxShadow:"0 10px 40px rgba(115,57,96,0.45)"}},"✦  Begin Your Practice"),
+      React.createElement("p",{style:{fontFamily:"'Montserrat',sans-serif",fontSize:10,color:C.txtFaded,marginTop:18,letterSpacing:"0.08em"}},"SOUL + STRATEGY · 5-10 MINUTES DAILY")
+    )
   );
 }
 
-/* ══════════════════════ DAILY ══════════════════════ */
 const MOODS=["✨ Expansive","🌸 Soft","🔥 Fired Up","🌊 Flowing","😤 Frustrated","😰 Anxious","🌙 Reflective","💫 Magnetic","🥱 Low Energy","🦋 Transforming"];
 const CHAKRAS=[{name:"Root",emoji:"🔴",theme:"Safety & Foundation"},{name:"Sacral",emoji:"🟠",theme:"Creativity & Flow"},{name:"Solar Plexus",emoji:"🟡",theme:"Power & Confidence"},{name:"Heart",emoji:"💚",theme:"Love & Connection"},{name:"Throat",emoji:"🔵",theme:"Expression & Visibility"},{name:"Third Eye",emoji:"💜",theme:"Intuition & Vision"},{name:"Crown",emoji:"🤍",theme:"Purpose & Surrender"}];
 
@@ -298,127 +267,121 @@ function Daily({markToday,doneToday}){
   const [chakra,setChakra]=useState(null); const [script,setScript]=useState(""); const [feelings,setFeelings]=useState("");
   const [action,setAction]=useState(""); const [intuition,setIntuition]=useState(""); const [open,setOpen]=useState(false); const [close,setClose]=useState(false);
   const today=new Date().toLocaleDateString("en-US",{weekday:"long",year:"numeric",month:"long",day:"numeric"});
-  const buildText=()=>`DAILY SPREAD — ${today}\n${"=".repeat(50)}\n\nOPENING RITUAL: ${open?"Complete":"Not yet"}\nMOOD: ${mood||"not selected"}\nBODY SENSATION: ${body||"not filled in"}\nDOMINANT EMOTION: ${emotion||"not filled in"}\nCHAKRA: ${chakra||"not selected"}\n\nMANIFESTATION SCRIPT:\n${script||"not filled in"}\n\nFEELINGS & EMBODIMENT:\n${feelings||"not filled in"}\n\nINSPIRED ACTION:\n${action||"not filled in"}\n\nINTUITIVE HITS & SIGNS:\n${intuition||"not filled in"}\n\nPRACTICE COMPLETE: ${close?"Yes 🤍":"Not yet"}`;
-  return (
-    <div>
-      <div style={{textAlign:"center",marginBottom:24}}>
-        <p style={{fontFamily:"'Montserrat',sans-serif",fontSize:11,letterSpacing:"0.1em",color:C.accentLt,fontWeight:700,margin:"0 0 4px",textTransform:"uppercase"}}>{today}</p>
-        <p style={{fontFamily:"'Cormorant Garamond',serif",fontSize:14,fontStyle:"italic",color:C.txtFaded,margin:0}}>5-10 minutes · Let this be a ritual, not a task</p>
-      </div>
+  const buildText=()=>`DAILY SPREAD — ${today}\n${"=".repeat(50)}\n\nOPENING RITUAL: ${open?"Complete":"Not yet"}\nMOOD: ${mood||"not selected"}\nBODY SENSATION: ${body||"not filled in"}\nDOMINANT EMOTION: ${emotion||"not filled in"}\nCHAKRA: ${chakra||"not selected"}\n\nMANIFESTATION SCRIPT:\n${script||"not filled in"}\n\nFEELINGS AND EMBODIMENT:\n${feelings||"not filled in"}\n\nINSPIRED ACTION:\n${action||"not filled in"}\n\nINTUITIVE HITS:\n${intuition||"not filled in"}\n\nPRACTICE COMPLETE: ${close?"Yes":"Not yet"}`;
 
-      <div style={cardStyle({background:"rgba(115,57,96,0.15)",border:`1px solid ${C.borderBr}`})}>
-        <CardStars/>
-        <div style={{position:"relative"}}>
-          <p style={{fontFamily:"'Montserrat',sans-serif",fontSize:13,color:C.txtSec,margin:"0 0 12px",lineHeight:1.7}}>Before you begin: light a candle, pull a card, or take 3 slow deep breaths. This is your time — protect it.</p>
-          <label style={{display:"flex",alignItems:"center",gap:10,cursor:"pointer"}}>
-            <input type="checkbox" checked={open} onChange={()=>setOpen(!open)} style={{accentColor:C.accent,width:17,height:17}}/>
-            <span style={{fontFamily:"'Montserrat',sans-serif",fontSize:14,color:C.txt}}>I have created my sacred space ✦</span>
-          </label>
-        </div>
-      </div>
-
-      <SCard title="Energetic Check-In" emoji="🌊">
-        <div style={{marginBottom:16}}>
-          <Overline color={C.orchid}>How are you arriving today?</Overline>
-          <p style={{fontFamily:"'Montserrat',sans-serif",fontSize:12,color:C.txtHint,margin:"0 0 10px",fontStyle:"italic"}}>Pick the word that most matches your energy right now — not how you want to feel, how you actually feel.</p>
-          <div style={{display:"flex",flexWrap:"wrap",gap:7}}>{MOODS.map(m=><Pill key={m} small active={mood===m} onClick={()=>setMood(m)}>{m}</Pill>)}</div>
-        </div>
-        <div style={{marginBottom:14}}>
-          <Overline color={C.orchid}>Body Sensation</Overline>
-          <TA value={body} onChange={setBody} rows={2} hint="Close your eyes. Where are you holding tension? Where do you feel open or light? Tight chest, warm belly, heavy shoulders — name it without judgment." placeholder="e.g. My chest feels tight. My jaw is clenched. My shoulders are starting to drop..."/>
-        </div>
-        <div style={{marginBottom:14}}>
-          <Overline color={C.orchid}>Dominant Emotion</Overline>
-          <TA value={emotion} onChange={setEmotion} rows={2} hint="Just name what is here. Emotions are data, not obstacles. You can feel anxious AND script from abundance." placeholder="e.g. I feel quietly excited but there is a layer of fear underneath. Mostly I feel hopeful..."/>
-        </div>
-        <div>
-          <Overline color={C.orchid}>Chakra / Energy Theme</Overline>
-          <div style={{display:"flex",flexWrap:"wrap",gap:7}}>{CHAKRAS.map(c=><Pill key={c.name} small active={chakra===c.name} onClick={()=>setChakra(c.name)}>{c.emoji} {c.name}</Pill>)}</div>
-          {chakra&&<p style={{fontFamily:"'Cormorant Garamond',serif",fontSize:15,fontStyle:"italic",color:C.accentLt,margin:"10px 0 0"}}>Theme: {CHAKRAS.find(c=>c.name===chakra)?.theme}</p>}
-        </div>
-      </SCard>
-
-      <SCard title="Present-Tense Manifestation Script" emoji="✍️">
-        <TA value={script} onChange={setScript} rows={6}
-          hint="Write as if it is already done. Use 'I am', 'I have', 'I feel' — never 'I want' or 'I will'. Be specific: include the number, the feeling, the scene. Let your body believe it as you write."
-          placeholder="e.g. I am fully booked with 8 soul-aligned clients who each pay me $2,000/month with ease. My calendar feels spacious and intentional. I wake up genuinely excited to serve. Money arrives in my account consistently and I feel safe receiving it..."/>
-      </SCard>
-
-      <SCard title="Feelings & Embodiment" emoji="🦋">
-        <TA value={feelings} onChange={setFeelings} rows={5}
-          hint="How does it feel in your body NOW that this is your reality? Go beyond 'good' — describe the physical sensation. This is how you signal to your nervous system that the shift is real."
-          placeholder="e.g. It feels like warm honey spreading through my chest. My shoulders have dropped. There is a quiet confidence sitting in my belly — not frantic hustle energy, but a deep knowing. I feel held..."/>
-      </SCard>
-
-      <SCard title="One Inspired Action for Today" emoji="⚡">
-        <TA value={action} onChange={setAction} rows={2}
-          hint="One thing. Tiny and concrete. The woman who already has this — what does she do today?"
-          placeholder="e.g. DM three people who engaged with yesterday's post. Send the invoice. Hit publish on the reel I have been sitting on..."/>
-      </SCard>
-
-      <SCard title="Intuitive Hits & Spiritual Signs" emoji="🔮">
-        <TA value={intuition} onChange={setIntuition} rows={3}
-          hint="Card pulls, repeating numbers, dreams, random knowings — log everything. These are breadcrumbs from your highest self."
-          placeholder="e.g. Pulled the Star card — recognition is coming. Saw 444 at exactly 4:44pm. Had a dream I was speaking on a big stage and the crowd was electric..."/>
-      </SCard>
-
-      <div style={cardStyle({background:"rgba(115,57,96,0.15)",border:`1px solid ${C.borderBr}`})}>
-        <CardStars/>
-        <div style={{position:"relative"}}>
-          <p style={{fontFamily:"'Montserrat',sans-serif",fontSize:13,color:C.txtSec,margin:"0 0 12px",lineHeight:1.7}}>Close your journal, take one full breath, and say: <em style={{color:C.accentLt}}>"It is done. I trust the timing."</em> Then release it.</p>
-          <label style={{display:"flex",alignItems:"center",gap:10,cursor:"pointer"}}>
-            <input type="checkbox" checked={close} onChange={()=>{setClose(true);markToday();}} style={{accentColor:C.accent,width:17,height:17}}/>
-            <span style={{fontFamily:"'Montserrat',sans-serif",fontSize:14,color:C.txt}}>Practice complete — I release it now 🤍</span>
-          </label>
-          {doneToday&&<p style={{fontFamily:"'Cormorant Garamond',serif",fontSize:16,fontStyle:"italic",color:C.accentLt,margin:"12px 0 0",textAlign:"center"}}>Streak updated. You showed up. ✦</p>}
-        </div>
-      </div>
-      <TabFooter buildText={buildText}/>
-    </div>
+  return React.createElement("div",null,
+    React.createElement("div",{style:{textAlign:"center",marginBottom:24}},
+      React.createElement("p",{style:{fontFamily:"'Montserrat',sans-serif",fontSize:11,letterSpacing:"0.1em",color:C.accentLt,fontWeight:700,margin:"0 0 4px",textTransform:"uppercase"}},today),
+      React.createElement("p",{style:{fontFamily:"'Cormorant Garamond',serif",fontSize:14,fontStyle:"italic",color:C.txtFaded,margin:0}},"5-10 minutes · Let this be a ritual, not a task")
+    ),
+    React.createElement("div",{style:cardSt({background:"rgba(115,57,96,0.15)",border:`1px solid ${C.borderBr}`})},
+      React.createElement(CardStars),
+      React.createElement("div",{style:{position:"relative"}},
+        React.createElement("p",{style:{fontFamily:"'Montserrat',sans-serif",fontSize:13,color:C.txtSec,margin:"0 0 12px",lineHeight:1.7}},"Before you begin: light a candle, pull a card, or take 3 slow deep breaths. This is your time — protect it."),
+        React.createElement("label",{style:{display:"flex",alignItems:"center",gap:10,cursor:"pointer"}},
+          React.createElement("input",{type:"checkbox",checked:open,onChange:()=>setOpen(!open),style:{accentColor:C.accent,width:17,height:17}}),
+          React.createElement("span",{style:{fontFamily:"'Montserrat',sans-serif",fontSize:14,color:C.txt}},"I have created my sacred space ✦")
+        )
+      )
+    ),
+    React.createElement(SCard,{title:"Energetic Check-In",emoji:"🌊"},
+      React.createElement("div",{style:{marginBottom:16}},
+        React.createElement(Overline,{color:C.orchid},"How are you arriving today?"),
+        React.createElement("p",{style:{fontFamily:"'Montserrat',sans-serif",fontSize:12,color:C.txtHint,margin:"0 0 10px",fontStyle:"italic"}},"Pick the word that most matches your energy right now — not how you want to feel, how you actually feel."),
+        React.createElement("div",{style:{display:"flex",flexWrap:"wrap",gap:7}},MOODS.map(m=>React.createElement(Pill,{key:m,small:true,active:mood===m,onClick:()=>setMood(m)},m)))
+      ),
+      React.createElement("div",{style:{marginBottom:14}},
+        React.createElement(Overline,{color:C.orchid},"Body Sensation"),
+        React.createElement(TA,{value:body,onChange:setBody,rows:2,hint:"Close your eyes. Where are you holding tension? Where do you feel open or light? Name it without judgment.",placeholder:"e.g. My chest feels tight. My jaw is clenched. My shoulders are starting to drop..."})
+      ),
+      React.createElement("div",{style:{marginBottom:14}},
+        React.createElement(Overline,{color:C.orchid},"Dominant Emotion"),
+        React.createElement(TA,{value:emotion,onChange:setEmotion,rows:2,hint:"Just name what is here. Emotions are data, not obstacles. You can feel anxious AND script from abundance.",placeholder:"e.g. I feel quietly excited but there is a layer of fear underneath. Mostly I feel hopeful..."})
+      ),
+      React.createElement("div",null,
+        React.createElement(Overline,{color:C.orchid},"Chakra / Energy Theme"),
+        React.createElement("div",{style:{display:"flex",flexWrap:"wrap",gap:7}},CHAKRAS.map(c=>React.createElement(Pill,{key:c.name,small:true,active:chakra===c.name,onClick:()=>setChakra(c.name)},`${c.emoji} ${c.name}`))),
+        chakra&&React.createElement("p",{style:{fontFamily:"'Cormorant Garamond',serif",fontSize:15,fontStyle:"italic",color:C.accentLt,margin:"10px 0 0"}},`Theme: ${CHAKRAS.find(c=>c.name===chakra)?.theme}`)
+      )
+    ),
+    React.createElement(SCard,{title:"Present-Tense Manifestation Script",emoji:"✍️"},
+      React.createElement(TA,{value:script,onChange:setScript,rows:6,
+        hint:"Write as if it is already done. Use 'I am', 'I have', 'I feel' — never 'I want' or 'I will'. Include the number, the feeling, the scene. Let your body believe it as you write.",
+        placeholder:"e.g. I am fully booked with 8 soul-aligned clients who each pay me $2,000/month with ease. My calendar feels spacious and intentional. I wake up genuinely excited to serve. Money arrives consistently and I feel safe receiving it..."})
+    ),
+    React.createElement(SCard,{title:"Feelings and Embodiment",emoji:"🦋"},
+      React.createElement(TA,{value:feelings,onChange:setFeelings,rows:5,
+        hint:"How does it feel in your body NOW that this is your reality? Go beyond 'good' — describe the physical sensation. This is how you signal to your nervous system that the shift is real.",
+        placeholder:"e.g. It feels like warm honey spreading through my chest. My shoulders have dropped. There is a quiet confidence — not frantic hustle energy, but a deep knowing. I feel held..."})
+    ),
+    React.createElement(SCard,{title:"One Inspired Action for Today",emoji:"⚡"},
+      React.createElement(TA,{value:action,onChange:setAction,rows:2,
+        hint:"One thing. Tiny and concrete. The woman who already has this — what does she do today?",
+        placeholder:"e.g. DM three people who engaged with yesterday's post. Send the invoice. Hit publish on the reel I have been sitting on..."})
+    ),
+    React.createElement(SCard,{title:"Intuitive Hits and Spiritual Signs",emoji:"🔮"},
+      React.createElement(TA,{value:intuition,onChange:setIntuition,rows:3,
+        hint:"Card pulls, repeating numbers, dreams, random knowings — log everything. These are breadcrumbs from your highest self.",
+        placeholder:"e.g. Pulled the Star card — recognition is coming. Saw 444 at exactly 4:44pm. Had a dream I was speaking on a big stage..."})
+    ),
+    React.createElement("div",{style:cardSt({background:"rgba(115,57,96,0.15)",border:`1px solid ${C.borderBr}`})},
+      React.createElement(CardStars),
+      React.createElement("div",{style:{position:"relative"}},
+        React.createElement("p",{style:{fontFamily:"'Montserrat',sans-serif",fontSize:13,color:C.txtSec,margin:"0 0 12px",lineHeight:1.7}},
+          "Close your journal, take one full breath, and say: ",
+          React.createElement("em",{style:{color:C.accentLt}},'"It is done. I trust the timing."'),
+          " Then release it."
+        ),
+        React.createElement("label",{style:{display:"flex",alignItems:"center",gap:10,cursor:"pointer"}},
+          React.createElement("input",{type:"checkbox",checked:close,onChange:()=>{setClose(true);markToday();},style:{accentColor:C.accent,width:17,height:17}}),
+          React.createElement("span",{style:{fontFamily:"'Montserrat',sans-serif",fontSize:14,color:C.txt}},"Practice complete — I release it now 🤍")
+        ),
+        doneToday&&React.createElement("p",{style:{fontFamily:"'Cormorant Garamond',serif",fontSize:16,fontStyle:"italic",color:C.accentLt,margin:"12px 0 0",textAlign:"center"}},"Streak updated. You showed up. ✦")
+      )
+    ),
+    React.createElement(TabFooter,{buildText})
   );
 }
 
-/* ══════════════════════ WEEKLY ══════════════════════ */
 function Weekly(){
   const [vision,setVision]=useState(""); const [mans,setMans]=useState(["","",""]); const [gratitude,setGratitude]=useState(""); const [evidence,setEvidence]=useState(""); const [values,setValues]=useState("");
   const ws=new Date(); const d=ws.getDay(); ws.setDate(ws.getDate()-(d===0?6:d-1)); const we=new Date(ws); we.setDate(we.getDate()+6);
   const fmt=d=>d.toLocaleDateString("en-US",{month:"short",day:"numeric"});
   const buildText=()=>`WEEKLY SPREAD — ${fmt(ws)} to ${fmt(we)}\n${"=".repeat(50)}\n\nVISION:\n${vision||"not filled in"}\n\nTOP 3:\n1. ${mans[0]||"not filled in"}\n2. ${mans[1]||"not filled in"}\n3. ${mans[2]||"not filled in"}\n\nGRATITUDE:\n${gratitude||"not filled in"}\n\nVALUES CHECK:\n${values||"not filled in"}\n\nEVIDENCE:\n${evidence||"not filled in"}`;
-  return (
-    <div>
-      <div style={{textAlign:"center",marginBottom:24}}><p style={{fontFamily:"'Montserrat',sans-serif",fontSize:11,letterSpacing:"0.1em",color:C.accentLt,fontWeight:700,margin:"0 0 4px",textTransform:"uppercase"}}>Week of {fmt(ws)} – {fmt(we)}</p></div>
-      <SCard title="Vision for the Week" emoji="🔭">
-        <TA value={vision} onChange={setVision} rows={5} hint="Dream into the week. Income, launches, visibility, impact, key conversations, how you want to FEEL by Sunday." placeholder="e.g. This week I am creating two new client conversations, showing up on stories every day, and finishing the sales page..."/>
-      </SCard>
-      <SCard title="Top 3 Manifestations" emoji="🎯">
-        <p style={{fontFamily:"'Montserrat',sans-serif",fontSize:12,color:C.txtHint,margin:"0 0 14px",fontStyle:"italic"}}>Mix one smaller win with one bigger stretch. Specificity builds belief — give it a number or a scene.</p>
-        <div style={{display:"grid",gap:12}}>{mans.map((v,i)=>(
-          <div key={i} style={{display:"flex",gap:12,alignItems:"flex-start"}}>
-            <div style={{minWidth:30,height:30,borderRadius:"50%",background:ACCENT_GRAD,display:"flex",alignItems:"center",justifyContent:"center",color:C.moonPrl,fontWeight:700,fontSize:13,fontFamily:"'Montserrat',sans-serif",flexShrink:0,marginTop:8}}>{i+1}</div>
-            <div style={{flex:1}}><TA value={v} onChange={val=>{const n=[...mans];n[i]=val;setMans(n);}} placeholder={["e.g. 5 genuine conversations with potential clients in my DMs","e.g. Sign one aligned client at my full price with zero negotiating","e.g. Hit $5K in sales this week from my current offer"][i]} rows={2}/></div>
-          </div>
-        ))}</div>
-      </SCard>
-      <SCard title="Business-Aligned Gratitude" emoji="🙏">
-        <TA value={gratitude} onChange={setGratitude} rows={5} hint="Gratitude for what IS and in advance for what is coming. Try: 'I am grateful for [moment]' AND 'I am grateful in advance for [what is on its way]'." placeholder="e.g. I am grateful for the client who left a glowing testimonial. I am grateful in advance for the partnership conversation coming my way..."/>
-      </SCard>
-      <SCard title="Values Alignment Check" emoji="💎">
-        <TA value={values} onChange={setValues} rows={4} hint="Check in honestly. Where is your business in full alignment? Where might you be forcing or shrinking? What is your energy calling you to do differently?" placeholder="e.g. My offer feels fully aligned. I notice I have been avoiding posting because of fear. My energy is asking me to slow down and trust more..."/>
-      </SCard>
-      <SCard title="Evidence & Synchronicities" emoji="✨">
-        <TA value={evidence} onChange={setEvidence} rows={5} hint="Track the universe meeting you halfway. DMs from nowhere, repeating numbers, unexpected opportunities. These are your receipts." placeholder="e.g. Tuesday: a woman I had not spoken to in 2 years messaged asking about my services. Wednesday: saw 222 three times in one hour..."/>
-      </SCard>
-      <TabFooter buildText={buildText}/>
-    </div>
+  return React.createElement("div",null,
+    React.createElement("div",{style:{textAlign:"center",marginBottom:24}},
+      React.createElement("p",{style:{fontFamily:"'Montserrat',sans-serif",fontSize:11,letterSpacing:"0.1em",color:C.accentLt,fontWeight:700,margin:"0 0 4px",textTransform:"uppercase"}},`Week of ${fmt(ws)} – ${fmt(we)}`)
+    ),
+    React.createElement(SCard,{title:"Vision for the Week",emoji:"🔭"},
+      React.createElement(TA,{value:vision,onChange:setVision,rows:5,hint:"Dream into the week. Income, launches, visibility, impact, key conversations, how you want to FEEL by Sunday.",placeholder:"e.g. This week I am creating two new client conversations, showing up on stories every day, and finishing the sales page..."})
+    ),
+    React.createElement(SCard,{title:"Top 3 Manifestations",emoji:"🎯"},
+      React.createElement("p",{style:{fontFamily:"'Montserrat',sans-serif",fontSize:12,color:C.txtHint,margin:"0 0 14px",fontStyle:"italic"}},"Mix one smaller win with one bigger stretch. Specificity builds belief — give it a number or a scene."),
+      React.createElement("div",{style:{display:"grid",gap:12}},mans.map((v,i)=>
+        React.createElement("div",{key:i,style:{display:"flex",gap:12,alignItems:"flex-start"}},
+          React.createElement("div",{style:{minWidth:30,height:30,borderRadius:"50%",background:ACCENT_GRAD,display:"flex",alignItems:"center",justifyContent:"center",color:C.moonPrl,fontWeight:700,fontSize:13,fontFamily:"'Montserrat',sans-serif",flexShrink:0,marginTop:8}},i+1),
+          React.createElement("div",{style:{flex:1}},React.createElement(TA,{value:v,onChange:val=>{const n=[...mans];n[i]=val;setMans(n);},placeholder:["e.g. 5 genuine conversations with potential clients in my DMs","e.g. Sign one aligned client at my full price with zero negotiating","e.g. Hit $5K in sales this week from my current offer"][i],rows:2}))
+        )
+      ))
+    ),
+    React.createElement(SCard,{title:"Business-Aligned Gratitude",emoji:"🙏"},
+      React.createElement(TA,{value:gratitude,onChange:setGratitude,rows:5,hint:"Gratitude for what IS and in advance for what is coming. Try: 'I am grateful for...' AND 'I am grateful in advance for...'",placeholder:"e.g. I am grateful for the client who left a glowing testimonial. I am grateful in advance for the partnership conversation coming my way..."})
+    ),
+    React.createElement(SCard,{title:"Values Alignment Check",emoji:"💎"},
+      React.createElement(TA,{value:values,onChange:setValues,rows:4,hint:"Check in honestly. Where is your business in full alignment? Where might you be forcing or shrinking?",placeholder:"e.g. My offer feels fully aligned. I notice I have been avoiding posting because of fear. My energy is asking me to slow down and trust more..."})
+    ),
+    React.createElement(SCard,{title:"Evidence and Synchronicities",emoji:"✨"},
+      React.createElement(TA,{value:evidence,onChange:setEvidence,rows:5,hint:"Track the universe meeting you halfway. DMs from nowhere, repeating numbers, unexpected opportunities. These are your receipts.",placeholder:"e.g. Tuesday: a woman I had not spoken to in 2 years messaged asking about my services. Wednesday: saw 222 three times in one hour..."})
+    ),
+    React.createElement(TabFooter,{buildText})
   );
 }
 
-/* ══════════════════════ MONTHLY ══════════════════════ */
 function WinBubble({text,onRemove}){
-  return <div style={{display:"inline-flex",alignItems:"center",gap:8,background:"rgba(115,57,96,0.22)",border:`1px solid ${C.borderBr}`,borderRadius:50,padding:"7px 15px",margin:"4px",fontSize:13,fontFamily:"'Montserrat',sans-serif",color:C.txtSec}}>
-    <span style={{color:C.accentLt,fontSize:10}}>✦</span><span>{text}</span>
-    <button onClick={onRemove} style={{background:"none",border:"none",color:C.txtFaded,cursor:"pointer",fontSize:15,lineHeight:1,padding:0,marginLeft:2}}>×</button>
-  </div>;
+  return React.createElement("div",{style:{display:"inline-flex",alignItems:"center",gap:8,background:"rgba(115,57,96,0.22)",border:`1px solid ${C.borderBr}`,borderRadius:50,padding:"7px 15px",margin:"4px",fontSize:13,fontFamily:"'Montserrat',sans-serif",color:C.txtSec}},
+    React.createElement("span",{style:{color:C.accentLt,fontSize:10}},"✦"),text,
+    React.createElement("button",{onClick:onRemove,style:{background:"none",border:"none",color:C.txtFaded,cursor:"pointer",fontSize:15,lineHeight:1,padding:0,marginLeft:2}},"×")
+  );
 }
 
 function Monthly(){
@@ -433,57 +396,56 @@ function Monthly(){
     w.document.write(`<!DOCTYPE html><html><head><title>Monthly Review — ${month}</title><style>body{font-family:Georgia,serif;max-width:680px;margin:40px auto;padding:0 24px;color:#1a0a2e;line-height:1.8;background:#f7edf1}h1{font-size:28px;margin-bottom:4px;color:#461D34}h2{font-size:17px;margin:28px 0 8px;color:#733960;border-bottom:1px solid #e8d4e0;padding-bottom:6px}pre{white-space:pre-wrap;font-family:Georgia,serif;font-size:15px;margin:0}.meta{font-size:12px;color:#9B4E7A;letter-spacing:.08em;text-transform:uppercase;margin-bottom:32px}.footer{margin-top:48px;text-align:center;font-size:11px;color:#B16AA2;letter-spacing:.1em}</style></head><body><h1>Manifestation Journal</h1><div class="meta">${month} · Badass Alchemy</div>${sections.map(b=>{const[h,...r]=b.split("\n");return`<h2>${h}</h2><pre>${r.join("\n")}</pre>`;}).join("")}<div class="footer">✦ Detox · Activate · Open · Build ✦</div></body></html>`);
     w.document.close();w.print();
   };
-  return (
-    <div>
-      <div style={{textAlign:"center",marginBottom:24}}>
-        <p style={{fontFamily:"'Montserrat',sans-serif",fontSize:11,letterSpacing:"0.1em",color:C.accentLt,fontWeight:700,margin:"0 0 4px",textTransform:"uppercase"}}>{month}</p>
-        <p style={{fontFamily:"'Cormorant Garamond',serif",fontSize:14,fontStyle:"italic",color:C.txtFaded,margin:0}}>Celebrate · Calibrate · Claim</p>
-      </div>
-      <div style={cardStyle({background:"rgba(115,57,96,0.2)",border:`1px solid ${C.borderBr}`,boxShadow:`0 4px 40px rgba(115,57,96,0.25)`})}>
-        <CardStars/>
-        <div style={{position:"relative"}}>
-          <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:6}}><span style={{fontSize:18}}>🏆</span><Overline>Wins for the Month</Overline></div>
-          <p style={{fontFamily:"'Montserrat',sans-serif",fontSize:13,color:C.txtSec,margin:"0 0 6px",lineHeight:1.7}}>Everything counts — small, big, and in between. Celebrate it all, Queen.</p>
-          <p style={{fontFamily:"'Montserrat',sans-serif",fontSize:12,color:C.txtHint,margin:"0 0 16px",fontStyle:"italic"}}>e.g. signed a client, posted every day, sent the scary email, raised your prices, got a testimonial, hit a revenue milestone...</p>
-          <div style={{display:"flex",gap:8,marginBottom:14}}>
-            <input value={winInput} onChange={e=>setWinInput(e.target.value)} onKeyDown={e=>e.key==="Enter"&&addWin()} placeholder="Type a win and press Enter..." style={{flex:1,padding:"11px 15px",borderRadius:50,border:`1px solid ${C.border}`,background:"rgba(13,6,16,0.5)",fontFamily:"'Montserrat',sans-serif",fontSize:13,color:C.txt,outline:"none"}} onFocus={e=>e.target.style.borderColor=C.accentLt} onBlur={e=>e.target.style.borderColor=C.border}/>
-            <button onClick={addWin} style={{background:ACCENT_GRAD,color:C.moonPrl,border:"none",borderRadius:50,padding:"11px 20px",fontFamily:"'Montserrat',sans-serif",fontWeight:700,fontSize:13,cursor:"pointer"}}>+ Add</button>
-          </div>
-          {wins.length>0?<div style={{display:"flex",flexWrap:"wrap"}}>{wins.map((w,i)=><WinBubble key={i} text={w} onRemove={()=>setWins(wins.filter((_,j)=>j!==i))}/>)}</div>
-          :<p style={{fontFamily:"'Montserrat',sans-serif",fontSize:13,color:C.txtFaded,fontStyle:"italic",textAlign:"center",margin:0,padding:"8px 0"}}>Your wins will appear here — start adding ✦</p>}
-        </div>
-      </div>
-
-      <SCard title="What Did I Manifest That I Asked For?" emoji="🌠">
-        <TA value={asked} onChange={setAsked} rows={5} hint="Go back through your daily scripts. What actually showed up? Even partial manifestations count — this is your proof that it works." placeholder="e.g. I asked for a client at $2K and signed one at $1,800. I scripted being featured and got asked to be on a podcast. I set an intention to stop working weekends and actually did it..."/>
-      </SCard>
-
-      {[["What Manifested Overall","🏅",manifested,setManifested,"Beyond what you asked for — what else arrived? Revenue, recognition, relationships, inner shifts, unexpected gifts.","e.g. $8,200 in revenue (my highest yet). Two organic referrals. A collaboration DM. A real sense of peace about my pricing..."],
-        ["What Moved the Needle","📈",needle,setNeedle,"Which actions or energy shifts created the most visible results? What would you double down on next month?","e.g. Showing up consistently on stories. Raising my price — it attracted better clients. The daily scripting changed my decision-making energy..."],
-        ["Beliefs That Shifted","🧬",beliefs,setBeliefs,"What do you believe now that you did not believe 30 days ago? Name the before and the after.","e.g. I used to believe I had to work constantly to make money. Now I know consistency matters more than hustle..."],
-        ["What Is Now Non-Negotiable","🔥",nonNeg,setNonNeg,"What standards or boundaries are you no longer willing to compromise on? These are the lines your future self needs you to hold.","e.g. I will no longer discount my offers out of fear. I require a 50% deposit before I start any work. Daily journaling is non-negotiable..."],
-        ["What I Am Releasing","🌙",release,setRelease,"What beliefs, habits, or patterns no longer serve who you are becoming? Name it clearly so you can consciously let it go.","e.g. I am releasing the belief that I have to earn my rest. I am done carrying the story that I am not experienced enough..."],
-        ["Next Month's Empire Declaration","👑",next,setNext,"One full paragraph. Present tense. No hedging. No 'I hope' — only 'I am' and 'I have'. Let it feel slightly uncomfortable — that is growth.","e.g. Next month I am the woman who consistently generates $10K from soul work that lights me up. I close the month with 3 new clients and a community that is actively growing..."]
-      ].map(([t,e,v,s,hint,ph])=>(
-        <SCard key={t} title={t} emoji={e}><TA value={v} onChange={s} rows={4} hint={hint} placeholder={ph}/></SCard>
-      ))}
-
-      <div style={{textAlign:"center",paddingTop:4,marginBottom:14}}>
-        <button onClick={handlePrint} style={{background:"rgba(115,57,96,0.2)",color:C.accentLt,border:`1px solid ${C.border}`,borderRadius:50,padding:"12px 28px",fontFamily:"'Montserrat',sans-serif",fontWeight:700,fontSize:13,cursor:"pointer",letterSpacing:.3}}>
-          🖨️ &nbsp;Export / Print This Review
-        </button>
-      </div>
-      <TabFooter buildText={buildText}/>
-    </div>
+  return React.createElement("div",null,
+    React.createElement("div",{style:{textAlign:"center",marginBottom:24}},
+      React.createElement("p",{style:{fontFamily:"'Montserrat',sans-serif",fontSize:11,letterSpacing:"0.1em",color:C.accentLt,fontWeight:700,margin:"0 0 4px",textTransform:"uppercase"}},month),
+      React.createElement("p",{style:{fontFamily:"'Cormorant Garamond',serif",fontSize:14,fontStyle:"italic",color:C.txtFaded,margin:0}},"Celebrate · Calibrate · Claim")
+    ),
+    React.createElement("div",{style:cardSt({background:"rgba(115,57,96,0.2)",border:`1px solid ${C.borderBr}`,boxShadow:`0 4px 40px rgba(115,57,96,0.25)`})},
+      React.createElement(CardStars),
+      React.createElement("div",{style:{position:"relative"}},
+        React.createElement("div",{style:{display:"flex",alignItems:"center",gap:8,marginBottom:6}},
+          React.createElement("span",{style:{fontSize:18}},"🏆"),
+          React.createElement(Overline,null,"Wins for the Month")
+        ),
+        React.createElement("p",{style:{fontFamily:"'Montserrat',sans-serif",fontSize:13,color:C.txtSec,margin:"0 0 6px",lineHeight:1.7}},"Everything counts — small, big, and in between. Celebrate it all, Queen."),
+        React.createElement("p",{style:{fontFamily:"'Montserrat',sans-serif",fontSize:12,color:C.txtHint,margin:"0 0 16px",fontStyle:"italic"}},"e.g. signed a client, posted every day, sent the scary email, raised your prices, got a testimonial, hit a revenue milestone..."),
+        React.createElement("div",{style:{display:"flex",gap:8,marginBottom:14}},
+          React.createElement("input",{value:winInput,onChange:e=>setWinInput(e.target.value),onKeyDown:e=>e.key==="Enter"&&addWin(),placeholder:"Type a win and press Enter...",style:{flex:1,padding:"11px 15px",borderRadius:50,border:`1px solid ${C.border}`,background:"rgba(13,6,16,0.5)",fontFamily:"'Montserrat',sans-serif",fontSize:13,outline:"none"},onFocus:e=>e.target.style.borderColor=C.accentLt,onBlur:e=>e.target.style.borderColor=C.border}),
+          React.createElement("button",{onClick:addWin,style:{background:ACCENT_GRAD,color:C.moonPrl,border:"none",borderRadius:50,padding:"11px 20px",fontFamily:"'Montserrat',sans-serif",fontWeight:700,fontSize:13,cursor:"pointer"}},"+ Add")
+        ),
+        wins.length>0
+          ?React.createElement("div",{style:{display:"flex",flexWrap:"wrap"}},wins.map((w,i)=>React.createElement(WinBubble,{key:i,text:w,onRemove:()=>setWins(wins.filter((_,j)=>j!==i))})))
+          :React.createElement("p",{style:{fontFamily:"'Montserrat',sans-serif",fontSize:13,color:C.txtFaded,fontStyle:"italic",textAlign:"center",margin:0,padding:"8px 0"}},"Your wins will appear here — start adding ✦")
+      )
+    ),
+    React.createElement(SCard,{title:"What Did I Manifest That I Asked For?",emoji:"🌠"},
+      React.createElement(TA,{value:asked,onChange:setAsked,rows:5,hint:"Go back through your daily scripts. What actually showed up? Even partial manifestations count — this is your proof that it works.",placeholder:"e.g. I asked for a client at $2K and signed one at $1,800. I scripted being featured and got asked to be on a podcast. I set an intention to stop working weekends and actually did it..."})
+    ),
+    ...[
+      ["What Manifested Overall","🏅",manifested,setManifested,"Beyond what you asked for — what else arrived? Revenue, recognition, relationships, inner shifts, unexpected gifts.","e.g. $8,200 in revenue (my highest yet). Two organic referrals. A collaboration DM. A real sense of peace about my pricing..."],
+      ["What Moved the Needle","📈",needle,setNeedle,"Which actions or energy shifts created the most visible results? What would you double down on next month?","e.g. Showing up consistently on stories. Raising my price. The daily scripting changed my decision-making energy..."],
+      ["Beliefs That Shifted","🧬",beliefs,setBeliefs,"What do you believe now that you did not believe 30 days ago? Name the before and the after.","e.g. I used to believe I had to work constantly to make money. Now I know consistency matters more than hustle..."],
+      ["What Is Now Non-Negotiable","🔥",nonNeg,setNonNeg,"What standards or boundaries are you no longer willing to compromise on?","e.g. I will no longer discount my offers out of fear. I require 50% deposit before starting any work..."],
+      ["What I Am Releasing","🌙",release,setRelease,"What beliefs, habits, or patterns no longer serve who you are becoming?","e.g. I am releasing the belief that I have to earn my rest. I am done carrying the story that I am not experienced enough..."],
+      ["Next Month's Empire Declaration","👑",next,setNext,"One full paragraph. Present tense. No hedging. Only 'I am' and 'I have'. Let it feel slightly uncomfortable — that is growth.","e.g. Next month I am the woman who consistently generates $10K from soul work that lights me up. I close the month with 3 new clients and a community that is actively growing..."],
+    ].map(([t,e,v,s,hint,ph])=>
+      React.createElement(SCard,{key:t,title:t,emoji:e},
+        React.createElement(TA,{value:v,onChange:s,rows:4,hint,placeholder:ph})
+      )
+    ),
+    React.createElement("div",{style:{textAlign:"center",paddingTop:4,marginBottom:14}},
+      React.createElement("button",{onClick:handlePrint,style:{background:"rgba(115,57,96,0.2)",color:C.accentLt,border:`1px solid ${C.border}`,borderRadius:50,padding:"12px 28px",fontFamily:"'Montserrat',sans-serif",fontWeight:700,fontSize:13,cursor:"pointer",letterSpacing:.3}},"🖨️  Export / Print This Review")
+    ),
+    React.createElement(TabFooter,{buildText})
   );
 }
 
-/* ══════════════════════ PROMPTS ══════════════════════ */
 const PROMPTS={
   "Future Self":["Describe your day as the version of you consistently making your dream income doing soul work you love.","Your dream client just DM'd you saying your work changed their life. What did they say?","You just closed out your best month ever. Walk through the moment you saw the numbers.","You are being interviewed on a top podcast. What are you sharing?","Your calendar this week is exactly how you designed it. Describe every block.","You just launched your signature offer and it sold out. What happened in the 24 hours after?"],
-  "Client & Community":["Who is your soul-aligned client? Describe them as if they are sitting across from you right now.","Your community just hit a milestone. What are members saying in the comments?","Describe the moment a client tells you they got the result they came for.","Your waitlist is full. How does that feel? What shifted to make this your reality?"],
-  "Money & Abundance":["What does financial safety feel like in your body? Describe it without using numbers.","You just raised your prices and people said yes immediately. What belief shifted?","Money flows to you because ____. Finish this sentence 10 different ways.","Write a thank-you letter to the next $10K coming to you."],
-  "Resistance & Shadow":["What would you do in your business if you knew no one was watching or judging?","The fear of being seen is trying to protect you from ____. What is underneath it?","If your highest self could send you a voice note right now, what would she say?","Where are you playing small because it feels safer? What would bold look like today?"],
+  "Client and Community":["Who is your soul-aligned client? Describe them as if they are sitting across from you right now.","Your community just hit a milestone. What are members saying in the comments?","Describe the moment a client tells you they got the result they came for.","Your waitlist is full. How does that feel? What shifted to make this your reality?"],
+  "Money and Abundance":["What does financial safety feel like in your body? Describe it without using numbers.","You just raised your prices and people said yes immediately. What belief shifted?","Money flows to you because ____. Finish this sentence 10 different ways.","Write a thank-you letter to the next $10K coming to you."],
+  "Resistance and Shadow":["What would you do in your business if you knew no one was watching or judging?","The fear of being seen is trying to protect you from ____. What is underneath it?","If your highest self could send you a voice note right now, what would she say?","Where are you playing small because it feels safer? What would bold look like today?"],
   "Create Your Day":["How do I want today to FEEL? Name three feelings and one action that creates each.","If today were the day everything started clicking, what is the one move I would make?","What is one courageous thing I can do today that my future self will thank me for?","What does my highest self want me to know before I start this day?"],
 };
 
@@ -491,152 +453,126 @@ function Prompts(){
   const [cat,setCat]=useState(Object.keys(PROMPTS)[0]); const [sel,setSel]=useState(null); const [entry,setEntry]=useState("");
   const random=()=>{const a=PROMPTS[cat];setSel(a[Math.floor(Math.random()*a.length)]);};
   const buildText=()=>sel?`PROMPT RESPONSE\n${"=".repeat(50)}\n\nPROMPT:\n"${sel}"\n\nMY RESPONSE:\n${entry||"not filled in"}`:"No prompt selected.";
-  return (
-    <div>
-      <div style={{textAlign:"center",marginBottom:22}}><p style={{fontFamily:"'Cormorant Garamond',serif",fontSize:14,fontStyle:"italic",color:C.txtFaded,margin:0}}>Pull a prompt · Let it guide you</p></div>
-      <div style={{display:"flex",flexWrap:"wrap",gap:7,marginBottom:18,justifyContent:"center"}}>{Object.keys(PROMPTS).map(c=><Pill key={c} small active={cat===c} onClick={()=>{setCat(c);setSel(null);}}>{c}</Pill>)}</div>
-      <div style={{textAlign:"center",marginBottom:18}}>
-        <button onClick={random} style={{fontFamily:"'Montserrat',sans-serif",fontSize:13,fontWeight:700,letterSpacing:.5,color:C.moonPrl,background:ACCENT_GRAD,padding:"12px 30px",borderRadius:50,border:"none",cursor:"pointer",boxShadow:"0 6px 24px rgba(115,57,96,0.4)"}}>🎲 Pull a Random Prompt</button>
-      </div>
-      {sel&&<SCard glow>
-        <p style={{fontFamily:"'Cormorant Garamond',serif",fontSize:18,fontStyle:"italic",color:C.txt,lineHeight:1.8,margin:"0 0 16px"}}>"{sel}"</p>
-        <TA value={entry} onChange={setEntry} rows={8} hint="Let it flow without editing. Set a timer for 5 minutes and do not stop writing. The best stuff comes after the obvious stuff." placeholder="Start writing and do not stop..."/>
-      </SCard>}
-      <SCard title="All Prompts" emoji="📚">
-        <div style={{display:"grid",gap:9}}>{PROMPTS[cat].map((p,i)=>(
-          <div key={i} onClick={()=>setSel(p)} style={{padding:"13px 16px",background:sel===p?"rgba(115,57,96,0.2)":"rgba(13,6,16,0.4)",borderRadius:12,cursor:"pointer",border:`1px solid ${sel===p?C.border:"transparent"}`,transition:"all .2s"}}>
-            <p style={{margin:0,fontFamily:"'Montserrat',sans-serif",fontSize:13,color:C.txtSec,lineHeight:1.7}}>{p}</p>
-          </div>
-        ))}</div>
-      </SCard>
-      <TabFooter buildText={buildText}/>
-    </div>
+  return React.createElement("div",null,
+    React.createElement("div",{style:{textAlign:"center",marginBottom:22}},React.createElement("p",{style:{fontFamily:"'Cormorant Garamond',serif",fontSize:14,fontStyle:"italic",color:C.txtFaded,margin:0}},"Pull a prompt · Let it guide you")),
+    React.createElement("div",{style:{display:"flex",flexWrap:"wrap",gap:7,marginBottom:18,justifyContent:"center"}},Object.keys(PROMPTS).map(c=>React.createElement(Pill,{key:c,small:true,active:cat===c,onClick:()=>{setCat(c);setSel(null);}},c))),
+    React.createElement("div",{style:{textAlign:"center",marginBottom:18}},
+      React.createElement("button",{onClick:random,style:{fontFamily:"'Montserrat',sans-serif",fontSize:13,fontWeight:700,letterSpacing:.5,color:C.moonPrl,background:ACCENT_GRAD,padding:"12px 30px",borderRadius:50,border:"none",cursor:"pointer",boxShadow:"0 6px 24px rgba(115,57,96,0.4)"}},"🎲 Pull a Random Prompt")
+    ),
+    sel&&React.createElement(SCard,{glow:true},
+      React.createElement("p",{style:{fontFamily:"'Cormorant Garamond',serif",fontSize:18,fontStyle:"italic",color:C.txt,lineHeight:1.8,margin:"0 0 16px"}},`"${sel}"`),
+      React.createElement(TA,{value:entry,onChange:setEntry,rows:8,hint:"Let it flow without editing. Set a timer for 5 minutes and do not stop writing. The best stuff comes after the obvious stuff.",placeholder:"Start writing and do not stop..."})
+    ),
+    React.createElement(SCard,{title:"All Prompts",emoji:"📚"},
+      React.createElement("div",{style:{display:"grid",gap:9}},PROMPTS[cat].map((p,i)=>
+        React.createElement("div",{key:i,onClick:()=>setSel(p),style:{padding:"13px 16px",background:sel===p?"rgba(115,57,96,0.2)":"rgba(13,6,16,0.4)",borderRadius:12,cursor:"pointer",border:`1px solid ${sel===p?C.border:"transparent"}`,transition:"all .2s"}},
+          React.createElement("p",{style:{margin:0,fontFamily:"'Montserrat',sans-serif",fontSize:13,color:C.txtSec,lineHeight:1.7}},p)
+        )
+      ))
+    ),
+    React.createElement(TabFooter,{buildText})
   );
 }
 
-/* ══════════════════════ 3/6/9 ══════════════════════ */
 function ThreeSixNine(){
   const [focus,setFocus]=useState(""); const [morning,setMorning]=useState(["","",""]); const [afternoon,setAfternoon]=useState(["","","","","",""]); const [evening,setEvening]=useState(["","","","","","","","",""]);
   const upd=(arr,s,i,v)=>{const n=[...arr];n[i]=v;s(n);};
   const buildText=()=>`3/6/9 METHOD\n${"=".repeat(50)}\n\nFOCUS:\n${focus||"not filled in"}\n\nMORNING (3x):\n${morning.map((v,i)=>`${i+1}. ${v||"blank"}`).join("\n")}\n\nAFTERNOON (6x):\n${afternoon.map((v,i)=>`${i+1}. ${v||"blank"}`).join("\n")}\n\nEVENING (9x):\n${evening.map((v,i)=>`${i+1}. ${v||"blank"}`).join("\n")}`;
-  const Block=({label,emoji,arr,setter,note})=>(
-    <SCard title={`${label} — Write ${arr.length}x`} emoji={emoji}>
-      <p style={{fontFamily:"'Montserrat',sans-serif",fontSize:12,color:C.txtHint,margin:"0 0 14px",fontStyle:"italic"}}>{note}</p>
-      <div style={{display:"grid",gap:9}}>{arr.map((v,i)=>(
-        <div key={i} style={{display:"flex",gap:10,alignItems:"center"}}>
-          <span style={{fontFamily:"'Montserrat',sans-serif",fontSize:11,fontWeight:700,color:C.txtFaded,minWidth:20}}>{i+1}.</span>
-          <div style={{flex:1}}><TA value={v} onChange={val=>upd(arr,setter,i,val)} placeholder={focus||"Write your focus statement here..."} rows={1}/></div>
-        </div>
-      ))}</div>
-    </SCard>
+  const Block=({label,emoji,arr,setter,note})=>React.createElement(SCard,{title:`${label} — Write ${arr.length}x`,emoji},
+    React.createElement("p",{style:{fontFamily:"'Montserrat',sans-serif",fontSize:12,color:C.txtHint,margin:"0 0 14px",fontStyle:"italic"}},note),
+    React.createElement("div",{style:{display:"grid",gap:9}},arr.map((v,i)=>
+      React.createElement("div",{key:i,style:{display:"flex",gap:10,alignItems:"center"}},
+        React.createElement("span",{style:{fontFamily:"'Montserrat',sans-serif",fontSize:11,fontWeight:700,color:C.txtFaded,minWidth:20}},`${i+1}.`),
+        React.createElement("div",{style:{flex:1}},React.createElement(TA,{value:v,onChange:val=>upd(arr,setter,i,val),placeholder:focus||"Write your focus statement here...",rows:1}))
+      )
+    ))
   );
-  return (
-    <div>
-      <div style={{textAlign:"center",marginBottom:24}}><p style={{fontFamily:"'Cormorant Garamond',serif",fontSize:14,fontStyle:"italic",color:C.txtFaded,margin:0}}>One desire · All day · Full embodiment</p></div>
-      <SCard title="Your Focus Statement" emoji="🎯">
-        <TA value={focus} onChange={setFocus} rows={2}
-          hint="Write ONE specific desire as a present-tense statement. Keep it to 1-2 sentences — simple enough to write 18 times without losing the feeling."
-          placeholder="e.g. I am consistently earning $10,000 per month from my soul-aligned offers and it feels completely natural and safe to receive this."/>
-      </SCard>
-      <Block label="Morning" emoji="🌅" arr={morning} setter={setMorning} note="Write your focus statement 3 times first thing — before you check your phone. Let this be the first thing your mind holds."/>
-      <Block label="Afternoon" emoji="☀️" arr={afternoon} setter={setAfternoon} note="Write it 6 times midday. Feel the desire strengthen. Notice what has subtly shifted since this morning."/>
-      <Block label="Evening" emoji="🌙" arr={evening} setter={setEvening} note="Write it 9 times before bed. Let this be the last clear thought you carry into sleep. Your subconscious works on it all night."/>
-      <TabFooter buildText={buildText}/>
-    </div>
+  return React.createElement("div",null,
+    React.createElement("div",{style:{textAlign:"center",marginBottom:24}},React.createElement("p",{style:{fontFamily:"'Cormorant Garamond',serif",fontSize:14,fontStyle:"italic",color:C.txtFaded,margin:0}},"One desire · All day · Full embodiment")),
+    React.createElement(SCard,{title:"Your Focus Statement",emoji:"🎯"},
+      React.createElement(TA,{value:focus,onChange:setFocus,rows:2,hint:"Write ONE specific desire as a present-tense statement. Keep it to 1-2 sentences — simple enough to write 18 times without losing the feeling.",placeholder:"e.g. I am consistently earning $10,000 per month from my soul-aligned offers and it feels completely natural and safe to receive this."})
+    ),
+    React.createElement(Block,{label:"Morning",emoji:"🌅",arr:morning,setter:setMorning,note:"Write your focus statement 3 times first thing — before you check your phone. Let this be the first thing your mind holds."}),
+    React.createElement(Block,{label:"Afternoon",emoji:"☀️",arr:afternoon,setter:setAfternoon,note:"Write it 6 times midday. Feel the desire strengthen. Notice what has subtly shifted since this morning."}),
+    React.createElement(Block,{label:"Evening",emoji:"🌙",arr:evening,setter:setEvening,note:"Write it 9 times before bed. Let this be the last clear thought you carry into sleep. Your subconscious works on it all night."}),
+    React.createElement(TabFooter,{buildText})
   );
 }
 
-/* ══════════════════════ APP ══════════════════════ */
 const TABS=[{id:"daily",label:"Daily",emoji:"☀️"},{id:"weekly",label:"Weekly",emoji:"🗓️"},{id:"monthly",label:"Monthly",emoji:"🌙"},{id:"prompts",label:"Prompts",emoji:"💡"},{id:"369",label:"3/6/9",emoji:"🔮"},{id:"streak",label:"Streak",emoji:"🔥"}];
 const heroLabel={daily:"Daily Sacred Spread",weekly:"Weekly Vision Spread",monthly:"Monthly Review",prompts:"Prompt Library","369":"3 / 6 / 9 Method",streak:"Your Practice Streak"};
 const heroSub={daily:"Soul + Strategy · 5-10 minutes",weekly:"Vision · Gratitude · Evidence",monthly:"Celebrate · Calibrate · Claim",prompts:"Pull a prompt · Let it guide you","369":"One desire · All day · Full embodiment",streak:"Show up. Stack the days. Build the empire."};
 
-export default function App(){
+function App(){
   const [screen,setScreen]=useState("cover"); const [tab,setTab]=useState("daily"); const [guide,setGuide]=useState(false);
   const {streak,totalDays,doneToday,markToday}=useStreak();
 
-  if(screen==="cover") return (
-    <div>
-      <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,700;1,400;1,700&family=Montserrat:wght@400;500;700&display=swap" rel="stylesheet"/>
-      <Cover onStart={()=>setScreen("journal")}/>
-    </div>
-  );
+  if(screen==="cover") return React.createElement(Cover,{onStart:()=>setScreen("journal")});
 
-  return (
-    <div style={{minHeight:"100vh",fontFamily:"'Montserrat',sans-serif",
-      backgroundImage:`url('${BG_IMAGE}')`,
-      backgroundSize:"cover",backgroundPosition:"center top",backgroundAttachment:"fixed",
-      backgroundColor:C.bg}}>
-      <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,700;1,400;1,700&family=Montserrat:wght@400;500;700&display=swap" rel="stylesheet"/>
-      {/* Global dark overlay over background */}
-      <div style={{position:"fixed",inset:0,background:"rgba(13,6,16,0.68)",pointerEvents:"none",zIndex:0}}/>
-      <div style={{position:"fixed",inset:0,background:GLOW,pointerEvents:"none",zIndex:0}}/>
-      <div style={{position:"relative",zIndex:1}}>
-        <AffirmationBar/>
-        {/* Sticky nav */}
-        <div style={{position:"sticky",top:0,zIndex:100,background:"rgba(13,6,16,0.88)",backdropFilter:"blur(20px)",WebkitBackdropFilter:"blur(20px)",borderBottom:`1px solid ${C.border}`,padding:"10px 16px"}}>
-          <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:guide?0:10}}>
-            <div style={{display:"flex",alignItems:"center",gap:10}}>
-              <h1 style={{fontFamily:"'Cormorant Garamond',serif",fontSize:17,color:C.txt,margin:0,fontWeight:700}}>✦ Manifestation Journal</h1>
-              {streak>0&&<div style={{background:ACCENT_GRAD,borderRadius:50,padding:"3px 10px",fontFamily:"'Montserrat',sans-serif",fontSize:10,fontWeight:700,color:C.moonPrl}}>🔥 {streak}</div>}
-            </div>
-            <button onClick={()=>setGuide(!guide)} style={{fontFamily:"'Montserrat',sans-serif",fontSize:11,fontWeight:700,color:guide?C.moonPrl:C.accentLt,background:guide?ACCENT_GRAD:"transparent",border:`1px solid ${guide?"transparent":C.border}`,padding:"6px 14px",borderRadius:50,cursor:"pointer",letterSpacing:.5}}>
-              {guide?"✕ Close":"📖 Guide"}
-            </button>
-          </div>
-          {!guide&&<div style={{display:"flex",gap:6,overflowX:"auto"}}>{TABS.map(t=><Pill key={t.id} small active={tab===t.id} onClick={()=>setTab(t.id)}>{t.emoji} {t.label}</Pill>)}</div>}
-        </div>
-
-        {/* Hero bar */}
-        {!guide&&(
-          <div style={{position:"relative",overflow:"hidden",padding:"28px 20px 24px",textAlign:"center",borderBottom:`1px solid ${C.border}`,background:"rgba(13,6,16,0.55)",backdropFilter:"blur(8px)"}}>
-            <div style={{position:"absolute",inset:0,backgroundImage:STARS,opacity:0.3,pointerEvents:"none"}}/>
-            <div style={{position:"absolute",inset:0,background:GLOW,opacity:0.5,pointerEvents:"none"}}/>
-            <div style={{position:"relative"}}>
-              <div style={{fontFamily:"'Montserrat',sans-serif",fontSize:9,fontWeight:700,letterSpacing:1.5,color:C.accentLt,textTransform:"uppercase",marginBottom:6}}>Badass Alchemy</div>
-              <h2 style={{fontFamily:"'Cormorant Garamond',serif",fontSize:"clamp(26px,5vw,36px)",fontWeight:700,color:C.txt,margin:"0 0 6px",lineHeight:1.15}}>
-                {heroLabel[tab].split(" ").slice(0,-1).join(" ")}{" "}
-                <em style={{color:C.accentLt,fontStyle:"italic"}}>{heroLabel[tab].split(" ").slice(-1)[0]}</em>
-              </h2>
-              <p style={{fontFamily:"'Cormorant Garamond',serif",fontSize:14,fontStyle:"italic",color:C.txtMuted,margin:0}}>{heroSub[tab]}</p>
-            </div>
-          </div>
-        )}
-
-        {/* Content */}
-        <div style={{maxWidth:680,margin:"0 auto",padding:"22px 14px 60px"}}>
-          {guide
-            ?<div>
-              <button onClick={()=>setGuide(false)} style={{background:"none",border:"none",color:C.accentLt,cursor:"pointer",fontSize:14,marginBottom:16,fontWeight:700,fontFamily:"'Montserrat',sans-serif"}}>← Back</button>
-              <SCard glow>
-                <div style={{fontFamily:"'Cormorant Garamond',serif",fontSize:22,fontWeight:700,color:C.txt,lineHeight:1.25,marginBottom:8}}>What is manifestation journaling?</div>
-                <p style={{fontFamily:"'Montserrat',sans-serif",fontSize:13.5,color:C.txtSec,lineHeight:1.75,margin:0}}>It bridges your inner vision with your outer business reality. Present-tense scripting trains your brain to recognize and act on opportunities that match your vision. Written goals increase achievement. Emotion accelerates everything.</p>
-              </SCard>
-              {[["Present-tense writing","Write as if it is already real. Use 'I am', 'I have', 'I feel' — never 'I want' or 'I will'."],["Emotional intensity","Feel it as you write. Emotion is the signal your subconscious responds to."],["Repetition over perfection","Two minutes every day beats 30 minutes once a week. Show up even when it feels flat."],["Aligned action","Vision without movement stays a dream. One small action per session closes the loop."],["Bridge beliefs","Not quite believing it yet? Start with 'I am learning to...' — your nervous system will catch up."]].map(([t,d],i)=>(
-                <div key={i} style={{display:"flex",gap:12,padding:"12px 14px",background:"rgba(13,6,16,0.5)",borderRadius:12,marginBottom:9,alignItems:"flex-start",border:`1px solid ${C.border}`,backdropFilter:"blur(8px)"}}>
-                  <span style={{color:C.accentLt,fontSize:14,marginTop:2,flexShrink:0}}>✦</span>
-                  <div><div style={{fontFamily:"'Montserrat',sans-serif",fontWeight:700,fontSize:13,color:C.txt,marginBottom:3}}>{t}</div><div style={{fontFamily:"'Montserrat',sans-serif",fontSize:13,color:C.txtMuted,lineHeight:1.65}}>{d}</div></div>
-                </div>
-              ))}
-            </div>
-            :tab==="daily"?<Daily markToday={markToday} doneToday={doneToday}/>
-            :tab==="weekly"?<Weekly/>
-            :tab==="monthly"?<Monthly/>
-            :tab==="prompts"?<Prompts/>
-            :tab==="369"?<ThreeSixNine/>
-            :<StreakWidget streak={streak} totalDays={totalDays} doneToday={doneToday} markToday={markToday}/>
-          }
-        </div>
-
-        {/* Footer */}
-        <div style={{position:"relative",overflow:"hidden",padding:"32px 24px",textAlign:"center",borderTop:`1px solid ${C.border}`,background:"rgba(13,6,16,0.7)",backdropFilter:"blur(12px)"}}>
-          <div style={{position:"absolute",inset:0,backgroundImage:STARS,opacity:0.3,pointerEvents:"none"}}/>
-          <div style={{position:"relative"}}>
-            <p style={{fontFamily:"'Cormorant Garamond',serif",fontSize:16,fontStyle:"italic",margin:"0 0 8px",color:C.accentLt}}>Detox · Activate · Open · Build</p>
-            <p style={{fontFamily:"'Montserrat',sans-serif",fontSize:9,fontWeight:700,letterSpacing:2,color:C.txtFaded,textTransform:"uppercase",margin:0}}>✦ Badass Alchemy · The Manifestation Journal ✦</p>
-          </div>
-        </div>
-      </div>
-    </div>
+  return React.createElement("div",{style:{minHeight:"100vh",fontFamily:"'Montserrat',sans-serif"}},
+    React.createElement("div",{style:{position:"fixed",inset:0,background:"rgba(13,6,16,0.68)",pointerEvents:"none",zIndex:0}}),
+    React.createElement("div",{style:{position:"fixed",inset:0,background:GLOW,pointerEvents:"none",zIndex:0}}),
+    React.createElement("div",{style:{position:"relative",zIndex:1}},
+      React.createElement(AffirmationBar),
+      React.createElement("div",{style:{position:"sticky",top:0,zIndex:100,background:"rgba(13,6,16,0.88)",backdropFilter:"blur(20px)",WebkitBackdropFilter:"blur(20px)",borderBottom:`1px solid ${C.border}`,padding:"10px 16px"}},
+        React.createElement("div",{style:{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:guide?0:10}},
+          React.createElement("div",{style:{display:"flex",alignItems:"center",gap:10}},
+            React.createElement("h1",{style:{fontFamily:"'Cormorant Garamond',serif",fontSize:17,color:C.txt,margin:0,fontWeight:700}},"✦ Manifestation Journal"),
+            streak>0&&React.createElement("div",{style:{background:ACCENT_GRAD,borderRadius:50,padding:"3px 10px",fontFamily:"'Montserrat',sans-serif",fontSize:10,fontWeight:700,color:C.moonPrl}},`🔥 ${streak}`)
+          ),
+          React.createElement("button",{onClick:()=>setGuide(!guide),style:{fontFamily:"'Montserrat',sans-serif",fontSize:11,fontWeight:700,color:guide?C.moonPrl:C.accentLt,background:guide?ACCENT_GRAD:"transparent",border:`1px solid ${guide?"transparent":C.border}`,padding:"6px 14px",borderRadius:50,cursor:"pointer",letterSpacing:.5}},guide?"✕ Close":"📖 Guide")
+        ),
+        !guide&&React.createElement("div",{style:{display:"flex",gap:6,overflowX:"auto"}},TABS.map(t=>React.createElement(Pill,{key:t.id,small:true,active:tab===t.id,onClick:()=>setTab(t.id)},`${t.emoji} ${t.label}`)))
+      ),
+      !guide&&React.createElement("div",{style:{position:"relative",overflow:"hidden",padding:"28px 20px 24px",textAlign:"center",borderBottom:`1px solid ${C.border}`,background:"rgba(13,6,16,0.55)",backdropFilter:"blur(8px)"}},
+        React.createElement("div",{style:{position:"absolute",inset:0,backgroundImage:STARS,opacity:0.3,pointerEvents:"none"}}),
+        React.createElement("div",{style:{position:"absolute",inset:0,background:GLOW,opacity:0.5,pointerEvents:"none"}}),
+        React.createElement("div",{style:{position:"relative"}},
+          React.createElement("div",{style:{fontFamily:"'Montserrat',sans-serif",fontSize:9,fontWeight:700,letterSpacing:1.5,color:C.accentLt,textTransform:"uppercase",marginBottom:6}},"Badass Alchemy"),
+          React.createElement("h2",{style:{fontFamily:"'Cormorant Garamond',serif",fontSize:"clamp(26px,5vw,36px)",fontWeight:700,color:C.txt,margin:"0 0 6px",lineHeight:1.15}},
+            heroLabel[tab].split(" ").slice(0,-1).join(" ")+" ",
+            React.createElement("em",{style:{color:C.accentLt,fontStyle:"italic"}},heroLabel[tab].split(" ").slice(-1)[0])
+          ),
+          React.createElement("p",{style:{fontFamily:"'Cormorant Garamond',serif",fontSize:14,fontStyle:"italic",color:C.txtMuted,margin:0}},heroSub[tab])
+        )
+      ),
+      React.createElement("div",{style:{maxWidth:680,margin:"0 auto",padding:"22px 14px 60px"}},
+        guide
+          ?React.createElement("div",null,
+              React.createElement("button",{onClick:()=>setGuide(false),style:{background:"none",border:"none",color:C.accentLt,cursor:"pointer",fontSize:14,marginBottom:16,fontWeight:700,fontFamily:"'Montserrat',sans-serif"}},"← Back"),
+              React.createElement(SCard,{glow:true},
+                React.createElement("div",{style:{fontFamily:"'Cormorant Garamond',serif",fontSize:22,fontWeight:700,color:C.txt,lineHeight:1.25,marginBottom:8}},"What is manifestation journaling?"),
+                React.createElement("p",{style:{fontFamily:"'Montserrat',sans-serif",fontSize:13.5,color:C.txtSec,lineHeight:1.75,margin:0}},"It bridges your inner vision with your outer business reality. Present-tense scripting trains your brain to recognize and act on opportunities that match your vision. Written goals increase achievement. Emotion accelerates everything.")
+              ),
+              ...[["Present-tense writing","Write as if it is already real. Use 'I am', 'I have', 'I feel' — never 'I want' or 'I will'."],["Emotional intensity","Feel it as you write. Emotion is the signal your subconscious responds to."],["Repetition over perfection","Two minutes every day beats 30 minutes once a week."],["Aligned action","Vision without movement stays a dream. One small action per session closes the loop."],["Bridge beliefs","Start with 'I am learning to...' — your nervous system will catch up."]].map(([t,d],i)=>
+                React.createElement("div",{key:i,style:{display:"flex",gap:12,padding:"12px 14px",background:"rgba(13,6,16,0.5)",borderRadius:12,marginBottom:9,alignItems:"flex-start",border:`1px solid ${C.border}`,backdropFilter:"blur(8px)"}},
+                  React.createElement("span",{style:{color:C.accentLt,fontSize:14,marginTop:2,flexShrink:0}},"✦"),
+                  React.createElement("div",null,
+                    React.createElement("div",{style:{fontFamily:"'Montserrat',sans-serif",fontWeight:700,fontSize:13,color:C.txt,marginBottom:3}},t),
+                    React.createElement("div",{style:{fontFamily:"'Montserrat',sans-serif",fontSize:13,color:C.txtMuted,lineHeight:1.65}},d)
+                  )
+                )
+              )
+            )
+          :tab==="daily"?React.createElement(Daily,{markToday,doneToday})
+          :tab==="weekly"?React.createElement(Weekly)
+          :tab==="monthly"?React.createElement(Monthly)
+          :tab==="prompts"?React.createElement(Prompts)
+          :tab==="369"?React.createElement(ThreeSixNine)
+          :React.createElement(StreakWidget,{streak,totalDays,doneToday,markToday})
+      ),
+      React.createElement("div",{style:{position:"relative",overflow:"hidden",padding:"32px 24px",textAlign:"center",borderTop:`1px solid ${C.border}`,background:"rgba(13,6,16,0.7)",backdropFilter:"blur(12px)"}},
+        React.createElement("div",{style:{position:"absolute",inset:0,backgroundImage:STARS,opacity:0.3,pointerEvents:"none"}}),
+        React.createElement("div",{style:{position:"relative"}},
+          React.createElement("p",{style:{fontFamily:"'Cormorant Garamond',serif",fontSize:16,fontStyle:"italic",margin:"0 0 8px",color:C.accentLt}},"Detox · Activate · Open · Build"),
+          React.createElement("p",{style:{fontFamily:"'Montserrat',sans-serif",fontSize:9,fontWeight:700,letterSpacing:2,color:C.txtFaded,textTransform:"uppercase",margin:0}},"✦ Badass Alchemy · The Manifestation Journal ✦")
+        )
+      )
+    )
   );
 }
+
+ReactDOM.createRoot(document.getElementById("root")).render(React.createElement(App));
+</script>
+</body>
+</html>
