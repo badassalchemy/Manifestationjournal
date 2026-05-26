@@ -10,16 +10,7 @@
 <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
-body{
-  background-color:#0D0610;
-  background-image:url('https://raw.githubusercontent.com/badassalchemy/imageassets/main/dark%20nebula%20baxckground.jpg');
-  background-size:cover;background-position:center top;background-attachment:fixed;
-  min-height:100vh;
-}
-textarea{color:#F7EDF1!important;font-family:'Cormorant Garamond',serif!important;}
-textarea::placeholder{color:#8A6080!important;opacity:1}
-input{color:#F7EDF1!important}
-input::placeholder{color:#8A6080!important;opacity:1}
+body{min-height:100vh;}
 ::-webkit-scrollbar{height:3px;width:3px}
 ::-webkit-scrollbar-track{background:transparent}
 ::-webkit-scrollbar-thumb{background:rgba(115,57,96,0.4);border-radius:2px}
@@ -30,26 +21,48 @@ input::placeholder{color:#8A6080!important;opacity:1}
 <script type="text/babel">
 const {useState,useRef,useEffect,useCallback} = React;
 
-const C={
-  bg:"#0D0610",bgMid:"#180B1E",dark:"#0D0618",darkMid:"#461D34",
-  accent:"#733960",accentLt:"#B16AA2",detail:"#C4789A",orchid:"#C6B6CD",moonPrl:"#F7EDF1",
-  txt:"#F7EDF1",txtSec:"#E8D4E0",txtMuted:"#C4A0B8",txtFaded:"#8A6080",txtHint:"#9A7090",
-  border:"rgba(179,106,162,0.18)",borderBr:"rgba(179,106,162,0.32)",shadow:"rgba(36,10,25,0.6)",card:"rgba(24,11,30,0.72)",
+/* ── THEME DEFINITIONS ── */
+const DARK = {
+  name:"dark",
+  bg:"#0D0610", card:"rgba(24,11,30,0.82)", surface:"rgba(255,255,255,0.05)",
+  accent:"#733960", accentLt:"#B16AA2", detail:"#C4789A", orchid:"#C6B6CD",
+  txt:"#F7EDF1", txtSec:"#E8D4E0", txtMuted:"#C4A0B8", txtFaded:"#8A6080", txtHint:"#9A7090",
+  border:"rgba(179,106,162,0.18)", borderBr:"rgba(179,106,162,0.32)",
+  shadow:"rgba(36,10,25,0.6)", inputBg:"rgba(13,6,16,0.5)", inputFocus:"rgba(30,10,35,0.7)",
+  navBg:"rgba(13,6,16,0.90)", heroBg:"rgba(13,6,16,0.55)", overlayBg:"rgba(13,6,16,0.68)",
+  affBg:"rgba(115,57,96,0.2)", saveBarBg:"rgba(115,57,96,0.12)", footerBg:"rgba(13,6,16,0.7)",
+  winBg:"rgba(115,57,96,0.2)", histBg:"rgba(18,8,24,0.97)", histCard:"rgba(24,11,30,0.8)",
+  starsOpacity:0.3,
 };
-const AG="linear-gradient(135deg,#733960,#461D34)";
-const AG2="linear-gradient(135deg,#B16AA2,#733960)";
-const GLOW="radial-gradient(ellipse at 55% 60%,rgba(200,60,120,0.18),transparent 60%)";
-const STARS="radial-gradient(1px 1px at 20% 30%,rgba(247,237,241,0.5),transparent),radial-gradient(1px 1px at 60% 15%,rgba(247,237,241,0.4),transparent),radial-gradient(1.5px 1.5px at 80% 60%,rgba(247,237,241,0.45),transparent),radial-gradient(1px 1px at 40% 80%,rgba(247,237,241,0.35),transparent),radial-gradient(1px 1px at 10% 70%,rgba(247,237,241,0.4),transparent),radial-gradient(1.5px 1.5px at 90% 25%,rgba(247,237,241,0.5),transparent)";
-const BG_IMAGE="https://raw.githubusercontent.com/badassalchemy/imageassets/main/dark%20nebula%20baxckground.jpg";
+const LIGHT = {
+  name:"light",
+  bg:"#F9F4FF", card:"rgba(255,255,255,0.92)", surface:"rgba(115,57,96,0.04)",
+  accent:"#733960", accentLt:"#9B4E7A", detail:"#B16AA2", orchid:"#7A3A6A",
+  txt:"#1A0628", txtSec:"#3D1A50", txtMuted:"#6B3080", txtFaded:"#9A6AAA", txtHint:"#8A5A98",
+  border:"rgba(115,57,96,0.15)", borderBr:"rgba(115,57,96,0.28)",
+  shadow:"rgba(115,57,96,0.08)", inputBg:"rgba(255,255,255,0.9)", inputFocus:"rgba(255,255,255,1)",
+  navBg:"rgba(249,244,255,0.96)", heroBg:"rgba(249,244,255,0.88)", overlayBg:"rgba(20,5,35,0.45)",
+  affBg:"rgba(115,57,96,0.08)", saveBarBg:"rgba(115,57,96,0.06)", footerBg:"rgba(245,238,255,0.95)",
+  winBg:"rgba(115,57,96,0.08)", histBg:"rgba(249,244,255,0.99)", histCard:"rgba(255,255,255,0.9)",
+  starsOpacity:0,
+};
+
+const AG  = "linear-gradient(135deg,#733960,#461D34)";
+const AG2 = "linear-gradient(135deg,#B16AA2,#733960)";
+const GLOW  = "radial-gradient(ellipse at 55% 60%,rgba(200,60,120,0.18),transparent 60%)";
+const STARS = "radial-gradient(1px 1px at 20% 30%,rgba(247,237,241,0.5),transparent),radial-gradient(1px 1px at 60% 15%,rgba(247,237,241,0.4),transparent),radial-gradient(1.5px 1.5px at 80% 60%,rgba(247,237,241,0.45),transparent),radial-gradient(1px 1px at 40% 80%,rgba(247,237,241,0.35),transparent),radial-gradient(1px 1px at 10% 70%,rgba(247,237,241,0.4),transparent),radial-gradient(1.5px 1.5px at 90% 25%,rgba(247,237,241,0.5),transparent)";
+const BG_IMAGE = "https://raw.githubusercontent.com/badassalchemy/imageassets/main/dark%20nebula%20baxckground.jpg";
 
 /* ── STORAGE ── */
 const todayKey=()=>new Date().toISOString().slice(0,10);
 const db={
   saveEntry:(tab,date,data)=>{try{const all=JSON.parse(localStorage.getItem("ba_entries_"+tab)||"{}");all[date]={...data,savedAt:new Date().toISOString()};localStorage.setItem("ba_entries_"+tab,JSON.stringify(all));}catch(e){}},
   loadEntry:(tab,date)=>{try{const all=JSON.parse(localStorage.getItem("ba_entries_"+tab)||"{}");return all[date]||null;}catch(e){return null;}},
-  getDates:(tab)=>{try{const all=JSON.parse(localStorage.getItem("ba_entries_"+tab)||"{}");return Object.keys(all).sort((a,b)=>b.localeCompare(a));}catch(e){return [];}},
+  getDates:(tab)=>{try{const all=JSON.parse(localStorage.getItem("ba_entries_"+tab)||"{}");return Object.keys(all).sort((a,b)=>b.localeCompare(a));}catch(e){return[];}},
   getStreak:()=>({streak:JSON.parse(localStorage.getItem("ba_streak")||"0"),lastDate:localStorage.getItem("ba_lastDate")||"",total:JSON.parse(localStorage.getItem("ba_total")||"0")}),
   saveStreak:(s,d,t)=>{localStorage.setItem("ba_streak",s);localStorage.setItem("ba_lastDate",d);localStorage.setItem("ba_total",t);},
+  getTheme:()=>localStorage.getItem("ba_theme")||"dark",
+  saveTheme:(t)=>localStorage.setItem("ba_theme",t),
 };
 
 function useStreak(){
@@ -81,55 +94,81 @@ function useAutoSave(tab,date,data){
 }
 
 /* ── UI PRIMITIVES ── */
-const cardSt=(extra={})=>({background:C.card,borderRadius:16,border:`1px solid ${C.border}`,boxShadow:`0 8px 32px ${C.shadow}`,backdropFilter:"blur(16px)",WebkitBackdropFilter:"blur(16px)",padding:"22px 20px",marginBottom:14,position:"relative",overflow:"hidden",...extra});
-const CardStars=()=>React.createElement("div",{style:{position:"absolute",inset:0,backgroundImage:STARS,opacity:0.2,pointerEvents:"none"}});
-const OL=({children,color})=>React.createElement("div",{style:{fontFamily:"'Montserrat',sans-serif",fontSize:9,fontWeight:700,letterSpacing:1.5,color:color||C.accentLt,textTransform:"uppercase",marginBottom:10}},children);
+const cardSt=(T,extra={})=>({
+  background:T.card,borderRadius:16,border:`1px solid ${T.border}`,
+  boxShadow:`0 8px 32px ${T.shadow}`,backdropFilter:"blur(16px)",
+  WebkitBackdropFilter:"blur(16px)",padding:"22px 20px",marginBottom:14,
+  position:"relative",overflow:"hidden",...extra,
+});
+const CardStars=({T})=>T.name==="dark"?React.createElement("div",{style:{position:"absolute",inset:0,backgroundImage:STARS,opacity:0.2,pointerEvents:"none"}}):null;
+const OL=({children,color,T})=>React.createElement("div",{style:{fontFamily:"'Montserrat',sans-serif",fontSize:9,fontWeight:700,letterSpacing:1.5,color:color||T.accentLt,textTransform:"uppercase",marginBottom:10}},children);
 
-function Pill({children,onClick,active,small}){
-  return React.createElement("button",{onClick,style:{background:active?AG:"rgba(115,57,96,0.18)",color:active?C.moonPrl:C.txtMuted,border:`1px solid ${active?"transparent":C.border}`,padding:small?"6px 13px":"11px 26px",borderRadius:50,fontSize:small?11:13,fontWeight:600,cursor:"pointer",fontFamily:"'Montserrat',sans-serif",transition:"all .2s",letterSpacing:.3,whiteSpace:"nowrap"}},children);
+function Pill({children,onClick,active,small,T}){
+  return React.createElement("button",{onClick,style:{
+    background:active?AG:T.name==="dark"?"rgba(115,57,96,0.18)":"rgba(115,57,96,0.08)",
+    color:active?"#fff":T.txtMuted,
+    border:`1px solid ${active?"transparent":T.border}`,
+    padding:small?"6px 13px":"11px 26px",borderRadius:50,fontSize:small?11:13,
+    fontWeight:600,cursor:"pointer",fontFamily:"'Montserrat',sans-serif",
+    transition:"all .2s",letterSpacing:.3,whiteSpace:"nowrap",
+  }},children);
 }
 
-function TA({value,onChange,placeholder,rows=3,hint}){
+function TA({value,onChange,placeholder,rows=3,hint,T}){
   return React.createElement("div",null,
-    hint&&React.createElement("p",{style:{fontFamily:"'Montserrat',sans-serif",fontSize:12,color:C.txtHint,margin:"0 0 8px",lineHeight:1.65,fontStyle:"italic"}},hint),
+    hint&&React.createElement("p",{style:{fontFamily:"'Montserrat',sans-serif",fontSize:12,color:T.txtHint,margin:"0 0 8px",lineHeight:1.65,fontStyle:"italic"}},hint),
     React.createElement("textarea",{value,onChange:e=>onChange(e.target.value),placeholder,rows,
-      style:{width:"100%",padding:"13px 15px",borderRadius:12,border:`1px solid ${C.border}`,background:"rgba(13,6,16,0.5)",fontSize:14,fontFamily:"'Cormorant Garamond',serif",color:C.txt,resize:"vertical",outline:"none",lineHeight:1.8,transition:"border-color .2s"},
-      onFocus:e=>{e.target.style.borderColor=C.accentLt;e.target.style.background="rgba(30,10,35,0.7)";},
-      onBlur:e=>{e.target.style.borderColor=C.border;e.target.style.background="rgba(13,6,16,0.5)";}})
+      style:{width:"100%",padding:"13px 15px",borderRadius:12,border:`1px solid ${T.border}`,
+        background:T.inputBg,fontSize:14,fontFamily:"'Cormorant Garamond',serif",
+        color:T.txt,resize:"vertical",outline:"none",lineHeight:1.8,transition:"border-color .2s"},
+      onFocus:e=>{e.target.style.borderColor=T.accentLt;e.target.style.background=T.inputFocus;},
+      onBlur:e=>{e.target.style.borderColor=T.border;e.target.style.background=T.inputBg;}})
   );
 }
 
-function SCard({title,emoji,children,glow}){
-  return React.createElement("div",{style:cardSt({boxShadow:glow?`0 4px 40px rgba(177,106,162,0.25),0 2px 16px ${C.shadow}`:`0 8px 32px ${C.shadow}`})},
-    React.createElement(CardStars),
+function SCard({title,emoji,children,glow,T}){
+  return React.createElement("div",{style:cardSt(T,{boxShadow:glow?`0 4px 40px rgba(177,106,162,0.2),0 2px 16px ${T.shadow}`:`0 8px 32px ${T.shadow}`})},
+    React.createElement(CardStars,{T}),
     React.createElement("div",{style:{position:"relative"}},
       title&&React.createElement("div",{style:{display:"flex",alignItems:"center",gap:8,marginBottom:16}},
         emoji&&React.createElement("span",{style:{fontSize:17}},emoji),
-        React.createElement(OL,null,title)
+        React.createElement(OL,{T},title)
       ),
       children
     )
   );
 }
 
+/* ── THEME TOGGLE ── */
+function ThemeToggle({theme,setTheme}){
+  const isDark=theme==="dark";
+  return React.createElement("button",{
+    onClick:()=>{const n=isDark?"light":"dark";setTheme(n);db.saveTheme(n);},
+    style:{background:isDark?"rgba(255,255,255,0.08)":"rgba(115,57,96,0.1)",border:`1px solid ${isDark?"rgba(255,255,255,0.15)":"rgba(115,57,96,0.2)"}`,borderRadius:50,padding:"6px 12px",cursor:"pointer",display:"flex",alignItems:"center",gap:6,fontFamily:"'Montserrat',sans-serif",fontSize:11,fontWeight:700,color:isDark?"#E8D4E0":"#733960",transition:"all .3s"},
+  },
+    React.createElement("span",{style:{fontSize:14}},isDark?"☀️":"🌙"),
+    React.createElement("span",null,isDark?"Light":"Dark")
+  );
+}
+
 /* ── SAVE BAR ── */
-function SaveBar({savedAt,viewingDate,isToday}){
+function SaveBar({savedAt,viewingDate,isToday,T}){
   const fmt=d=>d?new Date(d).toLocaleTimeString([],{hour:"2-digit",minute:"2-digit"}):"";
-  return React.createElement("div",{style:{display:"flex",alignItems:"center",justifyContent:"space-between",padding:"8px 14px",background:"rgba(115,57,96,0.12)",borderRadius:12,marginBottom:14,border:`1px solid ${C.border}`,flexWrap:"wrap",gap:8}},
+  return React.createElement("div",{style:{display:"flex",alignItems:"center",justifyContent:"space-between",padding:"8px 14px",background:T.saveBarBg,borderRadius:12,marginBottom:14,border:`1px solid ${T.border}`,flexWrap:"wrap",gap:8}},
     React.createElement("div",{style:{display:"flex",alignItems:"center",gap:8}},
-      React.createElement("span",{style:{fontSize:12}},"✦"),
-      React.createElement("span",{style:{fontFamily:"'Montserrat',sans-serif",fontSize:11,color:C.txtMuted}},
+      React.createElement("span",{style:{fontSize:12,color:T.accentLt}},"✦"),
+      React.createElement("span",{style:{fontFamily:"'Montserrat',sans-serif",fontSize:11,color:T.txtMuted}},
         isToday?(savedAt?`Auto-saved at ${fmt(savedAt)}`:"Auto-saving as you type..."):`Viewing entry from ${viewingDate}`
       )
     ),
-    React.createElement("span",{style:{fontFamily:"'Montserrat',sans-serif",fontSize:10,color:C.txtFaded,fontStyle:"italic"}},
+    React.createElement("span",{style:{fontFamily:"'Montserrat',sans-serif",fontSize:10,color:T.txtFaded,fontStyle:"italic"}},
       isToday?"Saved on this device":"Read-only — switch to Today to write"
     )
   );
 }
 
 /* ── HISTORY DRAWER ── */
-function HistoryDrawer({tab,currentDate,onSelect,onClose}){
+function HistoryDrawer({tab,currentDate,onSelect,onClose,T}){
   const dates=db.getDates(tab);
   const fmtDate=d=>{
     const dt=new Date(d+"T12:00:00");
@@ -146,29 +185,29 @@ function HistoryDrawer({tab,currentDate,onSelect,onClose}){
     return(fields[0]||"").slice(0,80)+"...";
   };
   return React.createElement("div",{style:{position:"fixed",inset:0,zIndex:500,display:"flex",justifyContent:"flex-end"}},
-    React.createElement("div",{onClick:onClose,style:{position:"absolute",inset:0,background:"rgba(0,0,0,0.6)",backdropFilter:"blur(4px)"}}),
-    React.createElement("div",{style:{position:"relative",width:"min(360px,95vw)",height:"100%",background:"rgba(18,8,24,0.97)",borderLeft:`1px solid ${C.border}`,overflowY:"auto",display:"flex",flexDirection:"column"}},
-      React.createElement("div",{style:{padding:"20px 20px 16px",position:"sticky",top:0,background:"rgba(18,8,24,0.97)",zIndex:10,borderBottom:`1px solid ${C.border}`}},
+    React.createElement("div",{onClick:onClose,style:{position:"absolute",inset:0,background:"rgba(0,0,0,0.5)",backdropFilter:"blur(4px)"}}),
+    React.createElement("div",{style:{position:"relative",width:"min(360px,95vw)",height:"100%",background:T.histBg,borderLeft:`1px solid ${T.border}`,overflowY:"auto",display:"flex",flexDirection:"column"}},
+      React.createElement("div",{style:{padding:"20px 20px 16px",position:"sticky",top:0,background:T.histBg,zIndex:10,borderBottom:`1px solid ${T.border}`}},
         React.createElement("div",{style:{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:4}},
-          React.createElement("div",{style:{fontFamily:"'Cormorant Garamond',serif",fontSize:20,fontWeight:700,color:C.txt}},"Past Entries"),
-          React.createElement("button",{onClick:onClose,style:{background:"none",border:"none",color:C.txtFaded,cursor:"pointer",fontSize:20,lineHeight:1}},"×")
+          React.createElement("div",{style:{fontFamily:"'Cormorant Garamond',serif",fontSize:20,fontWeight:700,color:T.txt}},"Past Entries"),
+          React.createElement("button",{onClick:onClose,style:{background:"none",border:"none",color:T.txtFaded,cursor:"pointer",fontSize:20,lineHeight:1}},"×")
         ),
-        React.createElement("div",{style:{fontFamily:"'Montserrat',sans-serif",fontSize:11,color:C.txtFaded}},`${dates.length} entries saved on this device`)
+        React.createElement("div",{style:{fontFamily:"'Montserrat',sans-serif",fontSize:11,color:T.txtFaded}},`${dates.length} entries saved on this device`)
       ),
       React.createElement("div",{style:{padding:"16px 20px",flex:1}},
         dates.length===0&&React.createElement("div",{style:{textAlign:"center",padding:"40px 0"}},
-          React.createElement("p",{style:{fontFamily:"'Cormorant Garamond',serif",fontSize:16,fontStyle:"italic",color:C.txtFaded}},"No past entries yet."),
-          React.createElement("p",{style:{fontFamily:"'Montserrat',sans-serif",fontSize:12,color:C.txtFaded,marginTop:8}},"Start writing — your entries will appear here.")
+          React.createElement("p",{style:{fontFamily:"'Cormorant Garamond',serif",fontSize:16,fontStyle:"italic",color:T.txtFaded}},"No past entries yet."),
+          React.createElement("p",{style:{fontFamily:"'Montserrat',sans-serif",fontSize:12,color:T.txtFaded,marginTop:8}},"Start writing — your entries will appear here.")
         ),
         dates.map(date=>React.createElement("div",{key:date,onClick:()=>{onSelect(date);onClose();},
           style:{padding:"14px 16px",borderRadius:14,marginBottom:10,cursor:"pointer",
-            background:date===currentDate?"rgba(115,57,96,0.25)":"rgba(24,11,30,0.8)",
-            border:`1px solid ${date===currentDate?C.borderBr:C.border}`,transition:"all .2s"}},
+            background:date===currentDate?`rgba(115,57,96,0.18)`:T.histCard,
+            border:`1px solid ${date===currentDate?T.borderBr:T.border}`,transition:"all .2s"}},
           React.createElement("div",{style:{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:6}},
-            React.createElement("span",{style:{fontFamily:"'Montserrat',sans-serif",fontSize:12,fontWeight:700,color:date===currentDate?C.accentLt:C.txtMuted}},fmtDate(date)),
-            date===todayKey()&&React.createElement("span",{style:{fontFamily:"'Montserrat',sans-serif",fontSize:9,fontWeight:700,letterSpacing:1,color:C.accentLt,background:"rgba(115,57,96,0.25)",padding:"2px 8px",borderRadius:50}},"TODAY")
+            React.createElement("span",{style:{fontFamily:"'Montserrat',sans-serif",fontSize:12,fontWeight:700,color:date===currentDate?T.accentLt:T.txtMuted}},fmtDate(date)),
+            date===todayKey()&&React.createElement("span",{style:{fontFamily:"'Montserrat',sans-serif",fontSize:9,fontWeight:700,letterSpacing:1,color:T.accentLt,background:"rgba(115,57,96,0.15)",padding:"2px 8px",borderRadius:50}},"TODAY")
           ),
-          React.createElement("p",{style:{fontFamily:"'Cormorant Garamond',serif",fontSize:13,fontStyle:"italic",color:C.txtFaded,margin:0,lineHeight:1.6}},preview(tab,date))
+          React.createElement("p",{style:{fontFamily:"'Cormorant Garamond',serif",fontSize:13,fontStyle:"italic",color:T.txtFaded,margin:0,lineHeight:1.6}},preview(tab,date))
         ))
       )
     )
@@ -178,78 +217,84 @@ function HistoryDrawer({tab,currentDate,onSelect,onClose}){
 /* ── AFFIRMATION BAR ── */
 const AFFIRMATIONS=["I am magnetic. The right clients, money, and opportunities find me with ease.","My self-trust is my most powerful business asset.","I release scarcity and step into the identity of a woman who receives abundantly.","I am building an empire that is an extension of my soul.","Money flows to me consistently because I show up as my highest self.","I am allowed to want more — and I am allowed to have it.","The version of me who has everything I desire already exists. I am becoming her now.","I decentered everyone else's opinion the moment I chose to trust myself.","My nervous system is regulated. My income is consistent. My life is my design.","I am not chasing. I am calling in.","Every boundary I hold is a declaration of my self-worth.","I am the woman in the room who knows her value and names her price.","Visibility is safe. Being seen is my superpower.","I did not come this far to shrink. I came here to build an empire.","I receive. I trust. I become.","The Baddie Building an Empire does not wait for permission. She moves.","Today I choose to be the evidence that it is possible.","I am not too much. I am exactly enough — and then some.","Scarcity had its turn. Abundance is my new normal.","The empire I am building will outlast every doubt I ever had.","My income is a reflection of how deeply I trust myself.","I attract soul-aligned clients who are ready and who pay in full.","I am not starting over. I am leveling up.","Every day I show up is a vote for the woman I am becoming.","I release the need for outside permission. I am my own authority.","I script my future and I act like it is already done.","I am a woman who finishes what she starts — with grace and with fire.","My community needs the version of me that says yes to herself.","I help women release scarcity and build consistent income — and I lead by example.","I am in full alignment — my energy, my offers, and my income match my worth.","She is already inside you. Stop waiting for permission to become her."];
 
-function AffirmationBar(){
+function AffirmationBar({T}){
   const idx=Math.floor(Date.now()/86400000)%AFFIRMATIONS.length;
   const [v,setV]=useState(true);
   if(!v)return null;
-  return React.createElement("div",{style:{position:"relative",background:"rgba(115,57,96,0.2)",borderBottom:`1px solid ${C.border}`,padding:"13px 44px 13px 20px",textAlign:"center",backdropFilter:"blur(10px)"}},
-    React.createElement("div",{style:{position:"absolute",inset:0,backgroundImage:STARS,opacity:0.2,pointerEvents:"none"}}),
-    React.createElement("p",{style:{fontFamily:"'Cormorant Garamond',serif",fontSize:15,fontStyle:"italic",color:C.accentLt,margin:0,lineHeight:1.6,position:"relative"}},
-      React.createElement("span",{style:{color:C.detail,marginRight:8,fontSize:11,fontFamily:"'Montserrat',sans-serif",letterSpacing:1.5,fontStyle:"normal"}},"✦ TODAY"),
+  return React.createElement("div",{style:{position:"relative",background:T.affBg,borderBottom:`1px solid ${T.border}`,padding:"13px 44px 13px 20px",textAlign:"center",backdropFilter:"blur(10px)"}},
+    T.name==="dark"&&React.createElement("div",{style:{position:"absolute",inset:0,backgroundImage:STARS,opacity:0.15,pointerEvents:"none"}}),
+    React.createElement("p",{style:{fontFamily:"'Cormorant Garamond',serif",fontSize:15,fontStyle:"italic",color:T.accentLt,margin:0,lineHeight:1.6,position:"relative"}},
+      React.createElement("span",{style:{color:T.detail,marginRight:8,fontSize:11,fontFamily:"'Montserrat',sans-serif",letterSpacing:1.5,fontStyle:"normal"}},"✦ TODAY"),
       AFFIRMATIONS[idx]
     ),
-    React.createElement("button",{onClick:()=>setV(false),style:{position:"absolute",right:12,top:"50%",transform:"translateY(-50%)",background:"none",border:"none",color:C.txtFaded,cursor:"pointer",fontSize:18}},"×")
+    React.createElement("button",{onClick:()=>setV(false),style:{position:"absolute",right:12,top:"50%",transform:"translateY(-50%)",background:"none",border:"none",color:T.txtFaded,cursor:"pointer",fontSize:18}},"×")
   );
 }
 
 /* ── STREAK WIDGET ── */
-function StreakWidget({streak,total,doneToday,markToday}){
+function StreakWidget({streak,total,doneToday,markToday,T}){
   const days=["M","T","W","T","F","S","S"];
   const todayDow=(new Date().getDay()+6)%7;
-  return React.createElement("div",{style:cardSt({background:"rgba(115,57,96,0.15)",border:`1px solid ${C.borderBr}`,marginBottom:20})},
-    React.createElement(CardStars),
+  return React.createElement("div",{style:cardSt(T,{background:T.name==="dark"?"rgba(115,57,96,0.15)":"rgba(115,57,96,0.06)",border:`1px solid ${T.borderBr}`,marginBottom:20})},
+    React.createElement(CardStars,{T}),
     React.createElement("div",{style:{position:"relative"}},
       React.createElement("div",{style:{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:16,flexWrap:"wrap",gap:10}},
         React.createElement("div",null,
-          React.createElement(OL,{color:C.accentLt},"Your Practice Streak"),
+          React.createElement(OL,{color:T.accentLt,T},"Your Practice Streak"),
           React.createElement("div",{style:{display:"flex",alignItems:"baseline",gap:10}},
             React.createElement("span",{style:{fontFamily:"'Cormorant Garamond',serif",fontSize:48,fontWeight:700,background:AG2,WebkitBackgroundClip:"text",WebkitTextFillColor:"transparent",lineHeight:1}},streak),
-            React.createElement("span",{style:{fontFamily:"'Montserrat',sans-serif",fontSize:12,color:C.txtMuted}},`day${streak!==1?"s":""} in a row`)
+            React.createElement("span",{style:{fontFamily:"'Montserrat',sans-serif",fontSize:12,color:T.txtMuted}},`day${streak!==1?"s":""} in a row`)
           )
         ),
         React.createElement("div",{style:{textAlign:"right"}},
-          React.createElement("div",{style:{fontFamily:"'Montserrat',sans-serif",fontSize:11,color:C.txtFaded,marginBottom:4}},"Total sessions"),
-          React.createElement("div",{style:{fontFamily:"'Cormorant Garamond',serif",fontSize:32,fontWeight:700,color:C.accentLt,lineHeight:1}},total)
+          React.createElement("div",{style:{fontFamily:"'Montserrat',sans-serif",fontSize:11,color:T.txtFaded,marginBottom:4}},"Total sessions"),
+          React.createElement("div",{style:{fontFamily:"'Cormorant Garamond',serif",fontSize:32,fontWeight:700,color:T.accentLt,lineHeight:1}},total)
         )
       ),
       React.createElement("div",{style:{display:"flex",gap:6,marginBottom:16}},
         days.map((d,i)=>React.createElement("div",{key:i,style:{flex:1,textAlign:"center"}},
-          React.createElement("div",{style:{fontFamily:"'Montserrat',sans-serif",fontSize:9,color:C.txtFaded,marginBottom:5,fontWeight:700}},d),
+          React.createElement("div",{style:{fontFamily:"'Montserrat',sans-serif",fontSize:9,color:T.txtFaded,marginBottom:5,fontWeight:700}},d),
           React.createElement("div",{style:{width:"100%",paddingBottom:"100%",borderRadius:"50%",position:"relative"}},
-            React.createElement("div",{style:{position:"absolute",inset:0,borderRadius:"50%",background:i===todayDow?(doneToday?AG:"rgba(115,57,96,0.2)"):i<todayDow?"rgba(115,57,96,0.4)":"rgba(247,237,241,0.04)",border:i===todayDow?`1.5px solid ${C.accentLt}`:`1px solid ${C.border}`,display:"flex",alignItems:"center",justifyContent:"center"}},
-              (i<todayDow||(i===todayDow&&doneToday))&&React.createElement("span",{style:{position:"absolute",top:"50%",left:"50%",transform:"translate(-50%,-50%)",fontSize:9,color:i===todayDow?C.moonPrl:C.accentLt}},"✦")
+            React.createElement("div",{style:{position:"absolute",inset:0,borderRadius:"50%",
+              background:i===todayDow?(doneToday?AG:"rgba(115,57,96,0.12)"):i<todayDow?"rgba(115,57,96,0.3)":"rgba(115,57,96,0.06)",
+              border:i===todayDow?`1.5px solid ${T.accentLt}`:`1px solid ${T.border}`,display:"flex",alignItems:"center",justifyContent:"center"}},
+              (i<todayDow||(i===todayDow&&doneToday))&&React.createElement("span",{style:{position:"absolute",top:"50%",left:"50%",transform:"translate(-50%,-50%)",fontSize:9,color:i===todayDow?"#fff":T.accentLt}},"✦")
             )
           )
         ))
       ),
       !doneToday
-        ?React.createElement("button",{onClick:markToday,style:{width:"100%",background:AG,color:C.moonPrl,border:"none",borderRadius:50,padding:"13px",fontFamily:"'Montserrat',sans-serif",fontWeight:700,fontSize:13,cursor:"pointer",letterSpacing:.5,boxShadow:"0 6px 24px rgba(115,57,96,0.4)"}},"✦ Mark Today as Complete")
-        :React.createElement("div",{style:{textAlign:"center",padding:"10px",fontFamily:"'Cormorant Garamond',serif",fontSize:17,fontStyle:"italic",color:C.accentLt}},"You showed up today. She is proud of you. 🤍")
+        ?React.createElement("button",{onClick:markToday,style:{width:"100%",background:AG,color:"#fff",border:"none",borderRadius:50,padding:"13px",fontFamily:"'Montserrat',sans-serif",fontWeight:700,fontSize:13,cursor:"pointer",letterSpacing:.5,boxShadow:"0 6px 24px rgba(115,57,96,0.3)"}},"✦ Mark Today as Complete")
+        :React.createElement("div",{style:{textAlign:"center",padding:"10px",fontFamily:"'Cormorant Garamond',serif",fontSize:17,fontStyle:"italic",color:T.accentLt}},"You showed up today. She is proud of you. 🤍")
     )
   );
 }
 
 /* ── COVER ── */
-function Cover({onStart}){
-  return React.createElement("div",{style:{minHeight:"100vh",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",textAlign:"center",padding:"48px 24px",backgroundImage:`url('${BG_IMAGE}')`,backgroundSize:"cover",backgroundPosition:"center",backgroundAttachment:"fixed",position:"relative",overflow:"hidden"}},
-    React.createElement("div",{style:{position:"absolute",inset:0,background:"rgba(13,6,16,0.62)",pointerEvents:"none"}}),
-    React.createElement("div",{style:{position:"absolute",inset:0,background:GLOW,pointerEvents:"none"}}),
-    React.createElement("div",{style:{position:"absolute",inset:0,backgroundImage:STARS,opacity:0.4,pointerEvents:"none"}}),
+function Cover({onStart,theme,setTheme}){
+  const isDark=theme==="dark";
+  return React.createElement("div",{style:{minHeight:"100vh",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",textAlign:"center",padding:"48px 24px",
+    backgroundImage:isDark?`url('${BG_IMAGE}')`:"none",
+    background:isDark?undefined:"linear-gradient(160deg,#F9F4FF 0%,#F0E6FA 40%,#FAE8F4 100%)",
+    backgroundSize:"cover",backgroundPosition:"center",backgroundAttachment:"fixed",position:"relative",overflow:"hidden"}},
+    isDark&&React.createElement("div",{style:{position:"absolute",inset:0,background:"rgba(13,6,16,0.62)",pointerEvents:"none"}}),
+    isDark&&React.createElement("div",{style:{position:"absolute",inset:0,background:GLOW,pointerEvents:"none"}}),
+    isDark&&React.createElement("div",{style:{position:"absolute",inset:0,backgroundImage:STARS,opacity:0.4,pointerEvents:"none"}}),
+    React.createElement("div",{style:{position:"absolute",top:16,right:16}},
+      React.createElement(ThemeToggle,{theme,setTheme})
+    ),
     React.createElement("div",{style:{position:"relative",maxWidth:560}},
-      React.createElement("div",{style:{fontFamily:"'Cormorant Garamond',serif",fontSize:14,fontStyle:"italic",color:C.detail,marginBottom:10,letterSpacing:1}},"Badass Alchemy"),
-      React.createElement("h1",{style:{fontFamily:"'Cormorant Garamond',serif",fontSize:"clamp(34px,6vw,56px)",fontWeight:700,lineHeight:1.08,margin:"0 0 8px",color:C.txt}},"Manifestation",React.createElement("br"),React.createElement("em",{style:{color:C.accentLt,fontStyle:"italic",fontWeight:400}},"Journal")),
-      React.createElement("p",{style:{fontFamily:"'Cormorant Garamond',serif",fontSize:"clamp(16px,3vw,22px)",fontStyle:"italic",margin:"0 0 6px",color:C.orchid}},"for the Baddie Building an Empire"),
-      React.createElement("div",{style:{width:48,height:1,background:AG2,margin:"20px auto 26px",borderRadius:2}}),
-      React.createElement("div",{style:{background:"rgba(13,6,16,0.65)",backdropFilter:"blur(20px)",borderRadius:20,padding:"26px 30px",margin:"0 auto 36px",border:`1px solid ${C.border}`,position:"relative",overflow:"hidden"}},
-        React.createElement(CardStars),
-        React.createElement("div",{style:{position:"relative"}},
-          React.createElement("p",{style:{fontFamily:"'Montserrat',sans-serif",fontSize:15,lineHeight:1.75,color:C.txtSec,fontWeight:500,margin:"0 0 12px"}},"Script your future. Regulate your energy. Build your empire — 10 minutes a day."),
-          React.createElement("div",{style:{width:32,height:1,background:AG2,margin:"0 auto 12px"}}),
-          React.createElement("p",{style:{fontFamily:"'Montserrat',sans-serif",fontSize:13,lineHeight:1.75,color:C.txtMuted,margin:0}},"Your entries save automatically. Come back any day and pick up where you left off.")
-        )
+      React.createElement("div",{style:{fontFamily:"'Cormorant Garamond',serif",fontSize:14,fontStyle:"italic",color:isDark?"#C4789A":"#9B4E7A",marginBottom:10,letterSpacing:1}},"Badass Alchemy"),
+      React.createElement("h1",{style:{fontFamily:"'Cormorant Garamond',serif",fontSize:"clamp(34px,6vw,56px)",fontWeight:700,lineHeight:1.08,margin:"0 0 8px",color:isDark?"#F7EDF1":"#1A0628"}},"Manifestation",React.createElement("br"),React.createElement("em",{style:{background:AG2,WebkitBackgroundClip:"text",WebkitTextFillColor:"transparent",fontStyle:"italic",fontWeight:400}},"Journal")),
+      React.createElement("p",{style:{fontFamily:"'Cormorant Garamond',serif",fontSize:"clamp(16px,3vw,22px)",fontStyle:"italic",margin:"0 0 6px",color:isDark?"#C6B6CD":"#7A3A6A"}},"for the Baddie Building an Empire"),
+      React.createElement("div",{style:{width:48,height:1.5,background:AG2,margin:"20px auto 26px",borderRadius:2}}),
+      React.createElement("div",{style:{background:isDark?"rgba(13,6,16,0.65)":"rgba(255,255,255,0.85)",backdropFilter:"blur(20px)",borderRadius:20,padding:"26px 30px",margin:"0 auto 36px",border:`1px solid ${isDark?"rgba(179,106,162,0.18)":"rgba(115,57,96,0.12)"}`}},
+        React.createElement("p",{style:{fontFamily:"'Montserrat',sans-serif",fontSize:15,lineHeight:1.75,color:isDark?"#E8D4E0":"#3D1A50",fontWeight:500,margin:"0 0 12px"}},"Script your future. Regulate your energy. Build your empire — 10 minutes a day."),
+        React.createElement("div",{style:{width:32,height:1,background:AG2,margin:"0 auto 12px"}}),
+        React.createElement("p",{style:{fontFamily:"'Montserrat',sans-serif",fontSize:13,lineHeight:1.75,color:isDark?"#C4A0B8":"#6B3080",margin:0}},"Your entries save automatically. Come back any day and pick up where you left off.")
       ),
-      React.createElement("button",{onClick:onStart,style:{fontFamily:"'Montserrat',sans-serif",fontSize:14,fontWeight:700,letterSpacing:1,color:C.moonPrl,background:AG,padding:"14px 40px",borderRadius:50,border:"none",cursor:"pointer",boxShadow:"0 10px 40px rgba(115,57,96,0.45)"}},"✦  Begin Your Practice"),
-      React.createElement("p",{style:{fontFamily:"'Montserrat',sans-serif",fontSize:10,color:C.txtFaded,marginTop:18,letterSpacing:"0.08em"}},"SOUL + STRATEGY · AUTO-SAVED · 5-10 MINUTES DAILY")
+      React.createElement("button",{onClick:onStart,style:{fontFamily:"'Montserrat',sans-serif",fontSize:14,fontWeight:700,letterSpacing:1,color:"#fff",background:AG,padding:"14px 40px",borderRadius:50,border:"none",cursor:"pointer",boxShadow:"0 10px 40px rgba(115,57,96,0.35)"}},"✦  Begin Your Practice"),
+      React.createElement("p",{style:{fontFamily:"'Montserrat',sans-serif",fontSize:10,color:isDark?"#8A6080":"#9A6AAA",marginTop:18,letterSpacing:"0.08em"}},"SOUL + STRATEGY · AUTO-SAVED · 5-10 MINUTES DAILY")
     )
   );
 }
@@ -258,7 +303,7 @@ function Cover({onStart}){
 const MOODS=["✨ Expansive","🌸 Soft","🔥 Fired Up","🌊 Flowing","😤 Frustrated","😰 Anxious","🌙 Reflective","💫 Magnetic","🥱 Low Energy","🦋 Transforming"];
 const CHAKRAS=[{name:"Root",emoji:"🔴",theme:"Safety & Foundation"},{name:"Sacral",emoji:"🟠",theme:"Creativity & Flow"},{name:"Solar Plexus",emoji:"🟡",theme:"Power & Confidence"},{name:"Heart",emoji:"💚",theme:"Love & Connection"},{name:"Throat",emoji:"🔵",theme:"Expression & Visibility"},{name:"Third Eye",emoji:"💜",theme:"Intuition & Vision"},{name:"Crown",emoji:"🤍",theme:"Purpose & Surrender"}];
 
-function Daily({markToday,doneToday}){
+function Daily({markToday,doneToday,T}){
   const today=todayKey();
   const [viewDate,setViewDate]=useState(today);
   const [showHistory,setShowHistory]=useState(false);
@@ -273,62 +318,62 @@ function Daily({markToday,doneToday}){
   const fmtView=d=>new Date(d+"T12:00:00").toLocaleDateString("en-US",{weekday:"long",year:"numeric",month:"long",day:"numeric"});
 
   return React.createElement("div",null,
-    showHistory&&React.createElement(HistoryDrawer,{tab:"daily",currentDate:viewDate,onSelect:d=>setViewDate(d),onClose:()=>setShowHistory(false)}),
+    showHistory&&React.createElement(HistoryDrawer,{tab:"daily",currentDate:viewDate,onSelect:d=>setViewDate(d),onClose:()=>setShowHistory(false),T}),
     React.createElement("div",{style:{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:20,flexWrap:"wrap",gap:10}},
       React.createElement("div",null,
-        React.createElement("p",{style:{fontFamily:"'Montserrat',sans-serif",fontSize:11,letterSpacing:"0.1em",color:C.accentLt,fontWeight:700,margin:"0 0 2px",textTransform:"uppercase"}},fmtView(viewDate)),
-        React.createElement("p",{style:{fontFamily:"'Cormorant Garamond',serif",fontSize:13,fontStyle:"italic",color:C.txtFaded,margin:0}},"5-10 minutes · Let this be a ritual")
+        React.createElement("p",{style:{fontFamily:"'Montserrat',sans-serif",fontSize:11,letterSpacing:"0.1em",color:T.accentLt,fontWeight:700,margin:"0 0 2px",textTransform:"uppercase"}},fmtView(viewDate)),
+        React.createElement("p",{style:{fontFamily:"'Cormorant Garamond',serif",fontSize:13,fontStyle:"italic",color:T.txtFaded,margin:0}},"5-10 minutes · Let this be a ritual")
       ),
-      React.createElement("div",{style:{display:"flex",gap:8,alignItems:"center"}},
-        !isToday&&React.createElement("button",{onClick:()=>setViewDate(today),style:{fontFamily:"'Montserrat',sans-serif",fontSize:11,fontWeight:700,color:C.moonPrl,background:AG,border:"none",borderRadius:50,padding:"7px 14px",cursor:"pointer"}},"← Today"),
-        React.createElement("button",{onClick:()=>setShowHistory(true),style:{fontFamily:"'Montserrat',sans-serif",fontSize:11,fontWeight:700,color:C.accentLt,background:"rgba(115,57,96,0.18)",border:`1px solid ${C.border}`,borderRadius:50,padding:"7px 14px",cursor:"pointer"}},"📖 History")
+      React.createElement("div",{style:{display:"flex",gap:8}},
+        !isToday&&React.createElement("button",{onClick:()=>setViewDate(today),style:{fontFamily:"'Montserrat',sans-serif",fontSize:11,fontWeight:700,color:"#fff",background:AG,border:"none",borderRadius:50,padding:"7px 14px",cursor:"pointer"}},"← Today"),
+        React.createElement("button",{onClick:()=>setShowHistory(true),style:{fontFamily:"'Montserrat',sans-serif",fontSize:11,fontWeight:700,color:T.accentLt,background:T.name==="dark"?"rgba(115,57,96,0.18)":"rgba(115,57,96,0.08)",border:`1px solid ${T.border}`,borderRadius:50,padding:"7px 14px",cursor:"pointer"}},"📖 History")
       )
     ),
-    React.createElement(SaveBar,{savedAt,viewingDate:fmtView(viewDate),isToday}),
-    React.createElement("div",{style:cardSt({background:"rgba(115,57,96,0.15)",border:`1px solid ${C.borderBr}`})},
-      React.createElement(CardStars),
+    React.createElement(SaveBar,{savedAt,viewingDate:fmtView(viewDate),isToday,T}),
+    React.createElement("div",{style:cardSt(T,{background:T.name==="dark"?"rgba(115,57,96,0.15)":"rgba(115,57,96,0.05)",border:`1px solid ${T.borderBr}`})},
+      React.createElement(CardStars,{T}),
       React.createElement("div",{style:{position:"relative"}},
-        React.createElement("p",{style:{fontFamily:"'Montserrat',sans-serif",fontSize:13,color:C.txtSec,margin:"0 0 12px",lineHeight:1.7}},"Before you begin: light a candle, pull a card, or take 3 slow deep breaths."),
+        React.createElement("p",{style:{fontFamily:"'Montserrat',sans-serif",fontSize:13,color:T.txtSec,margin:"0 0 12px",lineHeight:1.7}},"Before you begin: light a candle, pull a card, or take 3 slow deep breaths."),
         React.createElement("label",{style:{display:"flex",alignItems:"center",gap:10,cursor:isToday?"pointer":"default"}},
-          React.createElement("input",{type:"checkbox",checked:open,onChange:isToday?()=>setOpen(!open):undefined,disabled:!isToday,style:{accentColor:C.accent,width:17,height:17}}),
-          React.createElement("span",{style:{fontFamily:"'Montserrat',sans-serif",fontSize:14,color:C.txt}},"I have created my sacred space ✦")
+          React.createElement("input",{type:"checkbox",checked:open,onChange:isToday?()=>setOpen(!open):undefined,disabled:!isToday,style:{accentColor:T.accent,width:17,height:17}}),
+          React.createElement("span",{style:{fontFamily:"'Montserrat',sans-serif",fontSize:14,color:T.txt}},"I have created my sacred space ✦")
         )
       )
     ),
-    React.createElement(SCard,{title:"Energetic Check-In",emoji:"🌊"},
+    React.createElement(SCard,{title:"Energetic Check-In",emoji:"🌊",T},
       React.createElement("div",{style:{marginBottom:16}},
-        React.createElement(OL,{color:C.orchid},"How are you arriving today?"),
-        React.createElement("p",{style:{fontFamily:"'Montserrat',sans-serif",fontSize:12,color:C.txtHint,margin:"0 0 10px",fontStyle:"italic"}},"Pick the word that most matches your energy right now."),
-        React.createElement("div",{style:{display:"flex",flexWrap:"wrap",gap:7}},MOODS.map(m=>React.createElement(Pill,{key:m,small:true,active:mood===m,onClick:isToday?()=>setMood(m):undefined},m)))
+        React.createElement(OL,{color:T.orchid,T},"How are you arriving today?"),
+        React.createElement("p",{style:{fontFamily:"'Montserrat',sans-serif",fontSize:12,color:T.txtHint,margin:"0 0 10px",fontStyle:"italic"}},"Pick the word that most matches your energy right now."),
+        React.createElement("div",{style:{display:"flex",flexWrap:"wrap",gap:7}},MOODS.map(m=>React.createElement(Pill,{key:m,small:true,active:mood===m,onClick:isToday?()=>setMood(m):undefined,T},m)))
       ),
-      React.createElement("div",{style:{marginBottom:14}},React.createElement(OL,{color:C.orchid},"Body Sensation"),React.createElement(TA,{value:body,onChange:isToday?setBody:()=>{},rows:2,hint:"Close your eyes. Where are you holding tension? Where do you feel open?",placeholder:"e.g. My chest feels tight. My shoulders are starting to drop..."})),
-      React.createElement("div",{style:{marginBottom:14}},React.createElement(OL,{color:C.orchid},"Dominant Emotion"),React.createElement(TA,{value:emotion,onChange:isToday?setEmotion:()=>{},rows:2,hint:"Just name what is here. Emotions are data, not obstacles.",placeholder:"e.g. I feel quietly excited but there is a layer of fear underneath..."})),
+      React.createElement("div",{style:{marginBottom:14}},React.createElement(OL,{color:T.orchid,T},"Body Sensation"),React.createElement(TA,{value:body,onChange:isToday?setBody:()=>{},rows:2,hint:"Close your eyes. Where are you holding tension? Where do you feel open?",placeholder:"e.g. My chest feels tight. My shoulders are starting to drop...",T})),
+      React.createElement("div",{style:{marginBottom:14}},React.createElement(OL,{color:T.orchid,T},"Dominant Emotion"),React.createElement(TA,{value:emotion,onChange:isToday?setEmotion:()=>{},rows:2,hint:"Just name what is here. Emotions are data, not obstacles.",placeholder:"e.g. I feel quietly excited but there is a layer of fear underneath...",T})),
       React.createElement("div",null,
-        React.createElement(OL,{color:C.orchid},"Chakra / Energy Theme"),
-        React.createElement("div",{style:{display:"flex",flexWrap:"wrap",gap:7}},CHAKRAS.map(c=>React.createElement(Pill,{key:c.name,small:true,active:chakra===c.name,onClick:isToday?()=>setChakra(c.name):undefined},`${c.emoji} ${c.name}`))),
-        chakra&&React.createElement("p",{style:{fontFamily:"'Cormorant Garamond',serif",fontSize:15,fontStyle:"italic",color:C.accentLt,margin:"10px 0 0"}},`Theme: ${CHAKRAS.find(c=>c.name===chakra)?.theme}`)
+        React.createElement(OL,{color:T.orchid,T},"Chakra / Energy Theme"),
+        React.createElement("div",{style:{display:"flex",flexWrap:"wrap",gap:7}},CHAKRAS.map(c=>React.createElement(Pill,{key:c.name,small:true,active:chakra===c.name,onClick:isToday?()=>setChakra(c.name):undefined,T},`${c.emoji} ${c.name}`))),
+        chakra&&React.createElement("p",{style:{fontFamily:"'Cormorant Garamond',serif",fontSize:15,fontStyle:"italic",color:T.accentLt,margin:"10px 0 0"}},`Theme: ${CHAKRAS.find(c=>c.name===chakra)?.theme}`)
       )
     ),
-    React.createElement(SCard,{title:"Present-Tense Manifestation Script",emoji:"✍️"},React.createElement(TA,{value:script,onChange:isToday?setScript:()=>{},rows:6,hint:"Write as if it is already done. 'I am', 'I have', 'I feel' — never 'I want'. Be specific.",placeholder:"e.g. I am fully booked with 8 soul-aligned clients who each pay me $2,000/month with ease..."})),
-    React.createElement(SCard,{title:"Feelings and Embodiment",emoji:"🦋"},React.createElement(TA,{value:feelings,onChange:isToday?setFeelings:()=>{},rows:5,hint:"How does it feel in your body NOW that this is your reality? Go beyond 'good'.",placeholder:"e.g. It feels like warm honey spreading through my chest. My shoulders have dropped..."})),
-    React.createElement(SCard,{title:"One Inspired Action for Today",emoji:"⚡"},React.createElement(TA,{value:action,onChange:isToday?setAction:()=>{},rows:2,hint:"One thing. Tiny and concrete. What does the woman who already has this do today?",placeholder:"e.g. DM three people who engaged with yesterday's post. Hit publish on the reel..."})),
-    React.createElement(SCard,{title:"Intuitive Hits and Spiritual Signs",emoji:"🔮"},React.createElement(TA,{value:intuition,onChange:isToday?setIntuition:()=>{},rows:3,hint:"Card pulls, repeating numbers, dreams — log everything. Breadcrumbs from your highest self.",placeholder:"e.g. Pulled the Star card. Saw 444 at exactly 4:44pm. Had a dream about speaking on stage..."})),
-    isToday&&React.createElement("div",{style:cardSt({background:"rgba(115,57,96,0.15)",border:`1px solid ${C.borderBr}`})},
-      React.createElement(CardStars),
+    React.createElement(SCard,{title:"Present-Tense Manifestation Script",emoji:"✍️",T},React.createElement(TA,{value:script,onChange:isToday?setScript:()=>{},rows:6,hint:"Write as if it is already done. 'I am', 'I have', 'I feel' — never 'I want'. Be specific.",placeholder:"e.g. I am fully booked with 8 soul-aligned clients who each pay me $2,000/month with ease...",T})),
+    React.createElement(SCard,{title:"Feelings and Embodiment",emoji:"🦋",T},React.createElement(TA,{value:feelings,onChange:isToday?setFeelings:()=>{},rows:5,hint:"How does it feel in your body NOW that this is your reality? Go beyond 'good'.",placeholder:"e.g. It feels like warm honey spreading through my chest. My shoulders have dropped...",T})),
+    React.createElement(SCard,{title:"One Inspired Action for Today",emoji:"⚡",T},React.createElement(TA,{value:action,onChange:isToday?setAction:()=>{},rows:2,hint:"One thing. Tiny and concrete. What does the woman who already has this do today?",placeholder:"e.g. DM three people who engaged with yesterday's post. Hit publish on the reel...",T})),
+    React.createElement(SCard,{title:"Intuitive Hits and Spiritual Signs",emoji:"🔮",T},React.createElement(TA,{value:intuition,onChange:isToday?setIntuition:()=>{},rows:3,hint:"Card pulls, repeating numbers, dreams — log everything.",placeholder:"e.g. Pulled the Star card. Saw 444 at exactly 4:44pm. Had a dream about speaking on stage...",T})),
+    isToday&&React.createElement("div",{style:cardSt(T,{background:T.name==="dark"?"rgba(115,57,96,0.15)":"rgba(115,57,96,0.05)",border:`1px solid ${T.borderBr}`})},
+      React.createElement(CardStars,{T}),
       React.createElement("div",{style:{position:"relative"}},
-        React.createElement("p",{style:{fontFamily:"'Montserrat',sans-serif",fontSize:13,color:C.txtSec,margin:"0 0 12px",lineHeight:1.7}},'Close your journal and say: ',React.createElement("em",{style:{color:C.accentLt}},'"It is done. I trust the timing."')),
+        React.createElement("p",{style:{fontFamily:"'Montserrat',sans-serif",fontSize:13,color:T.txtSec,margin:"0 0 12px",lineHeight:1.7}},'Close your journal and say: ',React.createElement("em",{style:{color:T.accentLt}},'"It is done. I trust the timing."')),
         React.createElement("label",{style:{display:"flex",alignItems:"center",gap:10,cursor:"pointer"}},
-          React.createElement("input",{type:"checkbox",checked:close,onChange:()=>{setClose(true);markToday();},style:{accentColor:C.accent,width:17,height:17}}),
-          React.createElement("span",{style:{fontFamily:"'Montserrat',sans-serif",fontSize:14,color:C.txt}},"Practice complete — I release it now 🤍")
+          React.createElement("input",{type:"checkbox",checked:close,onChange:()=>{setClose(true);markToday();},style:{accentColor:T.accent,width:17,height:17}}),
+          React.createElement("span",{style:{fontFamily:"'Montserrat',sans-serif",fontSize:14,color:T.txt}},"Practice complete — I release it now 🤍")
         ),
-        doneToday&&React.createElement("p",{style:{fontFamily:"'Cormorant Garamond',serif",fontSize:16,fontStyle:"italic",color:C.accentLt,margin:"12px 0 0",textAlign:"center"}},"Streak updated. You showed up. ✦")
+        doneToday&&React.createElement("p",{style:{fontFamily:"'Cormorant Garamond',serif",fontSize:16,fontStyle:"italic",color:T.accentLt,margin:"12px 0 0",textAlign:"center"}},"Streak updated. You showed up. ✦")
       )
     )
   );
 }
 
 /* ── WEEKLY ── */
-function Weekly(){
+function Weekly({T}){
   const getWeekKey=()=>{const d=new Date();const day=d.getDay();d.setDate(d.getDate()-(day===0?6:day-1));return d.toISOString().slice(0,10);};
   const weekKey=getWeekKey();
   const [viewDate,setViewDate]=useState(weekKey);
@@ -337,38 +382,36 @@ function Weekly(){
   const load=date=>{const e=db.loadEntry("weekly",date);return e||{vision:"",mans:["","",""],gratitude:"",values:"",evidence:""};};
   const [vision,setVision]=useState(""); const [mans,setMans]=useState(["","",""]); const [gratitude,setGratitude]=useState(""); const [values,setValues]=useState(""); const [evidence,setEvidence]=useState("");
   useEffect(()=>{const e=load(viewDate);setVision(e.vision||"");setMans(e.mans||["","",""]);setGratitude(e.gratitude||"");setValues(e.values||"");setEvidence(e.evidence||"");},[viewDate]);
-  const data={vision,mans,gratitude,values,evidence};
-  const savedAt=useAutoSave("weekly",viewDate,isThisWeek?data:null);
+  const savedAt=useAutoSave("weekly",viewDate,isThisWeek?{vision,mans,gratitude,values,evidence}:null);
   const ws=new Date(viewDate+"T12:00:00"); const we=new Date(ws); we.setDate(we.getDate()+6);
   const fmt=d=>d.toLocaleDateString("en-US",{month:"short",day:"numeric"});
   const fmtLabel=`Week of ${fmt(ws)} – ${fmt(we)}`;
-
   return React.createElement("div",null,
-    showHistory&&React.createElement(HistoryDrawer,{tab:"weekly",currentDate:viewDate,onSelect:d=>setViewDate(d),onClose:()=>setShowHistory(false)}),
+    showHistory&&React.createElement(HistoryDrawer,{tab:"weekly",currentDate:viewDate,onSelect:d=>setViewDate(d),onClose:()=>setShowHistory(false),T}),
     React.createElement("div",{style:{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:20,flexWrap:"wrap",gap:10}},
-      React.createElement("p",{style:{fontFamily:"'Montserrat',sans-serif",fontSize:11,letterSpacing:"0.1em",color:C.accentLt,fontWeight:700,margin:0,textTransform:"uppercase"}},fmtLabel),
+      React.createElement("p",{style:{fontFamily:"'Montserrat',sans-serif",fontSize:11,letterSpacing:"0.1em",color:T.accentLt,fontWeight:700,margin:0,textTransform:"uppercase"}},fmtLabel),
       React.createElement("div",{style:{display:"flex",gap:8}},
-        !isThisWeek&&React.createElement("button",{onClick:()=>setViewDate(weekKey),style:{fontFamily:"'Montserrat',sans-serif",fontSize:11,fontWeight:700,color:C.moonPrl,background:AG,border:"none",borderRadius:50,padding:"7px 14px",cursor:"pointer"}},"← This Week"),
-        React.createElement("button",{onClick:()=>setShowHistory(true),style:{fontFamily:"'Montserrat',sans-serif",fontSize:11,fontWeight:700,color:C.accentLt,background:"rgba(115,57,96,0.18)",border:`1px solid ${C.border}`,borderRadius:50,padding:"7px 14px",cursor:"pointer"}},"📖 History")
+        !isThisWeek&&React.createElement("button",{onClick:()=>setViewDate(weekKey),style:{fontFamily:"'Montserrat',sans-serif",fontSize:11,fontWeight:700,color:"#fff",background:AG,border:"none",borderRadius:50,padding:"7px 14px",cursor:"pointer"}},"← This Week"),
+        React.createElement("button",{onClick:()=>setShowHistory(true),style:{fontFamily:"'Montserrat',sans-serif",fontSize:11,fontWeight:700,color:T.accentLt,background:T.name==="dark"?"rgba(115,57,96,0.18)":"rgba(115,57,96,0.08)",border:`1px solid ${T.border}`,borderRadius:50,padding:"7px 14px",cursor:"pointer"}},"📖 History")
       )
     ),
-    React.createElement(SaveBar,{savedAt,viewingDate:fmtLabel,isToday:isThisWeek}),
-    React.createElement(SCard,{title:"Vision for the Week",emoji:"🔭"},React.createElement(TA,{value:vision,onChange:isThisWeek?setVision:()=>{},rows:5,hint:"Income, launches, visibility, impact, how you want to FEEL by Sunday.",placeholder:"e.g. This week I am creating two new client conversations and finishing the sales page..."})),
-    React.createElement(SCard,{title:"Top 3 Manifestations",emoji:"🎯"},
-      React.createElement("p",{style:{fontFamily:"'Montserrat',sans-serif",fontSize:12,color:C.txtHint,margin:"0 0 14px",fontStyle:"italic"}},"Mix one smaller win with one bigger stretch. Specificity builds belief."),
+    React.createElement(SaveBar,{savedAt,viewingDate:fmtLabel,isToday:isThisWeek,T}),
+    React.createElement(SCard,{title:"Vision for the Week",emoji:"🔭",T},React.createElement(TA,{value:vision,onChange:isThisWeek?setVision:()=>{},rows:5,hint:"Income, launches, visibility, impact, how you want to FEEL by Sunday.",placeholder:"e.g. This week I am creating two new client conversations and finishing the sales page...",T})),
+    React.createElement(SCard,{title:"Top 3 Manifestations",emoji:"🎯",T},
+      React.createElement("p",{style:{fontFamily:"'Montserrat',sans-serif",fontSize:12,color:T.txtHint,margin:"0 0 14px",fontStyle:"italic"}},"Mix one smaller win with one bigger stretch. Specificity builds belief."),
       React.createElement("div",{style:{display:"grid",gap:12}},mans.map((v,i)=>React.createElement("div",{key:i,style:{display:"flex",gap:12,alignItems:"flex-start"}},
-        React.createElement("div",{style:{minWidth:30,height:30,borderRadius:"50%",background:AG,display:"flex",alignItems:"center",justifyContent:"center",color:C.moonPrl,fontWeight:700,fontSize:13,fontFamily:"'Montserrat',sans-serif",flexShrink:0,marginTop:8}},i+1),
-        React.createElement("div",{style:{flex:1}},React.createElement(TA,{value:v,onChange:isThisWeek?val=>{const n=[...mans];n[i]=val;setMans(n);}:()=>{},placeholder:["e.g. 5 genuine DM conversations with potential clients","e.g. Sign one aligned client at my full price","e.g. Hit $5K in sales this week"][i],rows:2}))
+        React.createElement("div",{style:{minWidth:30,height:30,borderRadius:"50%",background:AG,display:"flex",alignItems:"center",justifyContent:"center",color:"#fff",fontWeight:700,fontSize:13,fontFamily:"'Montserrat',sans-serif",flexShrink:0,marginTop:8}},i+1),
+        React.createElement("div",{style:{flex:1}},React.createElement(TA,{value:v,onChange:isThisWeek?val=>{const n=[...mans];n[i]=val;setMans(n);}:()=>{},placeholder:["e.g. 5 genuine DM conversations","e.g. Sign one aligned client at my full price","e.g. Hit $5K in sales this week"][i],rows:2,T}))
       )))
     ),
-    React.createElement(SCard,{title:"Business-Aligned Gratitude",emoji:"🙏"},React.createElement(TA,{value:gratitude,onChange:isThisWeek?setGratitude:()=>{},rows:5,hint:"Gratitude for what IS and in advance for what is coming.",placeholder:"e.g. I am grateful for the client who left a testimonial. I am grateful in advance for the partnership conversation..."})),
-    React.createElement(SCard,{title:"Values Alignment Check",emoji:"💎"},React.createElement(TA,{value:values,onChange:isThisWeek?setValues:()=>{},rows:4,hint:"Where is your business in full alignment? Where might you be forcing or shrinking?",placeholder:"e.g. My offer feels fully aligned. I notice I have been avoiding posting because of fear..."})),
-    React.createElement(SCard,{title:"Evidence and Synchronicities",emoji:"✨"},React.createElement(TA,{value:evidence,onChange:isThisWeek?setEvidence:()=>{},rows:5,hint:"DMs from nowhere, repeating numbers, unexpected opportunities — your receipts.",placeholder:"e.g. Tuesday: a woman I had not spoken to in 2 years messaged about my services. Saw 222 three times..."}))
+    React.createElement(SCard,{title:"Business-Aligned Gratitude",emoji:"🙏",T},React.createElement(TA,{value:gratitude,onChange:isThisWeek?setGratitude:()=>{},rows:5,hint:"Gratitude for what IS and in advance for what is coming.",placeholder:"e.g. I am grateful for the client who left a testimonial...",T})),
+    React.createElement(SCard,{title:"Values Alignment Check",emoji:"💎",T},React.createElement(TA,{value:values,onChange:isThisWeek?setValues:()=>{},rows:4,hint:"Where is your business in full alignment? Where might you be forcing?",placeholder:"e.g. My offer feels fully aligned. I notice I have been avoiding posting...",T})),
+    React.createElement(SCard,{title:"Evidence and Synchronicities",emoji:"✨",T},React.createElement(TA,{value:evidence,onChange:isThisWeek?setEvidence:()=>{},rows:5,hint:"DMs from nowhere, repeating numbers, unexpected opportunities.",placeholder:"e.g. Tuesday: a woman I had not spoken to in 2 years messaged about my services...",T}))
   );
 }
 
 /* ── MONTHLY ── */
-function Monthly(){
+function Monthly({T}){
   const getMonthKey=()=>new Date().toISOString().slice(0,7);
   const monthKey=getMonthKey();
   const [viewDate,setViewDate]=useState(monthKey);
@@ -378,8 +421,7 @@ function Monthly(){
   const [wins,setWins]=useState([]); const [winInput,setWinInput]=useState("");
   const [asked,setAsked]=useState(""); const [manifested,setManifested]=useState(""); const [needle,setNeedle]=useState(""); const [beliefs,setBeliefs]=useState(""); const [nonNeg,setNonNeg]=useState(""); const [release,setRelease]=useState(""); const [next,setNext]=useState("");
   useEffect(()=>{const e=load(viewDate);setWins(e.wins||[]);setAsked(e.asked||"");setManifested(e.manifested||"");setNeedle(e.needle||"");setBeliefs(e.beliefs||"");setNonNeg(e.nonNeg||"");setRelease(e.release||"");setNext(e.next||"");},[viewDate]);
-  const data={wins,asked,manifested,needle,beliefs,nonNeg,release,next};
-  const savedAt=useAutoSave("monthly",viewDate,isThisMonth?data:null);
+  const savedAt=useAutoSave("monthly",viewDate,isThisMonth?{wins,asked,manifested,needle,beliefs,nonNeg,release,next}:null);
   const addWin=()=>{if(winInput.trim()){setWins([...wins,winInput.trim()]);setWinInput("");}};
   const monthLabel=new Date(viewDate+"-02").toLocaleDateString("en-US",{month:"long",year:"numeric"});
   const handlePrint=()=>{
@@ -387,62 +429,61 @@ function Monthly(){
     w.document.write(`<!DOCTYPE html><html><head><title>Monthly Review — ${monthLabel}</title><style>body{font-family:Georgia,serif;max-width:680px;margin:40px auto;padding:0 24px;color:#1a0a2e;line-height:1.8;background:#f7edf1}h1{font-size:28px;margin-bottom:4px;color:#461D34}h2{font-size:17px;margin:28px 0 8px;color:#733960;border-bottom:1px solid #e8d4e0;padding-bottom:6px}pre{white-space:pre-wrap;font-family:Georgia,serif;font-size:15px;margin:0}.meta{font-size:12px;color:#9B4E7A;letter-spacing:.08em;text-transform:uppercase;margin-bottom:32px}.footer{margin-top:48px;text-align:center;font-size:11px;color:#B16AA2;letter-spacing:.1em}</style></head><body><h1>Manifestation Journal</h1><div class="meta">${monthLabel} · Badass Alchemy</div><h2>Wins</h2><pre>${wins.map(w=>"✦ "+w).join("\n")||"none"}</pre><h2>What Did I Manifest That I Asked For?</h2><pre>${asked||"not filled in"}</pre><h2>What Manifested Overall</h2><pre>${manifested||"not filled in"}</pre><h2>What Moved the Needle</h2><pre>${needle||"not filled in"}</pre><h2>Beliefs That Shifted</h2><pre>${beliefs||"not filled in"}</pre><h2>What Is Now Non-Negotiable</h2><pre>${nonNeg||"not filled in"}</pre><h2>What I Am Releasing</h2><pre>${release||"not filled in"}</pre><h2>Next Month's Empire Declaration</h2><pre>${next||"not filled in"}</pre><div class="footer">✦ Detox · Activate · Open · Build ✦</div></body></html>`);
     w.document.close();w.print();
   };
-
   return React.createElement("div",null,
-    showHistory&&React.createElement(HistoryDrawer,{tab:"monthly",currentDate:viewDate,onSelect:d=>setViewDate(d),onClose:()=>setShowHistory(false)}),
+    showHistory&&React.createElement(HistoryDrawer,{tab:"monthly",currentDate:viewDate,onSelect:d=>setViewDate(d),onClose:()=>setShowHistory(false),T}),
     React.createElement("div",{style:{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:20,flexWrap:"wrap",gap:10}},
       React.createElement("div",null,
-        React.createElement("p",{style:{fontFamily:"'Montserrat',sans-serif",fontSize:11,letterSpacing:"0.1em",color:C.accentLt,fontWeight:700,margin:"0 0 2px",textTransform:"uppercase"}},monthLabel),
-        React.createElement("p",{style:{fontFamily:"'Cormorant Garamond',serif",fontSize:13,fontStyle:"italic",color:C.txtFaded,margin:0}},"Celebrate · Calibrate · Claim")
+        React.createElement("p",{style:{fontFamily:"'Montserrat',sans-serif",fontSize:11,letterSpacing:"0.1em",color:T.accentLt,fontWeight:700,margin:"0 0 2px",textTransform:"uppercase"}},monthLabel),
+        React.createElement("p",{style:{fontFamily:"'Cormorant Garamond',serif",fontSize:13,fontStyle:"italic",color:T.txtFaded,margin:0}},"Celebrate · Calibrate · Claim")
       ),
       React.createElement("div",{style:{display:"flex",gap:8}},
-        !isThisMonth&&React.createElement("button",{onClick:()=>setViewDate(monthKey),style:{fontFamily:"'Montserrat',sans-serif",fontSize:11,fontWeight:700,color:C.moonPrl,background:AG,border:"none",borderRadius:50,padding:"7px 14px",cursor:"pointer"}},"← This Month"),
-        React.createElement("button",{onClick:()=>setShowHistory(true),style:{fontFamily:"'Montserrat',sans-serif",fontSize:11,fontWeight:700,color:C.accentLt,background:"rgba(115,57,96,0.18)",border:`1px solid ${C.border}`,borderRadius:50,padding:"7px 14px",cursor:"pointer"}},"📖 History")
+        !isThisMonth&&React.createElement("button",{onClick:()=>setViewDate(monthKey),style:{fontFamily:"'Montserrat',sans-serif",fontSize:11,fontWeight:700,color:"#fff",background:AG,border:"none",borderRadius:50,padding:"7px 14px",cursor:"pointer"}},"← This Month"),
+        React.createElement("button",{onClick:()=>setShowHistory(true),style:{fontFamily:"'Montserrat',sans-serif",fontSize:11,fontWeight:700,color:T.accentLt,background:T.name==="dark"?"rgba(115,57,96,0.18)":"rgba(115,57,96,0.08)",border:`1px solid ${T.border}`,borderRadius:50,padding:"7px 14px",cursor:"pointer"}},"📖 History")
       )
     ),
-    React.createElement(SaveBar,{savedAt,viewingDate:monthLabel,isToday:isThisMonth}),
-    React.createElement("div",{style:cardSt({background:"rgba(115,57,96,0.2)",border:`1px solid ${C.borderBr}`})},
-      React.createElement(CardStars),
+    React.createElement(SaveBar,{savedAt,viewingDate:monthLabel,isToday:isThisMonth,T}),
+    React.createElement("div",{style:cardSt(T,{background:T.winBg,border:`1px solid ${T.borderBr}`})},
+      React.createElement(CardStars,{T}),
       React.createElement("div",{style:{position:"relative"}},
-        React.createElement("div",{style:{display:"flex",alignItems:"center",gap:8,marginBottom:6}},React.createElement("span",{style:{fontSize:18}},"🏆"),React.createElement(OL,null,"Wins for the Month")),
-        React.createElement("p",{style:{fontFamily:"'Montserrat',sans-serif",fontSize:12,color:C.txtHint,margin:"0 0 14px",fontStyle:"italic"}},"e.g. signed a client, posted every day, raised your prices, got a testimonial, sent the scary email..."),
+        React.createElement("div",{style:{display:"flex",alignItems:"center",gap:8,marginBottom:6}},React.createElement("span",{style:{fontSize:18}},"🏆"),React.createElement(OL,{T},"Wins for the Month")),
+        React.createElement("p",{style:{fontFamily:"'Montserrat',sans-serif",fontSize:12,color:T.txtHint,margin:"0 0 14px",fontStyle:"italic"}},"e.g. signed a client, posted every day, raised your prices, got a testimonial..."),
         isThisMonth&&React.createElement("div",{style:{display:"flex",gap:8,marginBottom:14}},
-          React.createElement("input",{value:winInput,onChange:e=>setWinInput(e.target.value),onKeyDown:e=>e.key==="Enter"&&addWin(),placeholder:"Type a win and press Enter...",style:{flex:1,padding:"11px 15px",borderRadius:50,border:`1px solid ${C.border}`,background:"rgba(13,6,16,0.5)",fontFamily:"'Montserrat',sans-serif",fontSize:13,outline:"none"},onFocus:e=>e.target.style.borderColor=C.accentLt,onBlur:e=>e.target.style.borderColor=C.border}),
-          React.createElement("button",{onClick:addWin,style:{background:AG,color:C.moonPrl,border:"none",borderRadius:50,padding:"11px 20px",fontFamily:"'Montserrat',sans-serif",fontWeight:700,fontSize:13,cursor:"pointer"}},"+ Add")
+          React.createElement("input",{value:winInput,onChange:e=>setWinInput(e.target.value),onKeyDown:e=>e.key==="Enter"&&addWin(),placeholder:"Type a win and press Enter...",style:{flex:1,padding:"11px 15px",borderRadius:50,border:`1px solid ${T.border}`,background:T.inputBg,fontFamily:"'Montserrat',sans-serif",fontSize:13,color:T.txt,outline:"none"},onFocus:e=>e.target.style.borderColor=T.accentLt,onBlur:e=>e.target.style.borderColor=T.border}),
+          React.createElement("button",{onClick:addWin,style:{background:AG,color:"#fff",border:"none",borderRadius:50,padding:"11px 20px",fontFamily:"'Montserrat',sans-serif",fontWeight:700,fontSize:13,cursor:"pointer"}},"+ Add")
         ),
         wins.length>0
-          ?React.createElement("div",{style:{display:"flex",flexWrap:"wrap"}},wins.map((w,i)=>React.createElement("div",{key:i,style:{display:"inline-flex",alignItems:"center",gap:8,background:"rgba(115,57,96,0.22)",border:`1px solid ${C.borderBr}`,borderRadius:50,padding:"7px 15px",margin:"4px",fontSize:13,fontFamily:"'Montserrat',sans-serif",color:C.txtSec}},
-            React.createElement("span",{style:{color:C.accentLt,fontSize:10}},"✦"),w,
-            isThisMonth&&React.createElement("button",{onClick:()=>setWins(wins.filter((_,j)=>j!==i)),style:{background:"none",border:"none",color:C.txtFaded,cursor:"pointer",fontSize:15,lineHeight:1,padding:0,marginLeft:2}},"×")
+          ?React.createElement("div",{style:{display:"flex",flexWrap:"wrap"}},wins.map((w,i)=>React.createElement("div",{key:i,style:{display:"inline-flex",alignItems:"center",gap:8,background:T.name==="dark"?"rgba(115,57,96,0.22)":"rgba(115,57,96,0.1)",border:`1px solid ${T.borderBr}`,borderRadius:50,padding:"7px 15px",margin:"4px",fontSize:13,fontFamily:"'Montserrat',sans-serif",color:T.txtSec}},
+            React.createElement("span",{style:{color:T.accentLt,fontSize:10}},"✦"),w,
+            isThisMonth&&React.createElement("button",{onClick:()=>setWins(wins.filter((_,j)=>j!==i)),style:{background:"none",border:"none",color:T.txtFaded,cursor:"pointer",fontSize:15,lineHeight:1,padding:0,marginLeft:2}},"×")
           )))
-          :React.createElement("p",{style:{fontFamily:"'Montserrat',sans-serif",fontSize:13,color:C.txtFaded,fontStyle:"italic",textAlign:"center",margin:0,padding:"8px 0"}},"Your wins will appear here — start adding ✦")
+          :React.createElement("p",{style:{fontFamily:"'Montserrat',sans-serif",fontSize:13,color:T.txtFaded,fontStyle:"italic",textAlign:"center",margin:0,padding:"8px 0"}},"Your wins will appear here — start adding ✦")
       )
     ),
     ...[
-      ["What Did I Manifest That I Asked For?","🌠",asked,isThisMonth?setAsked:()=>{},"Go back through your daily scripts. What actually showed up? Even partial manifestations count.","e.g. I asked for a client at $2K and signed one at $1,800. I scripted being featured and got asked to be on a podcast..."],
-      ["What Manifested Overall","🏅",manifested,isThisMonth?setManifested:()=>{},"Revenue, recognition, relationships, inner shifts, unexpected gifts.","e.g. $8,200 in revenue — my highest yet. Two organic referrals. A real sense of peace about my pricing..."],
-      ["What Moved the Needle","📈",needle,isThisMonth?setNeedle:()=>{},"Which actions or energy shifts created the most visible results?","e.g. Showing up consistently on stories. Raising my price attracted better clients. Daily scripting changed my energy..."],
-      ["Beliefs That Shifted","🧬",beliefs,isThisMonth?setBeliefs:()=>{},"What do you believe now that you did not 30 days ago?","e.g. I used to believe I had to work constantly to make money. Now I know consistency matters more than hustle..."],
-      ["What Is Now Non-Negotiable","🔥",nonNeg,isThisMonth?setNonNeg:()=>{},"What standards are you no longer willing to compromise on?","e.g. I will no longer discount my offers out of fear. I require 50% deposit before I start any work..."],
-      ["What I Am Releasing","🌙",release,isThisMonth?setRelease:()=>{},"What beliefs or patterns no longer serve who you are becoming?","e.g. I am releasing the belief that I have to earn my rest. I am done carrying the story that I am not ready..."],
-      ["Next Month's Empire Declaration","👑",next,isThisMonth?setNext:()=>{},"One full paragraph. Present tense. No hedging. Only 'I am' and 'I have'.","e.g. Next month I am the woman who consistently generates $10K from soul work. I close with 3 new clients..."],
-    ].map(([t,e,v,s,hint,ph])=>React.createElement(SCard,{key:t,title:t,emoji:e},React.createElement(TA,{value:v,onChange:s,rows:4,hint,placeholder:ph}))),
+      ["What Did I Manifest That I Asked For?","🌠",asked,isThisMonth?setAsked:()=>{},"Go back through your daily scripts. What actually showed up? Even partial manifestations count.","e.g. I asked for a client at $2K and signed one at $1,800..."],
+      ["What Manifested Overall","🏅",manifested,isThisMonth?setManifested:()=>{},"Revenue, recognition, relationships, inner shifts, unexpected gifts.","e.g. $8,200 in revenue — my highest yet. Two organic referrals..."],
+      ["What Moved the Needle","📈",needle,isThisMonth?setNeedle:()=>{},"Which actions or energy shifts created the most visible results?","e.g. Showing up consistently on stories. Raising my price attracted better clients..."],
+      ["Beliefs That Shifted","🧬",beliefs,isThisMonth?setBeliefs:()=>{},"What do you believe now that you did not 30 days ago?","e.g. I used to believe I had to work constantly to make money..."],
+      ["What Is Now Non-Negotiable","🔥",nonNeg,isThisMonth?setNonNeg:()=>{},"What standards are you no longer willing to compromise on?","e.g. I will no longer discount my offers out of fear..."],
+      ["What I Am Releasing","🌙",release,isThisMonth?setRelease:()=>{},"What beliefs or patterns no longer serve who you are becoming?","e.g. I am releasing the belief that I have to earn my rest..."],
+      ["Next Month's Empire Declaration","👑",next,isThisMonth?setNext:()=>{},"One full paragraph. Present tense. No hedging. Only 'I am' and 'I have'.","e.g. Next month I am the woman who consistently generates $10K from soul work..."],
+    ].map(([t,e,v,s,hint,ph])=>React.createElement(SCard,{key:t,title:t,emoji:e,T},React.createElement(TA,{value:v,onChange:s,rows:4,hint,placeholder:ph,T}))),
     React.createElement("div",{style:{textAlign:"center",paddingTop:4,marginBottom:14}},
-      React.createElement("button",{onClick:handlePrint,style:{background:"rgba(115,57,96,0.2)",color:C.accentLt,border:`1px solid ${C.border}`,borderRadius:50,padding:"12px 28px",fontFamily:"'Montserrat',sans-serif",fontWeight:700,fontSize:13,cursor:"pointer"}},"🖨️  Export / Print This Review")
+      React.createElement("button",{onClick:handlePrint,style:{background:T.name==="dark"?"rgba(115,57,96,0.2)":"rgba(115,57,96,0.1)",color:T.accentLt,border:`1px solid ${T.border}`,borderRadius:50,padding:"12px 28px",fontFamily:"'Montserrat',sans-serif",fontWeight:700,fontSize:13,cursor:"pointer"}},"🖨️  Export / Print This Review")
     )
   );
 }
 
 /* ── PROMPTS ── */
 const PROMPTS={
-  "Future Self":["Describe your day as the version of you consistently making your dream income doing soul work you love.","Your dream client just DM'd you saying your work changed their life. What did they say?","You just closed out your best month ever. Walk through the moment you saw the numbers.","You are being interviewed on a top podcast. What are you sharing?","Your calendar this week is exactly how you designed it. Describe every block.","You just launched your signature offer and it sold out. What happened in the 24 hours after?"],
-  "Client and Community":["Who is your soul-aligned client? Describe them as if they are sitting across from you.","Your community just hit a milestone. What are members saying in the comments?","Describe the moment a client tells you they got the result they came for.","Your waitlist is full. How does that feel? What shifted to make this your reality?"],
+  "Future Self":["Describe your day as the version of you consistently making your dream income.","Your dream client just DM'd you saying your work changed their life. What did they say?","You just closed out your best month ever. Walk through the moment you saw the numbers.","You are being interviewed on a top podcast. What are you sharing?","Your calendar this week is exactly how you designed it. Describe every block.","You just launched your signature offer and it sold out. What happened after?"],
+  "Client and Community":["Who is your soul-aligned client? Describe them as if they are sitting across from you.","Your community just hit a milestone. What are members saying?","Describe the moment a client tells you they got the result they came for.","Your waitlist is full. How does that feel? What shifted to make this your reality?"],
   "Money and Abundance":["What does financial safety feel like in your body? Describe it without using numbers.","You just raised your prices and people said yes immediately. What belief shifted?","Money flows to you because ____. Finish this sentence 10 different ways.","Write a thank-you letter to the next $10K coming to you."],
-  "Resistance and Shadow":["What would you do in your business if you knew no one was watching or judging?","The fear of being seen is trying to protect you from ____. What is underneath it?","If your highest self could send you a voice note right now, what would she say?","Where are you playing small because it feels safer? What would bold look like today?"],
+  "Resistance and Shadow":["What would you do in your business if you knew no one was watching?","The fear of being seen is trying to protect you from ____. What is underneath it?","If your highest self could send you a voice note right now, what would she say?","Where are you playing small because it feels safer? What would bold look like?"],
   "Create Your Day":["How do I want today to FEEL? Name three feelings and one action that creates each.","If today were the day everything started clicking, what is the one move I would make?","What is one courageous thing I can do today that my future self will thank me for?","What does my highest self want me to know before I start this day?"],
 };
 
-function Prompts(){
+function Prompts({T}){
   const today=todayKey();
   const [viewDate,setViewDate]=useState(today);
   const [showHistory,setShowHistory]=useState(false);
@@ -450,37 +491,36 @@ function Prompts(){
   const load=date=>{const e=db.loadEntry("prompts",date);return e||{cat:Object.keys(PROMPTS)[0],sel:null,entry:""};};
   const [cat,setCat]=useState(Object.keys(PROMPTS)[0]); const [sel,setSel]=useState(null); const [entry,setEntry]=useState("");
   useEffect(()=>{const e=load(viewDate);setCat(e.cat||Object.keys(PROMPTS)[0]);setSel(e.sel||null);setEntry(e.entry||"");},[viewDate]);
-  const data={cat,sel,entry};
-  const savedAt=useAutoSave("prompts",viewDate,isToday?data:null);
+  const savedAt=useAutoSave("prompts",viewDate,isToday?{cat,sel,entry}:null);
   const random=()=>{const a=PROMPTS[cat];setSel(a[Math.floor(Math.random()*a.length)]);};
   const fmtDate=d=>new Date(d+"T12:00:00").toLocaleDateString("en-US",{month:"short",day:"numeric",year:"numeric"});
-
   return React.createElement("div",null,
-    showHistory&&React.createElement(HistoryDrawer,{tab:"prompts",currentDate:viewDate,onSelect:d=>setViewDate(d),onClose:()=>setShowHistory(false)}),
+    showHistory&&React.createElement(HistoryDrawer,{tab:"prompts",currentDate:viewDate,onSelect:d=>setViewDate(d),onClose:()=>setShowHistory(false),T}),
     React.createElement("div",{style:{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:16,flexWrap:"wrap",gap:10}},
-      React.createElement("p",{style:{fontFamily:"'Cormorant Garamond',serif",fontSize:14,fontStyle:"italic",color:C.txtFaded,margin:0}},"Pull a prompt · Let it guide you"),
+      React.createElement("p",{style:{fontFamily:"'Cormorant Garamond',serif",fontSize:14,fontStyle:"italic",color:T.txtFaded,margin:0}},"Pull a prompt · Let it guide you"),
       React.createElement("div",{style:{display:"flex",gap:8}},
-        !isToday&&React.createElement("button",{onClick:()=>setViewDate(today),style:{fontFamily:"'Montserrat',sans-serif",fontSize:11,fontWeight:700,color:C.moonPrl,background:AG,border:"none",borderRadius:50,padding:"7px 14px",cursor:"pointer"}},"← Today"),
-        React.createElement("button",{onClick:()=>setShowHistory(true),style:{fontFamily:"'Montserrat',sans-serif",fontSize:11,fontWeight:700,color:C.accentLt,background:"rgba(115,57,96,0.18)",border:`1px solid ${C.border}`,borderRadius:50,padding:"7px 14px",cursor:"pointer"}},"📖 History")
+        !isToday&&React.createElement("button",{onClick:()=>setViewDate(today),style:{fontFamily:"'Montserrat',sans-serif",fontSize:11,fontWeight:700,color:"#fff",background:AG,border:"none",borderRadius:50,padding:"7px 14px",cursor:"pointer"}},"← Today"),
+        React.createElement("button",{onClick:()=>setShowHistory(true),style:{fontFamily:"'Montserrat',sans-serif",fontSize:11,fontWeight:700,color:T.accentLt,background:T.name==="dark"?"rgba(115,57,96,0.18)":"rgba(115,57,96,0.08)",border:`1px solid ${T.border}`,borderRadius:50,padding:"7px 14px",cursor:"pointer"}},"📖 History")
       )
     ),
-    React.createElement(SaveBar,{savedAt,viewingDate:fmtDate(viewDate),isToday}),
-    React.createElement("div",{style:{display:"flex",flexWrap:"wrap",gap:7,marginBottom:16,justifyContent:"center"}},Object.keys(PROMPTS).map(c=>React.createElement(Pill,{key:c,small:true,active:cat===c,onClick:isToday?()=>{setCat(c);setSel(null);}:undefined},c))),
-    isToday&&React.createElement("div",{style:{textAlign:"center",marginBottom:18}},React.createElement("button",{onClick:random,style:{fontFamily:"'Montserrat',sans-serif",fontSize:13,fontWeight:700,letterSpacing:.5,color:C.moonPrl,background:AG,padding:"12px 30px",borderRadius:50,border:"none",cursor:"pointer",boxShadow:"0 6px 24px rgba(115,57,96,0.4)"}},"🎲 Pull a Random Prompt")),
-    sel&&React.createElement(SCard,{glow:true},
-      React.createElement("p",{style:{fontFamily:"'Cormorant Garamond',serif",fontSize:18,fontStyle:"italic",color:C.txt,lineHeight:1.8,margin:"0 0 16px"}},`"${sel}"`),
-      React.createElement(TA,{value:entry,onChange:isToday?setEntry:()=>{},rows:8,hint:"Let it flow without editing. Set a timer for 5 minutes and do not stop writing.",placeholder:"Start writing and do not stop..."})
+    React.createElement(SaveBar,{savedAt,viewingDate:fmtDate(viewDate),isToday,T}),
+    React.createElement("div",{style:{display:"flex",flexWrap:"wrap",gap:7,marginBottom:16,justifyContent:"center"}},Object.keys(PROMPTS).map(c=>React.createElement(Pill,{key:c,small:true,active:cat===c,onClick:isToday?()=>{setCat(c);setSel(null);}:undefined,T},c))),
+    isToday&&React.createElement("div",{style:{textAlign:"center",marginBottom:18}},React.createElement("button",{onClick:random,style:{fontFamily:"'Montserrat',sans-serif",fontSize:13,fontWeight:700,letterSpacing:.5,color:"#fff",background:AG,padding:"12px 30px",borderRadius:50,border:"none",cursor:"pointer",boxShadow:"0 6px 24px rgba(115,57,96,0.3)"}},"🎲 Pull a Random Prompt")),
+    sel&&React.createElement(SCard,{glow:true,T},
+      React.createElement("p",{style:{fontFamily:"'Cormorant Garamond',serif",fontSize:18,fontStyle:"italic",color:T.txt,lineHeight:1.8,margin:"0 0 16px"}},`"${sel}"`),
+      React.createElement(TA,{value:entry,onChange:isToday?setEntry:()=>{},rows:8,hint:"Let it flow without editing. Set a timer for 5 minutes and do not stop writing.",placeholder:"Start writing and do not stop...",T})
     ),
-    React.createElement(SCard,{title:"All Prompts",emoji:"📚"},
-      React.createElement("div",{style:{display:"grid",gap:9}},PROMPTS[cat].map((p,i)=>React.createElement("div",{key:i,onClick:isToday?()=>setSel(p):undefined,style:{padding:"13px 16px",background:sel===p?"rgba(115,57,96,0.2)":"rgba(13,6,16,0.4)",borderRadius:12,cursor:isToday?"pointer":"default",border:`1px solid ${sel===p?C.border:"transparent"}`,transition:"all .2s"}},
-        React.createElement("p",{style:{margin:0,fontFamily:"'Montserrat',sans-serif",fontSize:13,color:C.txtSec,lineHeight:1.7}},p)
+    React.createElement(SCard,{title:"All Prompts",emoji:"📚",T},
+      React.createElement("div",{style:{display:"grid",gap:9}},PROMPTS[cat].map((p,i)=>React.createElement("div",{key:i,onClick:isToday?()=>setSel(p):undefined,
+        style:{padding:"13px 16px",background:sel===p?`rgba(115,57,96,0.15)`:T.surface,borderRadius:12,cursor:isToday?"pointer":"default",border:`1px solid ${sel===p?T.border:"transparent"}`,transition:"all .2s"}},
+        React.createElement("p",{style:{margin:0,fontFamily:"'Montserrat',sans-serif",fontSize:13,color:T.txtSec,lineHeight:1.7}},p)
       )))
     )
   );
 }
 
 /* ── 3/6/9 ── */
-function ThreeSixNine(){
+function ThreeSixNine({T}){
   const today=todayKey();
   const [viewDate,setViewDate]=useState(today);
   const [showHistory,setShowHistory]=useState(false);
@@ -488,32 +528,29 @@ function ThreeSixNine(){
   const load=date=>{const e=db.loadEntry("369",date);return e||{focus:"",morning:["","",""],afternoon:["","","","","",""],evening:["","","","","","","","",""]};};
   const [focus,setFocus]=useState(""); const [morning,setMorning]=useState(["","",""]); const [afternoon,setAfternoon]=useState(["","","","","",""]); const [evening,setEvening]=useState(["","","","","","","","",""]);
   useEffect(()=>{const e=load(viewDate);setFocus(e.focus||"");setMorning(e.morning||["","",""]);setAfternoon(e.afternoon||["","","","",""]);setEvening(e.evening||["","","","","","","","",""]);},[viewDate]);
-  const data={focus,morning,afternoon,evening};
-  const savedAt=useAutoSave("369",viewDate,isToday?data:null);
+  const savedAt=useAutoSave("369",viewDate,isToday?{focus,morning,afternoon,evening}:null);
   const upd=(arr,s,i,v)=>{const n=[...arr];n[i]=v;s(n);};
   const fmtDate=d=>new Date(d+"T12:00:00").toLocaleDateString("en-US",{month:"short",day:"numeric",year:"numeric"});
-
-  const Block=({label,emoji,arr,setter,note})=>React.createElement(SCard,{title:`${label} — Write ${arr.length}x`,emoji},
-    React.createElement("p",{style:{fontFamily:"'Montserrat',sans-serif",fontSize:12,color:C.txtHint,margin:"0 0 14px",fontStyle:"italic"}},note),
+  const Block=({label,emoji,arr,setter,note})=>React.createElement(SCard,{title:`${label} — Write ${arr.length}x`,emoji,T},
+    React.createElement("p",{style:{fontFamily:"'Montserrat',sans-serif",fontSize:12,color:T.txtHint,margin:"0 0 14px",fontStyle:"italic"}},note),
     React.createElement("div",{style:{display:"grid",gap:9}},arr.map((v,i)=>React.createElement("div",{key:i,style:{display:"flex",gap:10,alignItems:"center"}},
-      React.createElement("span",{style:{fontFamily:"'Montserrat',sans-serif",fontSize:11,fontWeight:700,color:C.txtFaded,minWidth:20}},`${i+1}.`),
-      React.createElement("div",{style:{flex:1}},React.createElement(TA,{value:v,onChange:isToday?val=>upd(arr,setter,i,val):()=>{},placeholder:focus||"Write your focus statement here...",rows:1}))
+      React.createElement("span",{style:{fontFamily:"'Montserrat',sans-serif",fontSize:11,fontWeight:700,color:T.txtFaded,minWidth:20}},`${i+1}.`),
+      React.createElement("div",{style:{flex:1}},React.createElement(TA,{value:v,onChange:isToday?val=>upd(arr,setter,i,val):()=>{},placeholder:focus||"Write your focus statement here...",rows:1,T}))
     )))
   );
-
   return React.createElement("div",null,
-    showHistory&&React.createElement(HistoryDrawer,{tab:"369",currentDate:viewDate,onSelect:d=>setViewDate(d),onClose:()=>setShowHistory(false)}),
+    showHistory&&React.createElement(HistoryDrawer,{tab:"369",currentDate:viewDate,onSelect:d=>setViewDate(d),onClose:()=>setShowHistory(false),T}),
     React.createElement("div",{style:{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:16,flexWrap:"wrap",gap:10}},
-      React.createElement("p",{style:{fontFamily:"'Cormorant Garamond',serif",fontSize:14,fontStyle:"italic",color:C.txtFaded,margin:0}},"One desire · All day · Full embodiment"),
+      React.createElement("p",{style:{fontFamily:"'Cormorant Garamond',serif",fontSize:14,fontStyle:"italic",color:T.txtFaded,margin:0}},"One desire · All day · Full embodiment"),
       React.createElement("div",{style:{display:"flex",gap:8}},
-        !isToday&&React.createElement("button",{onClick:()=>setViewDate(today),style:{fontFamily:"'Montserrat',sans-serif",fontSize:11,fontWeight:700,color:C.moonPrl,background:AG,border:"none",borderRadius:50,padding:"7px 14px",cursor:"pointer"}},"← Today"),
-        React.createElement("button",{onClick:()=>setShowHistory(true),style:{fontFamily:"'Montserrat',sans-serif",fontSize:11,fontWeight:700,color:C.accentLt,background:"rgba(115,57,96,0.18)",border:`1px solid ${C.border}`,borderRadius:50,padding:"7px 14px",cursor:"pointer"}},"📖 History")
+        !isToday&&React.createElement("button",{onClick:()=>setViewDate(today),style:{fontFamily:"'Montserrat',sans-serif",fontSize:11,fontWeight:700,color:"#fff",background:AG,border:"none",borderRadius:50,padding:"7px 14px",cursor:"pointer"}},"← Today"),
+        React.createElement("button",{onClick:()=>setShowHistory(true),style:{fontFamily:"'Montserrat',sans-serif",fontSize:11,fontWeight:700,color:T.accentLt,background:T.name==="dark"?"rgba(115,57,96,0.18)":"rgba(115,57,96,0.08)",border:`1px solid ${T.border}`,borderRadius:50,padding:"7px 14px",cursor:"pointer"}},"📖 History")
       )
     ),
-    React.createElement(SaveBar,{savedAt,viewingDate:fmtDate(viewDate),isToday}),
-    React.createElement(SCard,{title:"Your Focus Statement",emoji:"🎯"},React.createElement(TA,{value:focus,onChange:isToday?setFocus:()=>{},rows:2,hint:"ONE specific desire as a present-tense statement. Simple enough to write 18 times without losing the feeling.",placeholder:"e.g. I am consistently earning $10,000 per month from my soul-aligned offers and it feels completely natural and safe to receive this."})),
+    React.createElement(SaveBar,{savedAt,viewingDate:fmtDate(viewDate),isToday,T}),
+    React.createElement(SCard,{title:"Your Focus Statement",emoji:"🎯",T},React.createElement(TA,{value:focus,onChange:isToday?setFocus:()=>{},rows:2,hint:"ONE specific desire as a present-tense statement. Simple enough to write 18 times.",placeholder:"e.g. I am consistently earning $10,000 per month from my soul-aligned offers and it feels completely natural and safe.",T})),
     React.createElement(Block,{label:"Morning",emoji:"🌅",arr:morning,setter:setMorning,note:"Write your focus statement 3 times first thing — before you check your phone."}),
-    React.createElement(Block,{label:"Afternoon",emoji:"☀️",arr:afternoon,setter:setAfternoon,note:"Write it 6 times midday. Feel the desire strengthen. Notice what has shifted since morning."}),
+    React.createElement(Block,{label:"Afternoon",emoji:"☀️",arr:afternoon,setter:setAfternoon,note:"Write it 6 times midday. Feel the desire strengthen."}),
     React.createElement(Block,{label:"Evening",emoji:"🌙",arr:evening,setter:setEvening,note:"Write it 9 times before bed. Let this be the last clear thought you carry into sleep."})
   );
 }
@@ -524,66 +561,90 @@ const heroLabel={daily:"Daily Sacred Spread",weekly:"Weekly Vision Spread",month
 const heroSub={daily:"Auto-saved · Pick up where you left off",weekly:"Auto-saved · Vision · Gratitude · Evidence",monthly:"Auto-saved · Celebrate · Calibrate · Claim",prompts:"Auto-saved · Pull a prompt · Let it guide you","369":"Auto-saved · One desire · All day",streak:"Show up. Stack the days. Build the empire."};
 
 function App(){
-  const [screen,setScreen]=useState("cover"); const [tab,setTab]=useState("daily"); const [guide,setGuide]=useState(false);
+  const [screen,setScreen]=useState("cover");
+  const [tab,setTab]=useState("daily");
+  const [guide,setGuide]=useState(false);
+  const [theme,setTheme]=useState(()=>db.getTheme());
+  const T=theme==="dark"?DARK:LIGHT;
   const {streak,total,doneToday,markToday}=useStreak();
-  if(screen==="cover")return React.createElement(Cover,{onStart:()=>setScreen("journal")});
+
+  // Apply background to body
+  useEffect(()=>{
+    if(theme==="dark"){
+      document.body.style.backgroundImage=`url('${BG_IMAGE}')`;
+      document.body.style.backgroundSize="cover";
+      document.body.style.backgroundPosition="center top";
+      document.body.style.backgroundAttachment="fixed";
+      document.body.style.backgroundColor="#0D0610";
+    } else {
+      document.body.style.backgroundImage="none";
+      document.body.style.background="linear-gradient(160deg,#F9F4FF 0%,#F0E6FA 40%,#FAE8F4 100%)";
+      document.body.style.backgroundAttachment="fixed";
+    }
+  },[theme]);
+
+  if(screen==="cover")return React.createElement(Cover,{onStart:()=>setScreen("journal"),theme,setTheme});
+
   return React.createElement("div",{style:{minHeight:"100vh",fontFamily:"'Montserrat',sans-serif"}},
-    React.createElement("div",{style:{position:"fixed",inset:0,background:"rgba(13,6,16,0.68)",pointerEvents:"none",zIndex:0}}),
-    React.createElement("div",{style:{position:"fixed",inset:0,background:GLOW,pointerEvents:"none",zIndex:0}}),
+    T.name==="dark"&&React.createElement("div",{style:{position:"fixed",inset:0,background:"rgba(13,6,16,0.68)",pointerEvents:"none",zIndex:0}}),
+    T.name==="dark"&&React.createElement("div",{style:{position:"fixed",inset:0,background:GLOW,pointerEvents:"none",zIndex:0}}),
     React.createElement("div",{style:{position:"relative",zIndex:1}},
-      React.createElement(AffirmationBar),
-      React.createElement("div",{style:{position:"sticky",top:0,zIndex:100,background:"rgba(13,6,16,0.9)",backdropFilter:"blur(20px)",WebkitBackdropFilter:"blur(20px)",borderBottom:`1px solid ${C.border}`,padding:"10px 16px"}},
+      React.createElement(AffirmationBar,{T}),
+      React.createElement("div",{style:{position:"sticky",top:0,zIndex:100,background:T.navBg,backdropFilter:"blur(20px)",WebkitBackdropFilter:"blur(20px)",borderBottom:`1px solid ${T.border}`,padding:"10px 16px"}},
         React.createElement("div",{style:{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:guide?0:10}},
           React.createElement("div",{style:{display:"flex",alignItems:"center",gap:10}},
-            React.createElement("h1",{style:{fontFamily:"'Cormorant Garamond',serif",fontSize:17,color:C.txt,margin:0,fontWeight:700}},"✦ Manifestation Journal"),
-            streak>0&&React.createElement("div",{style:{background:AG,borderRadius:50,padding:"3px 10px",fontFamily:"'Montserrat',sans-serif",fontSize:10,fontWeight:700,color:C.moonPrl}},`🔥 ${streak}`)
+            React.createElement("h1",{style:{fontFamily:"'Cormorant Garamond',serif",fontSize:17,color:T.txt,margin:0,fontWeight:700}},"✦ Manifestation Journal"),
+            streak>0&&React.createElement("div",{style:{background:AG,borderRadius:50,padding:"3px 10px",fontFamily:"'Montserrat',sans-serif",fontSize:10,fontWeight:700,color:"#fff"}},`🔥 ${streak}`)
           ),
-          React.createElement("button",{onClick:()=>setGuide(!guide),style:{fontFamily:"'Montserrat',sans-serif",fontSize:11,fontWeight:700,color:guide?C.moonPrl:C.accentLt,background:guide?AG:"transparent",border:`1px solid ${guide?"transparent":C.border}`,padding:"6px 14px",borderRadius:50,cursor:"pointer",letterSpacing:.5}},guide?"✕ Close":"📖 Guide")
+          React.createElement("div",{style:{display:"flex",gap:8,alignItems:"center"}},
+            React.createElement(ThemeToggle,{theme,setTheme}),
+            React.createElement("button",{onClick:()=>setGuide(!guide),style:{fontFamily:"'Montserrat',sans-serif",fontSize:11,fontWeight:700,color:guide?"#fff":T.accentLt,background:guide?AG:"transparent",border:`1px solid ${guide?"transparent":T.border}`,padding:"6px 14px",borderRadius:50,cursor:"pointer",letterSpacing:.5}},guide?"✕ Close":"📖 Guide")
+          )
         ),
-        !guide&&React.createElement("div",{style:{display:"flex",gap:6,overflowX:"auto"}},TABS.map(t=>React.createElement(Pill,{key:t.id,small:true,active:tab===t.id,onClick:()=>setTab(t.id)},`${t.emoji} ${t.label}`)))
+        !guide&&React.createElement("div",{style:{display:"flex",gap:6,overflowX:"auto"}},TABS.map(t=>React.createElement(Pill,{key:t.id,small:true,active:tab===t.id,onClick:()=>setTab(t.id),T},`${t.emoji} ${t.label}`)))
       ),
-      !guide&&React.createElement("div",{style:{position:"relative",overflow:"hidden",padding:"24px 20px 20px",textAlign:"center",borderBottom:`1px solid ${C.border}`,background:"rgba(13,6,16,0.55)",backdropFilter:"blur(8px)"}},
-        React.createElement("div",{style:{position:"absolute",inset:0,backgroundImage:STARS,opacity:0.3,pointerEvents:"none"}}),
+      !guide&&React.createElement("div",{style:{position:"relative",overflow:"hidden",padding:"24px 20px 20px",textAlign:"center",borderBottom:`1px solid ${T.border}`,background:T.heroBg,backdropFilter:"blur(8px)"}},
+        T.name==="dark"&&React.createElement("div",{style:{position:"absolute",inset:0,backgroundImage:STARS,opacity:0.3,pointerEvents:"none"}}),
         React.createElement("div",{style:{position:"relative"}},
-          React.createElement("div",{style:{fontFamily:"'Montserrat',sans-serif",fontSize:9,fontWeight:700,letterSpacing:1.5,color:C.accentLt,textTransform:"uppercase",marginBottom:4}},"Badass Alchemy"),
-          React.createElement("h2",{style:{fontFamily:"'Cormorant Garamond',serif",fontSize:"clamp(24px,5vw,34px)",fontWeight:700,color:C.txt,margin:"0 0 4px",lineHeight:1.15}},
+          React.createElement("div",{style:{fontFamily:"'Montserrat',sans-serif",fontSize:9,fontWeight:700,letterSpacing:1.5,color:T.accentLt,textTransform:"uppercase",marginBottom:4}},"Badass Alchemy"),
+          React.createElement("h2",{style:{fontFamily:"'Cormorant Garamond',serif",fontSize:"clamp(24px,5vw,34px)",fontWeight:700,color:T.txt,margin:"0 0 4px",lineHeight:1.15}},
             heroLabel[tab].split(" ").slice(0,-1).join(" ")+" ",
-            React.createElement("em",{style:{color:C.accentLt,fontStyle:"italic"}},heroLabel[tab].split(" ").slice(-1)[0])
+            React.createElement("em",{style:{color:T.accentLt,fontStyle:"italic"}},heroLabel[tab].split(" ").slice(-1)[0])
           ),
-          React.createElement("p",{style:{fontFamily:"'Montserrat',sans-serif",fontSize:11,color:C.txtMuted,margin:0}},heroSub[tab])
+          React.createElement("p",{style:{fontFamily:"'Montserrat',sans-serif",fontSize:11,color:T.txtMuted,margin:0}},heroSub[tab])
         )
       ),
       React.createElement("div",{style:{maxWidth:680,margin:"0 auto",padding:"22px 14px 60px"}},
         guide
           ?React.createElement("div",null,
-              React.createElement("button",{onClick:()=>setGuide(false),style:{background:"none",border:"none",color:C.accentLt,cursor:"pointer",fontSize:14,marginBottom:16,fontWeight:700,fontFamily:"'Montserrat',sans-serif"}},"← Back"),
-              React.createElement(SCard,{glow:true},
-                React.createElement("div",{style:{fontFamily:"'Cormorant Garamond',serif",fontSize:20,fontWeight:700,color:C.txt,lineHeight:1.25,marginBottom:8}},"What is manifestation journaling?"),
-                React.createElement("p",{style:{fontFamily:"'Montserrat',sans-serif",fontSize:13,color:C.txtSec,lineHeight:1.75,margin:"0 0 16px"}},"It bridges your inner vision with your outer business reality. Present-tense scripting trains your brain to recognize and act on opportunities that match your vision."),
-                React.createElement("div",{style:{background:"rgba(115,57,96,0.15)",borderRadius:12,padding:"14px 16px",border:`1px solid ${C.border}`}},
-                  React.createElement("div",{style:{fontFamily:"'Montserrat',sans-serif",fontSize:10,fontWeight:700,letterSpacing:1.2,color:C.accentLt,textTransform:"uppercase",marginBottom:8}},"About Auto-Save"),
-                  React.createElement("p",{style:{fontFamily:"'Montserrat',sans-serif",fontSize:12,color:C.txtSec,lineHeight:1.7,margin:0}},"Everything saves automatically as you type. Come back tomorrow and your entries will be waiting. Use the ",React.createElement("strong",{style:{color:C.accentLt}},"📖 History")," button on any tab to browse past entries by date.")
+              React.createElement("button",{onClick:()=>setGuide(false),style:{background:"none",border:"none",color:T.accentLt,cursor:"pointer",fontSize:14,marginBottom:16,fontWeight:700,fontFamily:"'Montserrat',sans-serif"}},"← Back"),
+              React.createElement(SCard,{glow:true,T},
+                React.createElement("div",{style:{fontFamily:"'Cormorant Garamond',serif",fontSize:20,fontWeight:700,color:T.txt,lineHeight:1.25,marginBottom:8}},"What is manifestation journaling?"),
+                React.createElement("p",{style:{fontFamily:"'Montserrat',sans-serif",fontSize:13,color:T.txtSec,lineHeight:1.75,margin:"0 0 16px"}},"It bridges your inner vision with your outer business reality. Present-tense scripting trains your brain to recognize and act on opportunities that match your vision."),
+                React.createElement("div",{style:{background:T.name==="dark"?"rgba(115,57,96,0.15)":"rgba(115,57,96,0.06)",borderRadius:12,padding:"14px 16px",border:`1px solid ${T.border}`}},
+                  React.createElement("div",{style:{fontFamily:"'Montserrat',sans-serif",fontSize:10,fontWeight:700,letterSpacing:1.2,color:T.accentLt,textTransform:"uppercase",marginBottom:8}},"About Auto-Save"),
+                  React.createElement("p",{style:{fontFamily:"'Montserrat',sans-serif",fontSize:12,color:T.txtSec,lineHeight:1.7,margin:0}},"Everything saves automatically as you type. Come back tomorrow and your entries will be waiting. Use the ",React.createElement("strong",{style:{color:T.accentLt}},"📖 History")," button on any tab to browse past entries by date.")
                 )
               ),
-              ...[["Present-tense writing","Write as if it is already real. 'I am', 'I have', 'I feel' — never 'I want' or 'I will'."],["Emotional intensity","Feel it as you write. Emotion is the signal your subconscious responds to."],["Repetition over perfection","Two minutes every day beats 30 minutes once a week."],["Aligned action","Vision without movement stays a dream. One small action per session."],["Bridge beliefs","Start with 'I am learning to...' — your nervous system will catch up."]].map(([t,d],i)=>
-                React.createElement("div",{key:i,style:{display:"flex",gap:12,padding:"12px 14px",background:"rgba(13,6,16,0.5)",borderRadius:12,marginBottom:9,alignItems:"flex-start",border:`1px solid ${C.border}`,backdropFilter:"blur(8px)"}},
-                  React.createElement("span",{style:{color:C.accentLt,fontSize:14,marginTop:2,flexShrink:0}},"✦"),
-                  React.createElement("div",null,React.createElement("div",{style:{fontFamily:"'Montserrat',sans-serif",fontWeight:700,fontSize:13,color:C.txt,marginBottom:3}},t),React.createElement("div",{style:{fontFamily:"'Montserrat',sans-serif",fontSize:13,color:C.txtMuted,lineHeight:1.65}},d))
+              ...[["Present-tense writing","Write as if it is already real. 'I am', 'I have', 'I feel' — never 'I want'."],["Emotional intensity","Feel it as you write. Emotion is the signal your subconscious responds to."],["Repetition over perfection","Two minutes every day beats 30 minutes once a week."],["Aligned action","Vision without movement stays a dream. One small action per session."],["Bridge beliefs","Start with 'I am learning to...' — your nervous system will catch up."]].map(([t,d],i)=>
+                React.createElement("div",{key:i,style:{display:"flex",gap:12,padding:"12px 14px",background:T.surface,borderRadius:12,marginBottom:9,alignItems:"flex-start",border:`1px solid ${T.border}`}},
+                  React.createElement("span",{style:{color:T.accentLt,fontSize:14,marginTop:2,flexShrink:0}},"✦"),
+                  React.createElement("div",null,React.createElement("div",{style:{fontFamily:"'Montserrat',sans-serif",fontWeight:700,fontSize:13,color:T.txt,marginBottom:3}},t),React.createElement("div",{style:{fontFamily:"'Montserrat',sans-serif",fontSize:13,color:T.txtMuted,lineHeight:1.65}},d))
                 )
               )
             )
-          :tab==="daily"?React.createElement(Daily,{markToday,doneToday})
-          :tab==="weekly"?React.createElement(Weekly)
-          :tab==="monthly"?React.createElement(Monthly)
-          :tab==="prompts"?React.createElement(Prompts)
-          :tab==="369"?React.createElement(ThreeSixNine)
-          :React.createElement(StreakWidget,{streak,total,doneToday,markToday})
+          :tab==="daily"?React.createElement(Daily,{markToday,doneToday,T})
+          :tab==="weekly"?React.createElement(Weekly,{T})
+          :tab==="monthly"?React.createElement(Monthly,{T})
+          :tab==="prompts"?React.createElement(Prompts,{T})
+          :tab==="369"?React.createElement(ThreeSixNine,{T})
+          :React.createElement(StreakWidget,{streak,total,doneToday,markToday,T})
       ),
-      React.createElement("div",{style:{position:"relative",overflow:"hidden",padding:"28px 24px",textAlign:"center",borderTop:`1px solid ${C.border}`,background:"rgba(13,6,16,0.7)",backdropFilter:"blur(12px)"}},
-        React.createElement("div",{style:{position:"absolute",inset:0,backgroundImage:STARS,opacity:0.3,pointerEvents:"none"}}),
+      React.createElement("div",{style:{position:"relative",overflow:"hidden",padding:"28px 24px",textAlign:"center",borderTop:`1px solid ${T.border}`,background:T.footerBg,backdropFilter:"blur(12px)"}},
+        T.name==="dark"&&React.createElement("div",{style:{position:"absolute",inset:0,backgroundImage:STARS,opacity:0.3,pointerEvents:"none"}}),
         React.createElement("div",{style:{position:"relative"}},
-          React.createElement("p",{style:{fontFamily:"'Cormorant Garamond',serif",fontSize:16,fontStyle:"italic",margin:"0 0 8px",color:C.accentLt}},"Detox · Activate · Open · Build"),
-          React.createElement("p",{style:{fontFamily:"'Montserrat',sans-serif",fontSize:9,fontWeight:700,letterSpacing:2,color:C.txtFaded,textTransform:"uppercase",margin:0}},"✦ Badass Alchemy · The Manifestation Journal ✦")
+          React.createElement("p",{style:{fontFamily:"'Cormorant Garamond',serif",fontSize:16,fontStyle:"italic",margin:"0 0 8px",color:T.accentLt}},"Detox · Activate · Open · Build"),
+          React.createElement("p",{style:{fontFamily:"'Montserrat',sans-serif",fontSize:9,fontWeight:700,letterSpacing:2,color:T.txtFaded,textTransform:"uppercase",margin:0}},"✦ Badass Alchemy · The Manifestation Journal ✦")
         )
       )
     )
