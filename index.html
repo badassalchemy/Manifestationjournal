@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+  <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8"/>
@@ -556,9 +556,176 @@ function ThreeSixNine({T}){
 }
 
 /* ── APP ── */
-const TABS=[{id:"daily",label:"Daily",emoji:"☀️"},{id:"weekly",label:"Weekly",emoji:"🗓️"},{id:"monthly",label:"Monthly",emoji:"🌙"},{id:"prompts",label:"Prompts",emoji:"💡"},{id:"369",label:"3/6/9",emoji:"🔮"},{id:"streak",label:"Streak",emoji:"🔥"}];
-const heroLabel={daily:"Daily Sacred Spread",weekly:"Weekly Vision Spread",monthly:"Monthly Review",prompts:"Prompt Library","369":"3 / 6 / 9 Method",streak:"Your Practice Streak"};
-const heroSub={daily:"Auto-saved · Pick up where you left off",weekly:"Auto-saved · Vision · Gratitude · Evidence",monthly:"Auto-saved · Celebrate · Calibrate · Claim",prompts:"Auto-saved · Pull a prompt · Let it guide you","369":"Auto-saved · One desire · All day",streak:"Show up. Stack the days. Build the empire."};
+/* ── PORTALS DATA 2026 ── */
+const PORTALS_2026 = {
+  "2026-01": [
+    {date:"Jan 3",type:"portal",name:"1/3 Portal",emoji:"🔢",energy:"The 1-3 gateway activates new beginnings with creative momentum. January 3rd carries a 1+3=4 frequency — the energy of building solid foundations for your year.",ritual:"Light a white candle. Write your top 3 intentions for 2026 on paper. Read them aloud 3 times then fold toward you.",prompt:"What am I building this year that will still matter in 5 years? What foundation needs to be laid right now?"},
+    {date:"Jan 10",type:"newmoon",name:"New Moon in Capricorn",emoji:"🌑",energy:"New moon in Capricorn — the most ambitious new moon of the year. This is the CEO moon. Capricorn asks: what structures, systems, and long-game moves will you commit to? Manifestation in Capricorn lands through discipline, not wishful thinking.",ritual:"Create your 2026 empire blueprint. Write your top 3 business goals, the systems needed to achieve them, and one non-negotiable daily action for each. Place it somewhere you see every morning.",prompt:"If I removed every excuse and showed up like the CEO I am becoming — what would I do differently this quarter? What structure does my empire actually need?"},
+    {date:"Jan 25",type:"fullmoon",name:"Full Moon in Leo",emoji:"🌕",energy:"The Leo full moon is the most visible, most magnetic full moon of the year. Leo rules the heart, creativity, and the stage. Whatever you have been building in the dark — this moon asks you to step into the light with it.",ritual:"Dress up. Light gold or orange candles. Read your biggest vision out loud as if you are already living it. Record a voice note of yourself speaking as your future self.",prompt:"Where have I been shrinking my visibility? What would I do this week if I fully believed the world was ready for me?"},
+    {date:"Jan 28",type:"portal",name:"1/28 Abundance Portal",emoji:"✨",energy:"28 reduces to 10, then to 1 — the number of new cycles and manifestation. Combined with the post-full moon energy, this is a powerful day to anchor abundance intentions.",ritual:"Write a list of 10 things you are calling in this year. Next to each one, write one action you will take this week toward it.",prompt:"What abundance am I ready to stop treating as optional and start treating as inevitable?"},
+  ],
+  "2026-02": [
+    {date:"Feb 9",type:"newmoon",name:"New Moon in Aquarius",emoji:"🌑",energy:"Aquarius new moon activates your community, your vision for collective impact, and your most innovative ideas. This moon says: stop playing small and start playing for the future. What movement are you building?",ritual:"Write a post, email, or voice note to your community as if you already have 10x the audience. What would you say? Send it or save it as your north star message.",prompt:"What does my community look like when I stop editing myself? What message have I been holding back that someone out there needs to hear?"},
+    {date:"Feb 14",type:"portal",name:"2/14 Love Portal",emoji:"💜",energy:"Valentine's Day falls on a 2/14/2026 = 2+1+4+2+0+2+6 = 17 = 8 — the number of infinite abundance and power. This is not just a day for romantic love. It is a day to deepen your love for yourself, your work, and your vision.",ritual:"Write yourself a love letter from your future self — the woman who made it. What does she want to tell you about who you are right now?",prompt:"What does it look like to love myself so fully that I stop accepting less than I deserve — in business, in relationships, in income?"},
+    {date:"Feb 24",type:"fullmoon",name:"Full Moon in Virgo",emoji:"🌕",energy:"Virgo full moon is the harvest moon for systems and health. Virgo asks: is your daily practice actually working? What needs to be refined, released, or rebuilt? This is the moon to audit your habits and your offers.",ritual:"Do a full audit. Go through your phone, your calendar, your finances. Release one thing that is draining your energy and commit to one new aligned habit.",prompt:"Where am I overcomplicating things? What is the simplest version of my business that would still create the income and impact I want?"},
+  ],
+  "2026-03": [
+    {date:"Mar 3",type:"portal",name:"3/3 Portal",emoji:"🔢",energy:"The 3/3 portal is one of the most creative and expressive portals of the year. 3 is the number of the creator — communication, joy, expansion. In 2026, this portal carries extra power as March begins a new energetic quarter.",ritual:"Create something for the pure joy of it — write, paint, dance, cook, sing. No agenda. Then share it with your community without overthinking it.",prompt:"Where have I stopped letting myself be playful and expressive in my business? What would I create if I knew it could not fail?"},
+    {date:"Mar 11",type:"newmoon",name:"New Moon in Pisces",emoji:"🌑",energy:"The Pisces new moon is the most intuitive and spiritually potent new moon of the year. Pisces rules dreams, dissolution, and the subconscious. This is the perfect moon to set intentions that come from your soul rather than your strategy.",ritual:"Meditate for 10 minutes before writing. Ask your highest self what she wants for you this month. Write without editing. Light incense or burn palo santo.",prompt:"If I stopped thinking about what was realistic and just listened to what my soul actually wants — what would I be calling in right now?"},
+    {date:"Mar 20",type:"portal",name:"Spring Equinox Portal",emoji:"🌸",energy:"The Spring Equinox on March 20 is one of the 4 most powerful portals of the solar year. Equal day and night — perfect balance of action and rest, masculine and feminine energy. A massive reset and rebirth portal.",ritual:"Cleanse your space. Open windows. Burn sage or palo santo. Write what you are releasing from the winter and what you are planting for spring. Bury the release list in soil or burn it safely.",prompt:"What old version of me am I ready to leave behind at this equinox? What is being reborn in me right now — even if I cannot see it fully yet?"},
+    {date:"Mar 25",type:"fullmoon",name:"Full Moon in Libra",emoji:"🌕",energy:"Libra full moon illuminates your relationships, partnerships, and the balance between giving and receiving. Where are you overextending? Where are you under-receiving? This moon also activates your sense of beauty, aesthetics, and brand.",ritual:"Audit your relationships. Write two lists: who energizes you and who drains you. Then write what you need to say, set, or release in one key relationship.",prompt:"Where am I giving more than I am receiving — in business, in relationships, in energy? What does true reciprocity look like for me?"},
+  ],
+  "2026-04": [
+    {date:"Apr 4",type:"portal",name:"4/4 Portal",emoji:"🔢",energy:"The 4/4 portal is the gateway of structure, stability, and sacred geometry. Four is the number of the builder — the one who lays foundations that last. In 2026, this portal is especially potent for business decisions and long-term commitments.",ritual:"Write your 4 pillars — the 4 non-negotiable foundations of your business and your life. What must be true for everything else to work?",prompt:"What structures do I need to put in place right now so that my future self is not constantly putting out fires? What am I avoiding building?"},
+    {date:"Apr 10",type:"newmoon",name:"New Moon in Aries",emoji:"🌑",energy:"The Aries new moon is the most action-oriented new moon of the year. Aries is the first sign — it does not wait, it goes first. This moon is the cosmic green light. Whatever you have been planning, hesitating on, or overthinking — this is your move.",ritual:"Do the thing you have been putting off. Send the pitch. Post the offer. Record the reel. Then write your bold intentions for the next 30 days.",prompt:"What bold move has my future self been waiting for me to make? What would I do today if I had absolutely nothing to prove and nothing to lose?"},
+    {date:"Apr 24",type:"fullmoon",name:"Full Moon in Scorpio",emoji:"🌕",energy:"The Scorpio full moon is the most transformational full moon of the year. Scorpio rules death and rebirth, power, money, and what lives beneath the surface. Whatever is not working will be revealed. Whatever needs to die will be obvious.",ritual:"Shadow work night. Light a black or dark purple candle. Journal everything that has been simmering underneath — the fears, the resentments, the truths you have not said out loud. Then burn the paper.",prompt:"What truth have I been avoiding about my business, my relationships, or myself? What needs to die so something more powerful can be born?"},
+  ],
+  "2026-05": [
+    {date:"May 5",type:"portal",name:"5/5 Portal",emoji:"🔢",energy:"The 5/5 portal is one of the most powerful change and freedom portals of the year. Five is the number of radical transformation, adventure, and breaking free from limitation. Change you have been resisting becomes unavoidable today.",ritual:"Do one thing completely outside your comfort zone. Pitch someone new, raise your price, delete something that no longer aligns. Let 5/5 be the day you chose differently.",prompt:"What change have I been delaying because I am afraid of what comes next? What would total freedom from this pattern actually look like?"},
+    {date:"May 9",type:"newmoon",name:"New Moon in Taurus",emoji:"🌑",energy:"Taurus new moon is the most abundant and sensual new moon of the year. Taurus rules money, the body, beauty, and what you value. This moon wants you to manifest from pleasure and worthiness — not hustle and proving.",ritual:"Create a luxury experience for yourself today — a beautiful meal, a long bath, flowers, music you love. Write your money intentions from a place of already being enough.",prompt:"What do I actually value — not what I think I should value, but what genuinely makes me feel alive and abundant? Am I building my business around that?"},
+    {date:"May 23",type:"fullmoon",name:"Full Moon in Sagittarius",emoji:"🌕",energy:"Sagittarius full moon expands your vision and calls you toward freedom, adventure, and your highest truth. This moon activates your beliefs — specifically the ones that are either expanding your world or keeping it small.",ritual:"Pull a tarot or oracle card about your next big expansion. Then write your most expansive vision — no limits, no logic, just the biggest version of your dream.",prompt:"What belief about what is possible for me needs a complete upgrade right now? What am I not letting myself want because it feels too big?"},
+  ],
+  "2026-06": [
+    {date:"Jun 6",type:"portal",name:"6/6 Portal",emoji:"🔢",energy:"The 6/6 portal is the gateway of love, healing, home, and harmony. Six is the number of the nurturer and the heart. This portal activates deep healing in relationships — with yourself, with money, with others.",ritual:"Write a forgiveness letter — to yourself, to someone who hurt you, or to a past version of your business. You do not have to send it. Release it by burning or releasing.",prompt:"What would I do differently in my business and relationships if I truly believed I deserved love, success, and support without having to earn it?"},
+    {date:"Jun 8",type:"newmoon",name:"New Moon in Gemini",emoji:"🌑",energy:"Gemini new moon is the moon of ideas, communication, and multiplicity. Gemini says: you contain multitudes. Your brand can hold more than one thing. This moon is perfect for launching new content, messaging, and conversations.",ritual:"Write 10 content ideas you have been holding back. Pick one and publish it today. Let the new moon in Gemini be the moon you started saying the quiet part loud.",prompt:"What have I been thinking but not saying publicly? What content or message has been living in my drafts that needs to be seen?"},
+    {date:"Jun 21",type:"portal",name:"Summer Solstice Portal",emoji:"☀️",energy:"The Summer Solstice on June 21 is the longest day of the year and one of the 4 most powerful solar portals. This is peak power, peak visibility, peak manifestation energy. Whatever you claim today lands with maximum potency.",ritual:"Stand outside at sunrise or noon. Say your biggest vision out loud to the sky. Then write a declaration of who you are becoming by the Winter Solstice.",prompt:"At the peak of the year, what am I declaring for myself? Who is the woman I am committing to becoming by December 21st?"},
+    {date:"Jun 22",type:"fullmoon",name:"Full Moon in Capricorn",emoji:"🌕",energy:"Full moon in Capricorn on the heels of the solstice is an exceptionally powerful harvest moon for ambition and career. What have you been building since January? This moon reveals your progress and what still needs to be restructured.",ritual:"Review your January intentions and 2026 empire blueprint. Celebrate every win — small and large. Then recommit to what still feels unfinished.",prompt:"What have I built in the first half of 2026 that I have not fully celebrated? What needs to be released or restructured for the second half?"},
+  ],
+  "2026-07": [
+    {date:"Jul 7",type:"portal",name:"7/7 Portal",emoji:"🔢",energy:"The 7/7 portal is the most spiritually potent portal of the year. Seven is the number of the mystic, the seeker, and divine wisdom. This portal opens direct access to your higher self and your intuition.",ritual:"Spend the morning in complete silence and stillness. Meditate, journal without a prompt, or walk in nature alone. Let yourself receive rather than seek.",prompt:"What has my intuition been trying to tell me that I have been too busy, too loud, or too afraid to hear?"},
+    {date:"Jul 8",type:"newmoon",name:"New Moon in Cancer",emoji:"🌑",energy:"Cancer new moon is the most emotionally powerful new moon of the year. Cancer rules home, roots, the mother wound, and belonging. This moon activates deep healing around safety, security, and where you feel at home in yourself.",ritual:"Create a nourishing home ritual — clean your space, cook something from scratch, light candles. Write intentions for emotional safety and financial security.",prompt:"Where do I not feel safe — in my body, my business, my money? What would it take for me to feel truly at home in the life I am building?"},
+    {date:"Jul 21",type:"fullmoon",name:"Full Moon in Aquarius",emoji:"🌕",energy:"Aquarius full moon lights up your community, your impact, and your most visionary ideas. What have you been building for others? This moon is about the ripple effect of your work.",ritual:"Reach out to 3 people who have been impacted by your work and tell them specifically what they mean to you. Then write about the community you are building.",prompt:"What is the impact I am actually having that I have been underselling or not talking about? Who needs to know what I do right now?"},
+  ],
+  "2026-08": [
+    {date:"Aug 8",type:"portal",name:"8/8 Lion's Gate Portal",emoji:"⭐",energy:"The 8/8 Lion's Gate is THE most powerful manifestation portal of the entire year. The star Sirius aligns with the Earth and the Sun in Leo, opening a cosmic gateway for abundance, power, and soul-level activation. This portal supercharges every intention set today.",ritual:"Wake early. Write your most expansive vision as if it is already done — present tense, full sensory detail, full emotion. Read it aloud facing the sunrise. Meditate for 8 minutes visualizing it. This is the most important ritual of your year.",prompt:"If the universe said YES to everything I asked for today — what would I ask for? What have I been too afraid or too small to claim? Write it all. Claim it all. Today is the day."},
+    {date:"Aug 22",type:"newmoon",name:"New Moon in Leo",emoji:"🌑",energy:"Leo new moon in the wake of the Lion's Gate is extraordinarily potent for visibility, identity, and creative leadership. Leo says: you are the main character. Stop acting like a supporting role in your own story.",ritual:"Create a brand photoshoot for yourself — even just with your phone. Dress in something that makes you feel powerful. Write a new bio from the perspective of your future self.",prompt:"Who am I when I stop dimming myself for other people's comfort? What would my brand look like if I led from my full power?"},
+    {date:"Aug 22",type:"fullmoon",name:"Full Moon in Pisces",emoji:"🌕",energy:"Full moon in Pisces activates your dreams, your spiritual gifts, and your subconscious patterns. What from your past is still running the show beneath the surface?",ritual:"Before bed, set an intention to receive a message in your dreams. Keep a journal by your bed. Write everything you remember upon waking.",prompt:"What pattern keeps showing up in my business or relationships that is rooted in a wound I have not fully healed? What is my subconscious still trying to protect me from?"},
+  ],
+  "2026-09": [
+    {date:"Sep 9",type:"portal",name:"9/9 Portal",emoji:"🔢",energy:"The 9/9 portal is the gateway of completion, release, and wisdom. Nine is the number of the humanitarian, the wise woman, and the end of cycles. Whatever has not been serving you will come to an obvious end today.",ritual:"Write everything you are releasing from this year so far. Then write what you are welcoming as the year begins its final chapter. Burn or release the list.",prompt:"What chapter of my story is clearly ending right now? What wisdom am I taking with me and what am I finally leaving behind?"},
+    {date:"Sep 6",type:"newmoon",name:"New Moon in Virgo",emoji:"🌑",energy:"Virgo new moon is the moon of refinement, health, and sacred service. This moon asks: are your daily practices actually supporting your vision? Is your offer truly serving your people at the highest level?",ritual:"Audit your morning routine and your offer suite. Make one upgrade to each. Even a small refinement made with intention has enormous impact during this moon.",prompt:"What is one thing I have been tolerating in my business or daily life that is quietly draining me? What would change if I finally addressed it?"},
+    {date:"Sep 21",type:"portal",name:"Autumn Equinox Portal",emoji:"🍂",energy:"The Autumn Equinox is the third of the four great solar portals. Equal day and night — the balance point before the descent into the darker, more introspective months. This is a powerful harvest portal: what have you grown this year?",ritual:"Create a physical harvest ritual. Make a list of everything you have created, launched, earned, healed, or learned in 2026 so far. Celebrate with something that brings you genuine pleasure.",prompt:"What am I harvesting from the seeds I planted at the Spring Equinox and the Summer Solstice? What do I want to preserve and take into the final quarter?"},
+    {date:"Sep 20",type:"fullmoon",name:"Full Moon in Aries",emoji:"🌕",energy:"Aries full moon is a bold, fire-charged full moon of action and identity. This moon is asking: who are you becoming as the year starts to close? Are you still playing small or have you finally decided to go first?",ritual:"Write a letter to the Aries full moon version of yourself — the woman who takes the leap, makes the move, and stops waiting. Then do one brave thing today.",prompt:"What brave action has my soul been calling me toward all year that I keep finding reasons to delay? What would I do today if I finally stopped waiting for the right time?"},
+  ],
+  "2026-10": [
+    {date:"Oct 10",type:"portal",name:"10/10 Portal",emoji:"🔢",energy:"The 10/10 portal activates completion and new cycles simultaneously. Ten represents the end of one cycle and the beginning of the next. In numerology, 10 = 1+0 = 1 — new beginnings with the wisdom of everything that came before.",ritual:"Write a letter to your past self from January 2026. What has changed? What have you accomplished? What do you want to tell her? Then write a letter from your January 2027 self to the woman you are right now.",prompt:"How much have I grown since January? What has shifted in me that I have not fully acknowledged or celebrated?"},
+    {date:"Oct 5",type:"newmoon",name:"New Moon in Libra",emoji:"🌑",energy:"Libra new moon activates balance, beauty, partnership, and decision-making. This moon is the perfect time to evaluate what is in alignment and what needs adjustment as you enter the final quarter of the year.",ritual:"Create a sacred space audit. Walk through your home, office, and online presence with fresh eyes. What feels aligned and beautiful? What feels stagnant or off?",prompt:"What decisions have I been putting off that, once made, will create immediate relief and alignment? What am I still sitting on the fence about?"},
+    {date:"Oct 20",type:"fullmoon",name:"Full Moon in Aries",emoji:"🌕",energy:"Second Aries full moon of the year — extremely rare and powerful. Double the Aries energy of courage, identity, and bold action. If you did not take the leap last month, the universe is giving you a second invitation.",ritual:"Revisit your September Aries full moon journal entry. Have you done the brave thing? If not — do it now. If yes — write about how it felt and what it opened.",prompt:"What is my soul still waiting for permission to do? Who is keeping me safe that is actually keeping me small?"},
+    {date:"Oct 31",type:"portal",name:"Samhain Portal",emoji:"🕯️",energy:"Samhain on October 31 is one of the most spiritually powerful portals of the year — the day the veil between worlds is thinnest. This is a portal for ancestral healing, shadow work, and deep intuitive access. The witches knew.",ritual:"Honor your ancestors and your lineage. Light candles for those who came before you. Do shadow work — journal the parts of yourself you have been hiding or rejecting. What is trying to come through the veil?",prompt:"What ancestral pattern around money, worth, or power have I inherited that I am now choosing to transform? What do I want to break in my lineage and what do I want to begin?"},
+  ],
+  "2026-11": [
+    {date:"Nov 3",type:"newmoon",name:"New Moon in Scorpio",emoji:"🌑",energy:"Scorpio new moon is the most transformational new moon of the year. Scorpio rules power, money, sex, death, and rebirth. This moon does not do shallow. It goes to the root. What are you finally ready to transform at the core level?",ritual:"Do your most honest shadow work of the year. Write what you have been afraid to want. Write what you have been pretending is fine when it is not. Then write what you choose instead.",prompt:"What core belief about myself, my worth, or my power is still limiting what I am willing to receive? What would change if I finally released it?"},
+    {date:"Nov 11",type:"portal",name:"11/11 Portal",emoji:"⭐",energy:"The 11/11 portal is the most famous and widely felt portal of the year. Master number 11 is the gateway between dimensions — it activates intuition, manifestation, and spiritual awakening. At 11:11, the veil between your current reality and your desired reality is at its thinnest.",ritual:"At 11:11am and 11:11pm, stop. Close your eyes. Feel your most desired reality as if it is already present. Make a wish. Write your intentions. Then trust completely.",prompt:"At this gateway between who I have been and who I am becoming — what am I choosing? What is the most important thing I am manifesting for the rest of this year and into 2027?"},
+    {date:"Nov 19",type:"fullmoon",name:"Full Moon in Taurus",emoji:"🌕",energy:"Taurus full moon is a deeply sensual and abundant harvest moon. Taurus rules money, stability, and the physical body. This moon reveals your relationship with abundance — what you are holding and what you are struggling to receive.",ritual:"Create an abundance altar. Money, crystals, flowers, things that represent wealth and beauty to you. Sit with it and write about your relationship with money without judgment.",prompt:"What is my money story right now — not what I want it to be, but what it actually is? Where am I blocking abundance from entering and how is that linked to my sense of worthiness?"},
+  ],
+  "2026-12": [
+    {date:"Dec 3",type:"newmoon",name:"New Moon in Sagittarius",emoji:"🌑",energy:"Sagittarius new moon is the final new moon before the Winter Solstice — it is expansive, optimistic, and visionary. This moon asks: what is the biggest version of your vision for 2027? Let yourself dream before the year closes.",ritual:"Write your 2027 vision without limitation. Not a goal list — a vision. What does your life feel like? What have you created? Who are you being?",prompt:"If 2026 was the year I built the foundation — what is 2027 the year of? What am I ready to expand into that felt impossible at the start of this year?"},
+    {date:"Dec 18",type:"fullmoon",name:"Full Moon in Gemini",emoji:"🌕",energy:"The final full moon of 2026 falls in Gemini — the sign of communication, duality, and storytelling. This moon asks: what is the story of your 2026? How will you tell it? And which version of you are you taking into the new year?",ritual:"Write your 2026 story — the real one, with the hard parts and the breakthroughs. Then write the headline: 'The year I ____.' Celebrate it. Honor it. Let it complete.",prompt:"What is the most important story from 2026 that I need to tell — to myself, to my community, or both? What did this year teach me that I want to carry into 2027?"},
+    {date:"Dec 21",type:"portal",name:"Winter Solstice Portal",emoji:"🌑",energy:"The Winter Solstice is the fourth and final great solar portal of the year. The longest night — the return of the light. This is the most introspective and potent closure portal of 2026. What you plant tonight will grow in the dark all winter and emerge in spring.",ritual:"Spend the evening in candlelight. Review your entire year. Write your biggest gratitudes. Then plant one seed intention for 2027 — one word, one image, one feeling — and let it rest in the dark until the new year dawns.",prompt:"As I close the longest night of the year — what am I leaving in the dark of 2026 to decompose? And what single intention am I planting like a seed for the dawn of 2027?"},
+  ],
+};
+
+const MONTH_NAMES=["January","February","March","April","May","June","July","August","September","October","November","December"];
+
+function PortalsTab({T}){
+  const [selectedMonth,setSelectedMonth]=useState(new Date().getMonth());
+  const [selectedPortal,setSelectedPortal]=useState(null);
+  const monthKey=`2026-${String(selectedMonth+1).padStart(2,"0")}`;
+  const portals=PORTALS_2026[monthKey]||[];
+  const typeColor=(type)=>({newmoon:T.accentLt,fullmoon:T.detail,portal:T.orchid}[type]||T.accentLt);
+  const typeLabel=(type)=>({newmoon:"New Moon",fullmoon:"Full Moon",portal:"Portal"}[type]||"Portal");
+
+  return React.createElement("div",null,
+    // Month selector
+    React.createElement("div",{style:{marginBottom:20}},
+      React.createElement("div",{style:{fontFamily:"'Montserrat',sans-serif",fontSize:9,fontWeight:700,letterSpacing:1.5,color:T.accentLt,textTransform:"uppercase",marginBottom:12}},`2026 Cosmic Calendar`),
+      React.createElement("div",{style:{display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:6}},
+        MONTH_NAMES.map((m,i)=>{
+          const mk=`2026-${String(i+1).padStart(2,"0")}`;
+          const count=(PORTALS_2026[mk]||[]).length;
+          const isActive=selectedMonth===i;
+          return React.createElement("button",{key:i,onClick:()=>{setSelectedMonth(i);setSelectedPortal(null);},
+            style:{padding:"10px 6px",borderRadius:12,border:`1px solid ${isActive?T.accentLt:T.border}`,
+              background:isActive?`rgba(115,57,96,0.2)`:T.surface,
+              cursor:"pointer",textAlign:"center",transition:"all .2s",
+              boxShadow:isActive?`0 0 12px rgba(115,57,96,0.2)`:"none"}},
+            React.createElement("div",{style:{fontFamily:"'Montserrat',sans-serif",fontSize:11,fontWeight:700,color:isActive?T.accentLt:T.txtMuted}}),
+            React.createElement("div",{style:{fontFamily:"'Cormorant Garamond',serif",fontSize:13,fontWeight:700,color:isActive?T.txt:T.txtSec}}),
+            React.createElement("div",{style:{fontFamily:"'Montserrat',sans-serif",fontSize:10,fontWeight:700,color:isActive?T.accentLt:T.txtMuted}},m.slice(0,3)),
+            count>0&&React.createElement("div",{style:{marginTop:4,display:"flex",justifyContent:"center",gap:2}},
+              Array(count).fill(0).map((_,j)=>React.createElement("div",{key:j,style:{width:4,height:4,borderRadius:"50%",background:isActive?T.accentLt:T.borderBr}}))
+            )
+          );
+        })
+      )
+    ),
+
+    // Month header
+    React.createElement("div",{style:{...({background:T.card,borderRadius:16,border:`1px solid ${T.border}`,backdropFilter:"blur(16px)",WebkitBackdropFilter:"blur(16px)",padding:"20px",marginBottom:14,position:"relative",overflow:"hidden"})}},
+      T.name==="dark"&&React.createElement("div",{style:{position:"absolute",inset:0,backgroundImage:STARS,opacity:0.2,pointerEvents:"none"}}),
+      React.createElement("div",{style:{position:"relative"}},
+        React.createElement("div",{style:{fontFamily:"'Cormorant Garamond',serif",fontSize:26,fontWeight:700,color:T.txt,marginBottom:4}},MONTH_NAMES[selectedMonth]," 2026"),
+        React.createElement("div",{style:{fontFamily:"'Montserrat',sans-serif",fontSize:12,color:T.txtMuted}}),
+        portals.length===0
+          ?React.createElement("div",{style:{fontFamily:"'Cormorant Garamond',serif",fontSize:15,fontStyle:"italic",color:T.txtFaded,marginTop:8}},"No major portals recorded for this month.")
+          :React.createElement("div",{style:{fontFamily:"'Montserrat',sans-serif",fontSize:12,color:T.txtMuted,marginTop:4}},`${portals.length} cosmic event${portals.length>1?"s":""} this month`)
+      )
+    ),
+
+    // Portal cards
+    portals.map((p,i)=>{
+      const isOpen=selectedPortal===i;
+      const tc=typeColor(p.type);
+      return React.createElement("div",{key:i,style:{background:T.card,borderRadius:16,border:`1px solid ${isOpen?tc:T.border}`,backdropFilter:"blur(16px)",WebkitBackdropFilter:"blur(16px)",marginBottom:12,overflow:"hidden",transition:"all .25s",boxShadow:isOpen?`0 4px 24px rgba(115,57,96,0.18)`:`0 4px 16px ${T.shadow}`}},
+        // Card header — always visible
+        React.createElement("div",{onClick:()=>setSelectedPortal(isOpen?null:i),style:{padding:"18px 20px",cursor:"pointer",position:"relative",overflow:"hidden"}},
+          T.name==="dark"&&React.createElement("div",{style:{position:"absolute",inset:0,backgroundImage:STARS,opacity:0.15,pointerEvents:"none"}}),
+          React.createElement("div",{style:{position:"relative",display:"flex",alignItems:"center",justifyContent:"space-between",gap:12}},
+            React.createElement("div",{style:{display:"flex",alignItems:"center",gap:12}},
+              React.createElement("span",{style:{fontSize:24}},p.emoji),
+              React.createElement("div",null,
+                React.createElement("div",{style:{display:"flex",alignItems:"center",gap:8,marginBottom:3}},
+                  React.createElement("span",{style:{fontFamily:"'Montserrat',sans-serif",fontSize:9,fontWeight:700,letterSpacing:1.2,color:tc,textTransform:"uppercase",background:`rgba(115,57,96,0.12)`,padding:"2px 8px",borderRadius:50}},typeLabel(p.type)),
+                  React.createElement("span",{style:{fontFamily:"'Montserrat',sans-serif",fontSize:10,color:T.txtFaded}}),p.date
+                ),
+                React.createElement("div",{style:{fontFamily:"'Cormorant Garamond',serif",fontSize:17,fontWeight:700,color:T.txt}},p.name)
+              )
+            ),
+            React.createElement("span",{style:{color:T.txtFaded,fontSize:18,transition:"transform .2s",transform:isOpen?"rotate(180deg)":"rotate(0deg)"}}, "↓")
+          )
+        ),
+        // Expanded content
+        isOpen&&React.createElement("div",{style:{padding:"0 20px 20px"}},
+          React.createElement("div",{style:{height:1,background:T.border,marginBottom:16}}),
+          // Energy
+          React.createElement("div",{style:{marginBottom:16}},
+            React.createElement("div",{style:{fontFamily:"'Montserrat',sans-serif",fontSize:9,fontWeight:700,letterSpacing:1.3,color:tc,textTransform:"uppercase",marginBottom:6}},"✦ Energetic Meaning"),
+            React.createElement("p",{style:{fontFamily:"'Montserrat',sans-serif",fontSize:13,color:T.txtSec,lineHeight:1.75,margin:0}},p.energy)
+          ),
+          // Ritual
+          React.createElement("div",{style:{background:T.name==="dark"?"rgba(115,57,96,0.1)":"rgba(115,57,96,0.05)",borderRadius:12,padding:"14px 16px",marginBottom:14,border:`1px solid ${T.border}`}},
+            React.createElement("div",{style:{fontFamily:"'Montserrat',sans-serif",fontSize:9,fontWeight:700,letterSpacing:1.3,color:T.detail,textTransform:"uppercase",marginBottom:8}},"🕯️ Ritual Suggestion"),
+            React.createElement("p",{style:{fontFamily:"'Montserrat',sans-serif",fontSize:13,color:T.txtSec,lineHeight:1.75,margin:0}},p.ritual)
+          ),
+          // Journal prompt
+          React.createElement("div",{style:{background:T.name==="dark"?"rgba(179,106,162,0.08)":"rgba(115,57,96,0.04)",borderRadius:12,padding:"14px 16px",border:`1px solid ${T.borderBr}`}},
+            React.createElement("div",{style:{fontFamily:"'Montserrat',sans-serif",fontSize:9,fontWeight:700,letterSpacing:1.3,color:T.accentLt,textTransform:"uppercase",marginBottom:8}},"✍️ Journal Prompt"),
+            React.createElement("p",{style:{fontFamily:"'Cormorant Garamond',serif",fontSize:15,fontStyle:"italic",color:T.txt,lineHeight:1.8,margin:0}},`"${p.prompt}"`)
+          )
+        )
+      );
+    }),
+
+    portals.length===0&&React.createElement("div",{style:{textAlign:"center",padding:"40px 20px"}},
+      React.createElement("p",{style:{fontFamily:"'Cormorant Garamond',serif",fontSize:18,fontStyle:"italic",color:T.txtFaded}},"The cosmos rests this month."),
+      React.createElement("p",{style:{fontFamily:"'Montserrat',sans-serif",fontSize:12,color:T.txtFaded,marginTop:8}},"Use this time for integration and reflection.")
+    )
+  );
+}
+
+const TABS=[{id:"daily",label:"Daily",emoji:"☀️"},{id:"weekly",label:"Weekly",emoji:"🗓️"},{id:"monthly",label:"Monthly",emoji:"🌙"},{id:"prompts",label:"Prompts",emoji:"💡"},{id:"369",label:"3/6/9",emoji:"🔮"},{id:"portals",label:"Portals",emoji:"🌕"},{id:"streak",label:"Streak",emoji:"🔥"}];
+const heroLabel={daily:"Daily Sacred Spread",weekly:"Weekly Vision Spread",monthly:"Monthly Review",prompts:"Prompt Library","369":"3 / 6 / 9 Method",portals:"2026 Cosmic Portals",streak:"Your Practice Streak"};
+const heroSub={daily:"Auto-saved · Pick up where you left off",weekly:"Auto-saved · Vision · Gratitude · Evidence",monthly:"Auto-saved · Celebrate · Calibrate · Claim",prompts:"Auto-saved · Pull a prompt · Let it guide you","369":"Auto-saved · One desire · All day",portals:"New Moons · Full Moons · Sacred Portals · Rituals",streak:"Show up. Stack the days. Build the empire."};
 
 function App(){
   const [screen,setScreen]=useState("cover");
@@ -638,6 +805,7 @@ function App(){
           :tab==="monthly"?React.createElement(Monthly,{T})
           :tab==="prompts"?React.createElement(Prompts,{T})
           :tab==="369"?React.createElement(ThreeSixNine,{T})
+          :tab==="portals"?React.createElement(PortalsTab,{T})
           :React.createElement(StreakWidget,{streak,total,doneToday,markToday,T})
       ),
       React.createElement("div",{style:{position:"relative",overflow:"hidden",padding:"28px 24px",textAlign:"center",borderTop:`1px solid ${T.border}`,background:T.footerBg,backdropFilter:"blur(12px)"}},
