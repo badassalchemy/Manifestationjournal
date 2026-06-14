@@ -695,32 +695,32 @@ function PortalsTab({T}){
               React.createElement("span",{style:{fontSize:24}},p.emoji),
               React.createElement("div",null,
                 React.createElement("div",{style:{display:"flex",alignItems:"center",gap:8,marginBottom:3}},
-                  React.createElement("span",{style:{fontFamily:"'Montserrat',sans-serif",fontSize:9,fontWeight:700,letterSpacing:1.2,color:tc,textTransform:"uppercase",background:`rgba(115,57,96,0.12)`,padding:"2px 8px",borderRadius:50}},typeLabel(p.type)),
-                  React.createElement("span",{style:{fontFamily:"'Montserrat',sans-serif",fontSize:10,color:T.txtFaded}}),p.date
+                  React.createElement("span",{style:{fontFamily:"'Montserrat',sans-serif",fontSize:9,fontWeight:700,letterSpacing:1.2,color:tc,textTransform:"uppercase",background:T.name==="dark"?"rgba(115,57,96,0.2)":"rgba(115,57,96,0.1)",padding:"2px 8px",borderRadius:50}},typeLabel(p.type)),
+                  React.createElement("span",{style:{fontFamily:"'Montserrat',sans-serif",fontSize:11,fontWeight:600,color:T.name==="dark"?"#D4C0E8":"#6B3080"}},p.date)
                 ),
-                React.createElement("div",{style:{fontFamily:"'Cormorant Garamond',serif",fontSize:17,fontWeight:700,color:T.txt}},p.name)
+                React.createElement("div",{style:{fontFamily:"'Cormorant Garamond',serif",fontSize:17,fontWeight:700,color:T.name==="dark"?"#F7EDF1":"#1A0628"}},p.name)
               )
             ),
-            React.createElement("span",{style:{color:T.txtFaded,fontSize:18,transition:"transform .2s",transform:isOpen?"rotate(180deg)":"rotate(0deg)"}}, "↓")
+            React.createElement("span",{style:{color:T.name==="dark"?"#8A6080":"#9A6AAA",fontSize:18,transition:"transform .2s",transform:isOpen?"rotate(180deg)":"rotate(0deg)"}},"↓")
           )
         ),
         // Expanded content
         isOpen&&React.createElement("div",{style:{padding:"0 20px 20px"}},
-          React.createElement("div",{style:{height:1,background:T.border,marginBottom:16}}),
+          React.createElement("div",{style:{height:1,background:T.name==="dark"?"rgba(179,106,162,0.18)":"rgba(115,57,96,0.15)",marginBottom:16}}),
           // Energy
           React.createElement("div",{style:{marginBottom:16}},
             React.createElement("div",{style:{fontFamily:"'Montserrat',sans-serif",fontSize:9,fontWeight:700,letterSpacing:1.3,color:tc,textTransform:"uppercase",marginBottom:6}},"✦ Energetic Meaning"),
-            React.createElement("p",{style:{fontFamily:"'Montserrat',sans-serif",fontSize:13,color:T.txtSec,lineHeight:1.75,margin:0}},p.energy)
+            React.createElement("p",{style:{fontFamily:"'Montserrat',sans-serif",fontSize:13,color:T.name==="dark"?"#E8D4E0":"#3D1A50",lineHeight:1.75,margin:0}},p.energy)
           ),
           // Ritual
-          React.createElement("div",{style:{background:T.name==="dark"?"rgba(115,57,96,0.1)":"rgba(115,57,96,0.05)",borderRadius:12,padding:"14px 16px",marginBottom:14,border:`1px solid ${T.border}`}},
-            React.createElement("div",{style:{fontFamily:"'Montserrat',sans-serif",fontSize:9,fontWeight:700,letterSpacing:1.3,color:T.detail,textTransform:"uppercase",marginBottom:8}},"🕯️ Ritual Suggestion"),
-            React.createElement("p",{style:{fontFamily:"'Montserrat',sans-serif",fontSize:13,color:T.txtSec,lineHeight:1.75,margin:0}},p.ritual)
+          React.createElement("div",{style:{background:T.name==="dark"?"rgba(115,57,96,0.1)":"rgba(115,57,96,0.05)",borderRadius:12,padding:"14px 16px",marginBottom:14,border:`1px solid ${T.name==="dark"?"rgba(179,106,162,0.18)":"rgba(115,57,96,0.15)"}`}},
+            React.createElement("div",{style:{fontFamily:"'Montserrat',sans-serif",fontSize:9,fontWeight:700,letterSpacing:1.3,color:T.name==="dark"?"#C4789A":"#9B4E7A",textTransform:"uppercase",marginBottom:8}},"🕯️ Ritual Suggestion"),
+            React.createElement("p",{style:{fontFamily:"'Montserrat',sans-serif",fontSize:13,color:T.name==="dark"?"#E8D4E0":"#3D1A50",lineHeight:1.75,margin:0}},p.ritual)
           ),
           // Journal prompt
-          React.createElement("div",{style:{background:T.name==="dark"?"rgba(179,106,162,0.08)":"rgba(115,57,96,0.04)",borderRadius:12,padding:"14px 16px",border:`1px solid ${T.borderBr}`}},
-            React.createElement("div",{style:{fontFamily:"'Montserrat',sans-serif",fontSize:9,fontWeight:700,letterSpacing:1.3,color:T.accentLt,textTransform:"uppercase",marginBottom:8}},"✍️ Journal Prompt"),
-            React.createElement("p",{style:{fontFamily:"'Cormorant Garamond',serif",fontSize:15,fontStyle:"italic",color:T.txt,lineHeight:1.8,margin:0}},`"${p.prompt}"`)
+          React.createElement("div",{style:{background:T.name==="dark"?"rgba(179,106,162,0.08)":"rgba(115,57,96,0.04)",borderRadius:12,padding:"14px 16px",border:`1px solid ${T.name==="dark"?"rgba(179,106,162,0.32)":"rgba(115,57,96,0.2)"}`}},
+            React.createElement("div",{style:{fontFamily:"'Montserrat',sans-serif",fontSize:9,fontWeight:700,letterSpacing:1.3,color:T.name==="dark"?"#B16AA2":"#733960",textTransform:"uppercase",marginBottom:8}},"✍️ Journal Prompt"),
+            React.createElement("p",{style:{fontFamily:"'Cormorant Garamond',serif",fontSize:15,fontStyle:"italic",color:T.name==="dark"?"#F7EDF1":"#1A0628",lineHeight:1.8,margin:0}},`"${p.prompt}"`)
           )
         )
       );
